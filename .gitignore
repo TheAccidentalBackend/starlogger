@@ -1,0 +1,11 @@
+# Local reference material — not for the public repo
+Hulpmiddel analysestructuur - Comm.Unit-T.html
+
+# Temp / verification files
+_*.mjs
+_*.txt
+_mod.mjs
+
+# OS / editor cruft
+Thumbs.db
+.DS_Store

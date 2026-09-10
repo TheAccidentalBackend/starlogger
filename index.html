@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>STAR LOGGER — Unit-T</title>
+<style>
+  :root{
+    --bg:#E1E2E1; --panel:#FFFFFF; --panel2:#F4F5F4; --line:#cfd2cf;
+    --txt:#3D3D3D; --muted:#6d6f6d;
+    --accent:#C4610b; --accent2:#EA8127; --cyan:#077176; --cta:#E5007D;
+    --ok:#86D586; --okd:#2f7a2f; --nok:#ff6A6A; --nokd:#b23b3b; --yellow:#FFC421;
+    --radius:12px;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0;height:100%}
+  body{
+    background:var(--bg); color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:15px; line-height:1.4; display:flex; flex-direction:column; min-height:100%;
+  }
+  header{
+    position:sticky; top:0; z-index:30;
+    background:linear-gradient(180deg,#C4610b,#EA8127); color:#fff;
+    border-bottom:1px solid #a4500a; padding:8px 12px;
+  }
+  .brand{display:flex;align-items:center;gap:10px;justify-content:space-between;flex-wrap:wrap}
+  .title{display:flex;align-items:center;gap:8px;font-weight:800;font-size:17px;color:#fff}
+  .star{color:var(--yellow);font-size:20px}
+  .rightctrls{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+  .langs{display:flex;gap:4px}
+  .chip{background:rgba(255,255,255,.85);color:#8a4408;border:1px solid rgba(255,255,255,.6);
+    border-radius:999px;padding:5px 11px;font-weight:800;font-size:12px;cursor:pointer}
+  .chip.active{background:#fff;color:#C4610b}
+  .progress{margin-top:8px;height:6px;background:rgba(255,255,255,.35);border-radius:999px;overflow:hidden}
+  .progress>div{height:100%;background:#fff;width:0;transition:width .25s}
+  .pmeta{display:flex;justify-content:space-between;margin-top:6px;font-size:11.5px;color:rgba(255,255,255,.9)}
+
+  main{flex:1;display:flex;flex-direction:column;max-width:1040px;width:100%;margin:0 auto;padding:12px 12px 0 12px}
+  .layout{display:flex;gap:14px;align-items:flex-start;flex:1;min-height:0}
+  .guidewrap{flex:1 1 52%;min-width:0}
+  .outwrap{flex:1 1 48%;min-width:0;display:flex;flex-direction:column}
+  @media(max-width:860px){ .layout{flex-direction:column} .outwrap{width:100%} }
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+  .stagebadge{display:inline-block;background:var(--panel2);color:var(--cyan);border:1px solid var(--line);
+    border-radius:999px;padding:3px 10px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
+  .qtitle{font-size:20px;font-weight:800;margin:0 0 4px 0}
+  .qsub{color:var(--muted);font-size:13.5px;margin:0 0 14px 0}
+  .normbox{background:#fff7ef;border:1px solid #f0c99b;border-left:4px solid var(--accent2);border-radius:8px;
+    padding:10px 12px;font-size:13px;margin-bottom:14px;color:#7a4a12}
+  .normbox b{color:var(--accent)}
+
+  .values{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+  .values .v{flex:1;min-width:80px}
+  .values label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:3px}
+  .values input{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:9px;font-size:15px;color:var(--txt)}
+  .values input:focus{outline:none;border-color:var(--accent)}
+
+  .oknok{display:flex;gap:10px;margin-bottom:6px}
+  .oknok button{flex:1;padding:15px;border-radius:12px;border:2px solid var(--line);background:#fff;color:var(--txt);
+    font-weight:800;font-size:16px;cursor:pointer;transition:transform .05s}
+  .oknok button:active{transform:scale(.98)}
+  .oknok .ok:hover,.oknok .ok.sel{background:var(--ok);border-color:var(--okd);color:#123b12}
+  .oknok .nok:hover,.oknok .nok.sel{background:var(--nok);border-color:var(--nokd);color:#4a1414}
+
+  .hints{margin-top:12px;border-top:1px dashed var(--line);padding-top:12px}
+  .hints .htitle{font-size:12px;font-weight:800;color:var(--nokd);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px}
+  .hintbtn{display:flex;align-items:center;gap:8px;width:100%;text-align:left;background:var(--panel2);
+    border:1px solid var(--line);border-radius:9px;padding:10px;font-size:13.5px;font-weight:600;color:var(--txt);cursor:pointer;margin-bottom:6px}
+  .hintbtn:hover{border-color:var(--accent)}
+  .hintbtn .plus{color:var(--cta);font-weight:900;font-size:16px}
+
+  .qm{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;
+    background:var(--cyan);color:#fff;font-size:12px;font-weight:900;cursor:help;flex:none;margin-left:8px;vertical-align:middle}
+
+  .choice{display:flex;flex-direction:column;gap:10px}
+  .choice button{display:flex;align-items:center;gap:12px;text-align:left;background:#fff;border:2px solid var(--line);
+    border-radius:12px;padding:16px;font-size:16px;font-weight:800;color:var(--txt);cursor:pointer}
+  .choice button:hover{border-color:var(--accent)}
+  .choice .ic{font-size:22px}
+  .choice .desc{display:block;font-weight:500;color:var(--muted);font-size:12.5px;margin-top:2px}
+
+  .freetype{margin-bottom:12px}
+  .freetype label{display:block;font-weight:700;font-size:13px;margin-bottom:6px}
+  .freetype textarea{width:100%;min-height:80px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;
+    padding:10px;font-size:15px;color:var(--txt);resize:vertical;font-family:inherit}
+  .freetype textarea:focus{outline:none;border-color:var(--accent)}
+
+  .helpers{margin-top:8px}
+  .helpers h5{margin:12px 0 6px 0;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--cyan)}
+  .hrow{display:flex;flex-wrap:wrap;gap:6px}
+  .hrow button{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:12.5px;font-weight:600;color:var(--txt);cursor:pointer}
+  .hrow button:hover{border-color:var(--accent)}
+
+  /* Output notepad */
+  .outhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .outhead h3{margin:0;font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--cyan)}
+  #out{width:100%;flex:1;min-height:320px;background:#fff;color:var(--txt);border:1px solid var(--line);border-radius:var(--radius);
+    padding:14px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13.5px;line-height:1.55;
+    white-space:pre;overflow:auto;resize:none;tab-size:8;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+  #out:focus{outline:none;border-color:var(--accent)}
+  .lockmsg{background:#fff7ef;border:1px solid #f0c99b;color:#7a4a12;border-radius:8px;padding:8px 10px;font-size:12.5px;margin-top:6px}
+
+  .navbar{position:sticky;bottom:0;z-index:20;background:var(--panel);border-top:1px solid var(--line);
+    padding:10px 12px calc(10px + env(safe-area-inset-bottom,0)) 12px;display:flex;gap:8px;max-width:1040px;width:100%;margin:14px auto 0 auto;box-shadow:0 -2px 8px rgba(0,0,0,.05)}
+  .navbar button{padding:13px;border-radius:11px;font-weight:800;font-size:14px;cursor:pointer;border:1px solid var(--line)}
+  .btn-back{background:var(--panel2);color:var(--txt);flex:0 0 auto;min-width:76px}
+  .btn-next{background:var(--accent);color:#fff;border-color:var(--accent);flex:1;min-width:120px}
+  .btn-next:disabled{background:var(--panel2);color:var(--muted);border-color:var(--line);cursor:not-allowed}
+  .btn-skip{background:transparent;color:var(--muted);flex:0 0 auto}
+  .btn-copy{background:var(--cta);color:#fff;border-color:var(--cta);flex:1}
+  .btn-mt{background:transparent;color:var(--cyan);border-color:var(--cyan);flex:0 0 auto;font-weight:800}
+  .btn-new{background:var(--panel2);color:var(--txt);flex:0 0 auto}
+
+  .tip{position:fixed;z-index:100;max-width:280px;background:#3D3D3D;color:#fff;border:1px solid var(--accent);
+    border-radius:10px;padding:10px 12px;font-size:13px;line-height:1.45;box-shadow:0 8px 24px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:opacity .12s}
+  .tip.show{opacity:1}
+  .tip .warn{color:var(--yellow);font-weight:700}
+  .toast{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);background:var(--cyan);color:#fff;font-weight:800;padding:10px 16px;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:120}
+  .toast.show{opacity:1}
+
+  .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;display:none;align-items:center;justify-content:center;padding:14px}
+  .modal-bg.show{display:flex}
+  .modal{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;max-width:560px;width:100%;max-height:88vh;overflow:auto}
+  .modal h3{margin:0 0 4px 0}
+  .modal .sub{margin:0 0 12px 0;color:var(--muted);font-size:13px}
+  .modal label{display:block;font-weight:700;font-size:13px;margin:10px 0 4px 0}
+  .modal input,.modal textarea{width:100%;background:var(--panel2);color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:9px;font-size:14px;font-family:ui-monospace,monospace}
+  .modal textarea{min-height:120px;white-space:pre;overflow:auto}
+  .modal .row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .modal .actions{display:flex;gap:8px;margin-top:14px}
+  .modal .actions button{flex:1;padding:11px;border-radius:9px;font-weight:800;cursor:pointer;border:1px solid var(--line)}
+  .tabs{display:flex;gap:6px;margin-bottom:10px}
+  .tabs .chip{color:var(--cyan);background:var(--panel2);border-color:var(--line)}
+  .tabs .chip.active{background:var(--cyan);color:#fff}
+  .btn-copy2{background:var(--cta);color:#fff;border-color:var(--cta)}
+  .btn-grey{background:var(--panel2);color:var(--txt)}
+  .hintline{color:var(--muted);font-size:12px;margin-top:6px}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="title"><span class="star">★</span><span id="appTitle">STAR LOGGER</span></div>
+    <div class="rightctrls">
+      <div class="langs" id="langs">
+        <button class="chip active" data-lang="nl">NL</button>
+        <button class="chip" data-lang="fr">FR</button>
+        <button class="chip" data-lang="en">EN</button>
+      </div>
+    </div>
+  </div>
+  <div class="progress"><div id="progressBar"></div></div>
+  <div class="pmeta"><span id="crumb"></span><span id="count"></span></div>
+</header>
+
+<main>
+  <div class="layout">
+    <div class="guidewrap"><div id="stepHost"></div></div>
+    <div class="outwrap">
+      <div class="outhead"><h3 id="outLabel">Log</h3></div>
+      <textarea id="out" spellcheck="false"></textarea>
+      <div class="lockmsg" id="lockMsg"></div>
+    </div>
+  </div>
+</main>
+
+<div class="navbar">
+  <button class="btn-back" id="btnBack">◀</button>
+  <button class="btn-next" id="btnNext">▶</button>
+  <button class="btn-mt" id="btnMt">📋</button>
+  <button class="btn-copy" id="btnCopy">Kopieer</button>
+  <button class="btn-new" id="btnNew">↺</button>
+</div>
+
+<div class="tip" id="tip"></div>
+<div class="toast" id="toast"></div>
+
+<div class="modal-bg" id="mtModal">
+  <div class="modal">
+    <h3 id="mtTitle">Modemtest blok</h3>
+    <p class="sub" id="mtSub"></p>
+    <div class="tabs" id="mtTabs">
+      <button class="chip active" data-mttab="align" id="mtTabAlign">Plakken & uitlijnen</button>
+      <button class="chip" data-mttab="fields" id="mtTabFields">Snel Rx/Tx/Snr</button>
+    </div>
+    <div id="mtAlign">
+      <label id="lblPaste">Plak hier je modemtest</label>
+      <textarea id="mtPaste" placeholder="Mac ...&#10;Node ...&#10;Freq ..."></textarea>
+      <div class="hintline" id="mtAlignHint"></div>
+    </div>
+    <div id="mtFields" style="display:none">
+      <div class="row">
+        <div><label>Rx</label><input id="fRx" placeholder="5"></div>
+        <div><label>Tx</label><input id="fTx" placeholder="38"></div>
+      </div>
+      <div class="row">
+        <div><label>Snr</label><input id="fSnr" placeholder="38"></div>
+        <div><label id="lblMac">MAC</label><input id="fMac" placeholder="5C:35:..."></div>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn-copy2" id="mtInsert">Invoegen</button>
+      <button class="btn-grey" id="mtCancel">Annuleer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   STAR LOGGER — Unit-T — guided/forced Modem Health Check
+   Builds notepad-style plain text as the tech answers.
+   Log output follows the chosen language.
+   ============================================================ */
+
+const UI={
+  nl:{appTitle:"STAR LOGGER",back:"Terug",next:"Volgende",skip:"Overslaan",copy:"Kopieer",copied:"Gekopieerd!",modemtest:"Modemtest",newCase:"Nieuw",
+      newConfirm:"Nieuwe case starten? Huidige log wordt gewist.",log:"Log (kopieer naar systeem)",
+      lockGuided:"Doorloop eerst alle modemchecks. Zo mis je nooit iets.",lockOpen:"Je kan de log vrij aanpassen.",
+      stepOf:(a,b)=>`Stap ${a} / ${b}`, ok:"OK", nok:"NOK", yes:"Ja", no:"Nee",
+      hintsTitle:"Wat nu? (tik om toe te voegen)",
+      mtTitle:"Modemtest blok",mtSub:"Plak de modemtest om uit te lijnen, of vul snel Rx/Tx/Snr in.",
+      tabAlign:"Plakken & uitlijnen",tabFields:"Snel Rx/Tx/Snr",paste:"Plak hier je modemtest",
+      alignHint:"Kolommen worden uitgelijnd met tabs.",insert:"Invoegen",cancel:"Annuleer",
+      addNote:"Vrije notitie toevoegen", freeHint:"Typ vrij; tik hierboven voor vaste zinnen."},
+  fr:{appTitle:"STAR LOGGER",back:"Retour",next:"Suivant",skip:"Passer",copy:"Copier",copied:"Copié !",modemtest:"Test modem",newCase:"Nouveau",
+      newConfirm:"Nouveau cas ? Le log actuel sera effacé.",log:"Log (copier vers le système)",
+      lockGuided:"Faites d'abord tous les checks modem. Vous n'oublierez rien.",lockOpen:"Vous pouvez modifier le log librement.",
+      stepOf:(a,b)=>`Étape ${a} / ${b}`, ok:"OK", nok:"NOK", yes:"Oui", no:"Non",
+      hintsTitle:"Et maintenant ? (touchez pour ajouter)",
+      mtTitle:"Bloc test modem",mtSub:"Collez le test modem pour l'aligner, ou saisissez Rx/Tx/Snr.",
+      tabAlign:"Coller & aligner",tabFields:"Rapide Rx/Tx/Snr",paste:"Collez ici votre test modem",
+      alignHint:"Colonnes alignées avec des tabs.",insert:"Insérer",cancel:"Annuler",
+      addNote:"Ajouter une note libre", freeHint:"Écrivez librement ; touchez ci-dessus pour des phrases."},
+  en:{appTitle:"STAR LOGGER",back:"Back",next:"Next",skip:"Skip",copy:"Copy",copied:"Copied!",modemtest:"Modemtest",newCase:"New",
+      newConfirm:"Start a new case? Current log will be cleared.",log:"Log (copy into system)",
+      lockGuided:"Do all modem checks first. So you never miss anything.",lockOpen:"You can edit the log freely.",
+      stepOf:(a,b)=>`Step ${a} / ${b}`, ok:"OK", nok:"NOK", yes:"Yes", no:"No",
+      hintsTitle:"What now? (tap to add)",
+      mtTitle:"Modemtest block",mtSub:"Paste the modemtest to align it, or quickly enter Rx/Tx/Snr.",
+      tabAlign:"Paste & align",tabFields:"Quick Rx/Tx/Snr",paste:"Paste your modemtest here",
+      alignHint:"Columns aligned with tabs.",insert:"Insert",cancel:"Cancel",
+      addNote:"Add free note", freeHint:"Type freely; tap above for fixed phrases."}
+};
+
+const STARHEAD={nl:["Situatie","Testen","Actie","Resultaat"],fr:["Situation","Tests","Action","Résultat"],en:["Situation","Tests","Action","Result"]};
+
+const CASETYPES={
+  internet:{label:{nl:"Internet",fr:"Internet",en:"Internet"},ic:"🌐",
+    desc:{nl:"na modem → WiFi & inhome",fr:"après modem → WiFi & inhome",en:"after modem → WiFi & in-home"}},
+  idtv:{label:{nl:"iDTV",fr:"iDTV",en:"iDTV"},ic:"📺",
+    desc:{nl:"na modem → STB",fr:"après modem → décodeur",en:"after modem → STB"}},
+  phone:{label:{nl:"Telefonie",fr:"Téléphonie",en:"Telephony"},ic:"📞",
+    desc:{nl:"na modem → lijn & testtoestel",fr:"après modem → ligne & test",en:"after modem → line & test phone"}}
+};
+
+/* ---------- helper to make a 3-lang object quickly ---------- */
+function L(nl,fr,en){return{nl,fr,en};}
+
+/* ============================================================
+   MODEM HEALTH CHECK — 7 forced checks (Unit-T community guide)
+   Each check:
+     id, title{}, norm{} (shown box), tip{} (?),
+     values: [{key,label{}}] optional numeric fields,
+     okLine{}, nokLine{}, hints:[{label{},line{}}]
+   ============================================================ */
+const MODEM=[
+  { id:"levels",
+    title:L("Levels Summary (historiek)","Levels Summary (historique)","Levels Summary (history)"),
+    norm:L("Tx, Rx én SNR mogen <b>niet meer dan 6 dB</b> schommelen. Schommelingen = meestal probleem tussen tap en modem (koppelingen, connectoren, water).",
+           "Tx, Rx et SNR ne doivent <b>pas fluctuer de plus de 6 dB</b>. Fluctuations = souvent problème entre le tap et le modem.",
+           "Tx, Rx and SNR must <b>not fluctuate more than 6 dB</b>. Fluctuations = usually a problem between tap and modem."),
+    tip:L("Max 6 dB schommeling op Tx/Rx/SNR. Vergelijk met de buren. Controleer drop, connectoren, cm-snoer. TDR in beide richtingen.",
+          "Max 6 dB de fluctuation sur Tx/Rx/SNR. Comparez aux voisins. Vérifiez drop, connecteurs, cordon cm. TDR dans les deux sens.",
+          "Max 6 dB fluctuation on Tx/Rx/SNR. Compare with neighbours. Check drop, connectors, cm cord. TDR both directions."),
+    okLine:L("-levels historiek ok: geen schommelingen >6dB","-historique niveaux ok: pas de fluctuations >6dB","-level history ok: no fluctuations >6dB"),
+    nokLine:L("-levels historiek nok: schommelingen","-historique niveaux nok: fluctuations","-level history nok: fluctuations"),
+    hints:[
+      {label:L("Schommeling TX invullen","Indiquer fluctuation TX","Enter TX fluctuation"),line:L(" >schommelingen tx van __dB"," >fluctuations tx de __dB"," >tx fluctuations of __dB")},
+      {label:L("Schommeling RX invullen","Indiquer fluctuation RX","Enter RX fluctuation"),line:L(" >schommelingen rx van __dB"," >fluctuations rx de __dB"," >rx fluctuations of __dB")},
+      {label:L("Vergeleken met buren","Comparé aux voisins","Compared with neighbours"),line:L(" >vergeleken met buren","  >comparé aux voisins"," >compared with neighbours")},
+      {label:L("Drop/connectoren gecontroleerd","Drop/connecteurs vérifiés","Drop/connectors checked"),line:L(" >drop, connectoren en cm-snoer gecontroleerd"," >drop, connecteurs et cordon cm vérifiés"," >drop, connectors and cm cord checked")},
+      {label:L("TDR beide richtingen","TDR deux sens","TDR both directions"),line:L(" >TDR-meting in beide richtingen: __"," >mesure TDR dans les deux sens: __"," >TDR both directions: __")}
+    ]
+  },
+  { id:"levelsnow",
+    title:L("Down & Upstream signalen","Signaux Down & Upstream","Down & Upstream signals"),
+    norm:L("<b>Rx-modem: -4 tot +17 dBmV</b>. <b>Tx-modem: 25 tot 47 dBmV</b>.",
+           "<b>Rx-modem : -4 à +17 dBmV</b>. <b>Tx-modem : 25 à 47 dBmV</b>.",
+           "<b>Rx-modem: -4 to +17 dBmV</b>. <b>Tx-modem: 25 to 47 dBmV</b>."),
+    tip:L("Rx tussen -4 en +17 dBmV, Tx tussen 25 en 47 dBmV. Vergelijk met buren. Deviser aan de tap. Overbrug de NIU. Gebruik dropkabelverzwakkingstool.",
+          "Rx entre -4 et +17 dBmV, Tx entre 25 et 47 dBmV. Comparez aux voisins. Deviser au tap. Pontez le NIU.",
+          "Rx between -4 and +17 dBmV, Tx between 25 and 47 dBmV. Compare with neighbours. Deviser at the tap. Bridge the NIU."),
+    values:[{key:"rx",label:L("Rx","Rx","Rx")},{key:"tx",label:L("Tx","Tx","Tx")},{key:"snr",label:L("SNR","SNR","SNR")}],
+    okLine:L("-signalen ok: Rx {rx} / Tx {tx} / SNR {snr}","-signaux ok: Rx {rx} / Tx {tx} / SNR {snr}","-signals ok: Rx {rx} / Tx {tx} / SNR {snr}"),
+    nokLine:L("-signalen nok: Rx {rx} / Tx {tx} / SNR {snr}","-signaux nok: Rx {rx} / Tx {tx} / SNR {snr}","-signals nok: Rx {rx} / Tx {tx} / SNR {snr}"),
+    hints:[
+      {label:L("Vergeleken met buren","Comparé aux voisins","Compared with neighbours"),line:L(" >vergeleken met buren"," >comparé aux voisins"," >compared with neighbours")},
+      {label:L("Deviser aan de tap","Deviser au tap","Deviser at the tap"),line:L(" >signalen gemeten aan de tap met deviser: __"," >signaux mesurés au tap avec deviser: __"," >signals measured at the tap with deviser: __")},
+      {label:L("NIU overbrugd","NIU ponté","NIU bridged"),line:L(" >NIU overbrugd"," >NIU ponté"," >NIU bridged")}
+    ]
+  },
+  { id:"status", answer:"janee", bad:"yes",
+    title:L("Status Historiek","Historique de statut","Status History"),
+    norm:L("Zijn er <b>deregs</b>? Vergelijk met de buren. Lees de event log om te achterhalen waarom de modem herstartte.",
+           "Y a-t-il des <b>deregs</b> ? Comparez aux voisins. Lisez l'event log pour comprendre le redémarrage.",
+           "Any <b>deregs</b>? Compare with neighbours. Read the event log to see why the modem restarted."),
+    tip:L("Deregs = modem uit dienst. T4 timeouts = mogelijk RF-issue. Check power resets (klant/stroom). SOS SWAT bij twijfel.",
+          "Deregs = modem hors service. T4 timeouts = possible RF-issue. Vérifiez power resets. SOS SWAT en cas de doute.",
+          "Deregs = modem out of service. T4 timeouts = possible RF issue. Check power resets. SOS SWAT if in doubt."),
+    okLine:L("-status historiek ok: geen deregs","-historique statut ok: pas de deregs","-status history ok: no deregs"),
+    nokLine:L("-status historiek nok: deregs zichtbaar","-historique statut nok: deregs visibles","-status history nok: deregs visible"),
+    hints:[
+      {label:L("Aantal / dagen invullen","Nombre / jours","Count / days"),line:L(" >deregs op __"," >deregs le __"," >deregs on __")},
+      {label:L("T4 timeouts (RF-issue)","T4 timeouts (RF)","T4 timeouts (RF)"),line:L(" >T4 timeouts zichtbaar → mogelijk RF-issue"," >T4 timeouts visibles → possible RF-issue"," >T4 timeouts visible → possible RF issue")},
+      {label:L("Power resets klant/stroom","Power resets client/courant","Power resets customer/power"),line:L(" >deregs door power resets (klant/stroom)"," >deregs dus aux power resets (client/courant)"," >deregs due to power resets (customer/power)")},
+      {label:L("Vergeleken met buren","Comparé aux voisins","Compared with neighbours"),line:L(" >buren vertonen geen deregs"," >les voisins n'ont pas de deregs"," >neighbours show no deregs")}
+    ]
+  },
+  { id:"streetping",
+    title:L("Streetping (Spot Charts)","Streetping (Spot Charts)","Streetping (Spot Charts)"),
+    norm:L("Tx, Rx en SNR mogen <b>niet meer dan 6 dB</b> schommelen. Vergelijk met meerdere klanten. Zelfde tap & zelfde probleem → Aftakdoos. Verder dan één tap → MO.",
+           "Tx, Rx et SNR ne doivent <b>pas fluctuer de plus de 6 dB</b>. Comparez plusieurs clients. Même tap & même problème → Aftakdoos. Au-delà d'un tap → MO.",
+           "Tx, Rx and SNR must <b>not fluctuate more than 6 dB</b>. Compare several customers. Same tap & same problem → Aftakdoos. Beyond one tap → MO."),
+    tip:L("Vergelijk Tx/Rx/SNR/errors met meerdere klanten. Zelfde tap + zelfde probleem → boek een Aftakdoos. Probleem verder dan één tap → vraag een MO aan.",
+          "Comparez Tx/Rx/SNR/erreurs avec plusieurs clients. Même tap + même problème → Aftakdoos. Au-delà d'un tap → MO.",
+          "Compare Tx/Rx/SNR/errors with several customers. Same tap + same problem → Aftakdoos. Beyond one tap → request an MO."),
+    okLine:L("+streetping ok: buren geen schommelingen of deregs","+streetping ok: voisins pas de fluctuations ni deregs","+streetping ok: neighbours no fluctuations or deregs"),
+    nokLine:L("-streetping nok: ook problemen bij buren","-streetping nok: problèmes aussi chez les voisins","-streetping nok: problems at neighbours too"),
+    hints:[
+      {label:L("Zelfde tap → Aftakdoos boeken","Même tap → Aftakdoos","Same tap → book Aftakdoos"),line:L(" >zelfde tap & zelfde probleem → aftakdoos geboekt"," >même tap & même problème → aftakdoos réservée"," >same tap & same problem → aftakdoos booked")},
+      {label:L("Verder dan tap → MO aanvragen","Au-delà tap → MO","Beyond tap → request MO"),line:L(" >probleem verder dan één tap → MO aangevraagd"," >problème au-delà d'un tap → MO demandée"," >problem beyond one tap → MO requested")}
+    ]
+  },
+  { id:"ofdm",
+    title:L("Docsis 3.1 OFDM (downstream)","Docsis 3.1 OFDM (downstream)","Docsis 3.1 OFDM (downstream)"),
+    norm:L("Check partial service incidents (elk = wijziging modulatieprofiel). <b>Active profile moet 3 zijn (QAM2048)</b>. Check uncorrectable codewords (errors).",
+           "Vérifiez les partial service incidents (chacun = changement de profil). <b>Active profile doit être 3 (QAM2048)</b>. Vérifiez les uncorrectable codewords.",
+           "Check partial service incidents (each = profile change). <b>Active profile must be 3 (QAM2048)</b>. Check uncorrectable codewords."),
+    tip:L("Op sommige nodes 2 OFDM kanalen (scroll rechts). Active profile 3 = QAM2048. Elk partial service incident = modulatiewijziging. Kijk errorhistoriek na.",
+          "Sur certains nœuds 2 canaux OFDM (défilez à droite). Active profile 3 = QAM2048. Chaque partial service incident = changement de modulation.",
+          "Some nodes have 2 OFDM channels (scroll right). Active profile 3 = QAM2048. Each partial service incident = modulation change."),
+    okLine:L("+OFDM ok: active profile 3 (QAM2048), geen partial service","+OFDM ok: active profile 3 (QAM2048), pas de partial service","+OFDM ok: active profile 3 (QAM2048), no partial service"),
+    nokLine:L("-OFDM nok","-OFDM nok","-OFDM nok"),
+    hints:[
+      {label:L("Partial service incidents","Partial service incidents","Partial service incidents"),line:L(" >partial service incidents: __"," >partial service incidents: __"," >partial service incidents: __")},
+      {label:L("Active profile niet 3","Active profile pas 3","Active profile not 3"),line:L(" >active profile niet op 3 (QAM2048)"," >active profile pas sur 3 (QAM2048)"," >active profile not on 3 (QAM2048)")},
+      {label:L("Uncorrectable codewords","Uncorrectable codewords","Uncorrectable codewords"),line:L(" >uncorrectable codewords (errors): __"," >uncorrectable codewords (erreurs): __"," >uncorrectable codewords (errors): __")}
+    ]
+  },
+  { id:"rxmer",
+    title:L("OFDM RXMER","OFDM RXMER","OFDM RXMER"),
+    norm:L("<b>MER minimum 32,4</b> over heel de band om QAM2048 aan te houden. Grafiek NOK + andere klanten identiek → MO prio 4. Individueel → TDR beide kanten, connectoren, koppelingen.",
+           "<b>MER minimum 32,4</b> sur toute la bande pour QAM2048. Graphe NOK + autres clients identiques → MO prio 4. Individuel → TDR deux sens, connecteurs, raccords.",
+           "<b>MER minimum 32.4</b> across the whole band for QAM2048. Graph NOK + other customers identical → MO prio 4. Individual → TDR both sides, connectors, couplings."),
+    tip:L("MER ≥32,4 over de hele band nodig voor QAM2048. Vergelijk met andere 3.1 modems. Identiek → MO prio 4. Escalatie: drop op modem → outdoor drop (dag+7) → SOS SWAT bij deregs/hoge errors.",
+          "MER ≥32,4 sur toute la bande pour QAM2048. Comparez aux autres modems 3.1. Identique → MO prio 4. Escalade : drop sur modem → outdoor drop (jour+7) → SOS SWAT.",
+          "MER ≥32.4 across the band for QAM2048. Compare to other 3.1 modems. Identical → MO prio 4. Escalation: drop on modem → outdoor drop (day+7) → SOS SWAT."),
+    okLine:L("+RXMER ok: MER >32,4 over de band","+RXMER ok: MER >32,4 sur la bande","+RXMER ok: MER >32.4 across the band"),
+    nokLine:L("-RXMER nok: MER onder 32,4","-RXMER nok: MER sous 32,4","-RXMER nok: MER below 32.4"),
+    hints:[
+      {label:L("Andere klanten identiek → MO prio 4","Autres clients identiques → MO prio 4","Others identical → MO prio 4"),line:L(" >grafiek identiek bij andere klanten → MO prio 4"," >graphe identique chez d'autres → MO prio 4"," >graph identical at other customers → MO prio 4")},
+      {label:L("Individueel → TDR beide kanten","Individuel → TDR deux sens","Individual → TDR both sides"),line:L(" >individueel probleem: TDR beide kanten, connectoren/koppelingen"," >problème individuel: TDR deux sens, connecteurs/raccords"," >individual problem: TDR both sides, connectors/couplings")},
+      {label:L("Drop rechtstreeks op modem","Drop direct sur modem","Drop directly on modem"),line:L(" >drop rechtstreeks op modem aangesloten: __"," >drop raccordé direct sur modem: __"," >drop connected directly to modem: __")},
+      {label:L("Outdoor drop (dag+7)","Outdoor drop (jour+7)","Outdoor drop (day+7)"),line:L(" >outdoor type drop geboekt (dag+7)"," >outdoor type drop réservé (jour+7)"," >outdoor type drop booked (day+7)")}
+    ]
+  },
+  { id:"ofdma",
+    title:L("OFDMA (upstream)","OFDMA (upstream)","OFDMA (upstream)"),
+    norm:L("Check <b>ranging state</b>, partial service en partial service incidents. Check het profiel: <b>11 = QAM256, 12 = QAM64, 13 = QPSK</b>.",
+           "Vérifiez le <b>ranging state</b>, partial service et incidents. Vérifiez le profil : <b>11 = QAM256, 12 = QAM64, 13 = QPSK</b>.",
+           "Check <b>ranging state</b>, partial service and incidents. Check the profile: <b>11 = QAM256, 12 = QAM64, 13 = QPSK</b>."),
+    tip:L("Ranging state OK? Partial service / incidents? Profiel 11 (QAM256) is best; 12 (QAM64) en 13 (QPSK) wijzen op een slechtere upstream.",
+          "Ranging state OK ? Partial service / incidents ? Profil 11 (QAM256) est le meilleur ; 12 (QAM64) et 13 (QPSK) = upstream moins bon.",
+          "Ranging state OK? Partial service / incidents? Profile 11 (QAM256) is best; 12 (QAM64) and 13 (QPSK) indicate a worse upstream."),
+    okLine:L("+OFDMA ok: ranging ok, profiel 11 (QAM256), geen partial service","+OFDMA ok: ranging ok, profil 11 (QAM256), pas de partial service","+OFDMA ok: ranging ok, profile 11 (QAM256), no partial service"),
+    nokLine:L("-OFDMA nok","-OFDMA nok","-OFDMA nok"),
+    hints:[
+      {label:L("Ranging state NOK","Ranging state NOK","Ranging state NOK"),line:L(" >ranging state nok"," >ranging state nok"," >ranging state nok")},
+      {label:L("Partial service incidents","Partial service incidents","Partial service incidents"),line:L(" >partial service incidents: __"," >partial service incidents: __"," >partial service incidents: __")},
+      {label:L("Profiel 12 (QAM64)","Profil 12 (QAM64)","Profile 12 (QAM64)"),line:L(" >profiel 12 (QAM64)"," >profil 12 (QAM64)"," >profile 12 (QAM64)")},
+      {label:L("Profiel 13 (QPSK)","Profil 13 (QPSK)","Profile 13 (QPSK)"),line:L(" >profiel 13 (QPSK)"," >profil 13 (QPSK)"," >profile 13 (QPSK)")}
+    ]
+  }
+];
+
+/* ---------- Branch guided checks (short) ---------- */
+const BRANCH={
+  internet:[
+    { id:"wifi",title:L("WiFi & inhome","WiFi & inhome","WiFi & in-home"),
+      norm:L("Voldoende dekking? Genoeg AP's/pods? RSSI <b>niet slechter dan -68 dBmV</b>. Sticky clients / roaming? Eigen hardware (router, smart switch, PWL)?",
+             "Couverture suffisante ? Assez d'AP/pods ? RSSI <b>pas sous -68 dBmV</b>. Clients sticky / roaming ? Matériel propre ?",
+             "Enough coverage? Enough APs/pods? RSSI <b>not below -68 dBmV</b>. Sticky clients / roaming? Own hardware?"),
+      tip:L("RSSI niet slechter dan -68 dBmV. Check sticky/roaming in SPOT of Frontline. Noteer eigen hardware van de klant.",
+            "RSSI pas sous -68 dBmV. Vérifiez sticky/roaming dans SPOT ou Frontline. Notez le matériel du client.",
+            "RSSI not below -68 dBmV. Check sticky/roaming in SPOT or Frontline. Note the customer's own hardware."),
+      okLine:L("+wifi ok: dekking goed, nergens < -68 dBmV","+wifi ok: bonne couverture, nulle part < -68 dBmV","+wifi ok: good coverage, nowhere < -68 dBmV"),
+      nokLine:L("-wifi nok","-wifi nok","-wifi nok"),
+      hints:[
+        {label:L("Aantal AP's/pods","Nombre d'AP/pods","Number of APs/pods"),line:L(" >__ AP's/pods aanwezig"," >__ AP/pods présents"," >__ APs/pods present")},
+        {label:L("Onvoldoende dekking","Couverture insuffisante","Insufficient coverage"),line:L(" >onvoldoende dekking: __"," >couverture insuffisante: __"," >insufficient coverage: __")},
+        {label:L("Sticky/roaming","Sticky/roaming","Sticky/roaming"),line:L(" >sticky clients / slechte roaming"," >clients sticky / mauvais roaming"," >sticky clients / poor roaming")},
+        {label:L("Eigen hardware klant","Matériel propre client","Customer's own hardware"),line:L(" >eigen hardware klant: __"," >matériel propre du client: __"," >customer's own hardware: __")}
+      ] }
+  ],
+  idtv:[
+    { id:"stb",title:L("STB / iDTV","STB / iDTV","STB / iDTV"),
+      norm:L("Visuele controle coax + connecties. STB service menu 120 MHz (tiktest). Sipadan IP-check 10.x.x.x (ingress). BER-meting.",
+             "Contrôle visuel coax + connexions. Menu service 120 MHz (test tik). IP-check 10.x.x.x (ingress). Mesure BER.",
+             "Visual check coax + connections. STB service menu 120 MHz (tik test). IP check 10.x.x.x (ingress). BER measurement."),
+      tip:L("Coax/connecties visueel, service menu 120 MHz tiktest, IP 10.x.x.x geen ingress, BER binnen norm.",
+            "Coax/connexions visuel, menu 120 MHz test tik, IP 10.x.x.x pas d'ingress, BER dans la norme.",
+            "Coax/connections visual, 120 MHz menu tik test, IP 10.x.x.x no ingress, BER within spec."),
+      okLine:L("+STB ok: coax, service menu 120MHz, IP-check en BER ok","+STB ok: coax, menu 120MHz, IP-check et BER ok","+STB ok: coax, 120MHz menu, IP check and BER ok"),
+      nokLine:L("-STB nok","-STB nok","-STB nok"),
+      hints:[
+        {label:L("Coax/connecties","Coax/connexions","Coax/connections"),line:L(" >probleem coax/connecties: __"," >problème coax/connexions: __"," >coax/connection issue: __")},
+        {label:L("Service menu 120MHz","Menu service 120MHz","Service menu 120MHz"),line:L(" >service menu 120MHz nok (tiktest)"," >menu service 120MHz nok (test tik)"," >service menu 120MHz nok (tik test)")},
+        {label:L("IP-check / ingress","IP-check / ingress","IP check / ingress"),line:L(" >IP-check/ingress nok"," >IP-check/ingress nok"," >IP check/ingress nok")},
+        {label:L("BER","BER","BER"),line:L(" >BER buiten norm: __"," >BER hors norme: __"," >BER out of spec: __")}
+      ] }
+  ],
+  phone:[
+    { id:"phone",title:L("Telefonie","Téléphonie","Telephony"),
+      norm:L("Nog geprovisioned (SPOT)? Testtoestel op telefoonpoort modem: kiestoon? uitgaand bellen? Interne bekabeling = klant (buiten scope).",
+             "Toujours provisionné (SPOT) ? Téléphone de test sur port modem : tonalité ? appel sortant ? Câblage interne = client (hors scope).",
+             "Still provisioned (SPOT)? Test phone on modem port: dial tone? call out? Internal wiring = customer (out of scope)."),
+      tip:L("Check provisioning in SPOT. Test met testtoestel op de telefoonpoort van de modem. Werkt het op ons toestel → lijn OK aan onze kant. Interne bekabeling raken we niet aan.",
+            "Vérifiez le provisioning dans SPOT. Testez avec le téléphone de test sur le port du modem. OK sur notre appareil → ligne OK. On ne touche pas au câblage interne.",
+            "Check provisioning in SPOT. Test with the test phone on the modem's phone port. Works on our device → line OK on our side. We don't touch internal wiring."),
+      okLine:L("+telefonie ok: geprovisioned, kiestoon en uitgaand bellen ok","+téléphonie ok: provisionné, tonalité et appel sortant ok","+telephony ok: provisioned, dial tone and outgoing call ok"),
+      nokLine:L("-telefonie nok","-téléphonie nok","-telephony nok"),
+      hints:[
+        {label:L("Niet geprovisioned","Non provisionné","Not provisioned"),line:L(" >niet/foutief geprovisioned (SPOT)"," >non/mal provisionné (SPOT)"," >not/incorrectly provisioned (SPOT)")},
+        {label:L("Geen kiestoon","Pas de tonalité","No dial tone"),line:L(" >geen kiestoon op testtoestel"," >pas de tonalité sur téléphone de test"," >no dial tone on test phone")},
+        {label:L("Kan niet uitgaand bellen","Appel sortant impossible","Cannot call out"),line:L(" >uitgaand bellen lukt niet"," >appel sortant impossible"," >cannot call out")},
+        {label:L("Lijn ok op ons toestel","Ligne ok sur notre appareil","Line ok on our device"),line:L(" >lijn ok op ons toestel; interne bekabeling = klant (buiten scope)"," >ligne ok sur notre appareil; câblage interne = client (hors scope)"," >line ok on our device; internal wiring = customer (out of scope)")}
+      ] }
+  ]
+};
+
+/* ---------- Free-type helper snippets for Actie/Resultaat ---------- */
+const FREEHELP={
+  actie:[
+    {label:L("Fcon vervangen","Fcon remplacé","Fcon replaced"),line:L("-fcon vervangen aan __","-fcon remplacé au __","-fcon replaced at __")},
+    {label:L("Connector vervangen","Connecteur remplacé","Connector replaced"),line:L("-connector vervangen aan __","-connecteur remplacé au __","-connector replaced at __")},
+    {label:L("Drop vervangen","Drop remplacé","Drop replaced"),line:L("-drop vervangen","-drop remplacé","-drop replaced")},
+    {label:L("Modem vervangen","Modem remplacé","Modem replaced"),line:L("-modem vervangen door __","-modem remplacé par __","-modem replaced by __")},
+    {label:L("Modem online","Modem en ligne","Modem online"),line:L("-modem meteen online met goede signalen","-modem en ligne avec de bons signaux","-modem online with good signals")},
+    {label:L("SOS SWAT","SOS SWAT","SOS SWAT"),line:L("-SOS SWAT gecontacteerd voor 2de opinie: __","-SOS SWAT contacté pour 2e avis: __","-SOS SWAT contacted for 2nd opinion: __")},
+    {label:L("Klant ingelicht","Client informé","Customer informed"),line:L("-klant hierover ingelicht","-client informé","-customer informed")}
+  ],
+  result:[
+    {label:L("Alles in dienst","Tout en service","All in service"),line:L("-alles in dienst","-tout en service","-all in service")},
+    {label:L("Gratis interventie","Intervention gratuite","Free intervention"),line:L("-gratis interventie: __","-intervention gratuite: __","-free intervention: __")},
+    {label:L("Klant getest ok","Testé client ok","Customer tested ok"),line:L("-klant getest op laptop/tablet: ok","-testé chez le client sur laptop/tablette: ok","-tested at customer on laptop/tablet: ok")},
+    {label:L("Opgelost","Résolu","Solved"),line:L("=>probleem opgelost ter plaatse","=>problème résolu sur place","=>problem solved on site")},
+    {label:L("Niet opgelost","Non résolu","Not solved"),line:L("=>niet opgelost → vervolgactie: __","=>non résolu → suivi: __","=>not solved → follow-up: __")}
+  ]
+};
+
+/* ============================================================
+   State + step list
+   ============================================================ */
+const state={ lang:"nl", idx:0, answers:{}, situatie:"", caseType:null, actie:"", result:"", log:"", unlocked:false };
+
+function save(){ try{ localStorage.setItem("starlogger_v3", JSON.stringify(state)); }catch(e){} }
+function load(){ try{ const s=JSON.parse(localStorage.getItem("starlogger_v3")); if(s) Object.assign(state,s);}catch(e){} }
+
+/* Build the ordered list of steps */
+function steps(){
+  const arr=[];
+  arr.push({kind:"situatie"});
+  MODEM.forEach(m=>arr.push({kind:"modem",check:m}));
+  arr.push({kind:"casetype"});
+  const b = state.caseType?BRANCH[state.caseType]:[];
+  b.forEach(c=>arr.push({kind:"branch",check:c}));
+  arr.push({kind:"actie"});
+  arr.push({kind:"result"});
+  return arr;
+}
+
+function tr(){ return UI[state.lang]; }
+const $=id=>document.getElementById(id);
+const host=$("stepHost"), out=$("out");
+
+/* ============================================================
+   Build the log text from answers (plain notepad, chosen lang)
+   ============================================================ */
+function buildLog(){
+  const H=STARHEAD[state.lang], div="____________________";
+  const S=[], T=[], A=[], R=[];
+  // Situatie
+  if(state.situatie && state.situatie.trim()) state.situatie.split("\n").forEach(l=>{ if(l.trim()) S.push(l.replace(/^\s*-?\s*/,"-")); });
+  if(state.caseType) S.push("-type: "+CASETYPES[state.caseType].label[state.lang]);
+  // Testen: modem + branch
+  const emit=(check)=>{
+    const a=state.answers[check.id];
+    if(!a) return;
+    let line = a.status==="good" ? check.okLine[state.lang] : check.nokLine[state.lang];
+    // fill values
+    if(check.values){ check.values.forEach(v=>{ line=line.replace("{"+v.key+"}", (a.values&&a.values[v.key])?a.values[v.key]:"?"); }); }
+    T.push(line);
+    (a.hints||[]).forEach(hl=>T.push(hl));
+  };
+  MODEM.forEach(emit);
+  if(state.caseType) (BRANCH[state.caseType]||[]).forEach(emit);
+  // Actie / Resultaat free text
+  if(state.actie && state.actie.trim()) state.actie.split("\n").forEach(l=>{ if(l.trim()) A.push(l); });
+  if(state.result && state.result.trim()) state.result.split("\n").forEach(l=>{ if(l.trim()) R.push(l); });
+
+  const sec=(title,lines)=>`${title}\n${div}\n${lines.length?lines.join("\n"):"-"}\n`;
+  return [sec(H[0],S),sec(H[1],T),sec(H[2],A),sec(H[3],R)].join("\n");
+}
+
+/* Sync log into the textarea unless the user manually edited it on the last step */
+function refreshLog(){
+  state.log=buildLog();
+  out.value=state.log;
+  save();
+}
+
+/* ============================================================
+   Rendering
+   ============================================================ */
+function render(){
+  const list=steps();
+  if(state.idx>=list.length) state.idx=list.length-1;
+  if(state.idx<0) state.idx=0;
+  const step=list[state.idx];
+
+  // header
+  $("appTitle").textContent=tr().appTitle;
+  document.querySelectorAll("#langs .chip").forEach(b=>b.classList.toggle("active",b.dataset.lang===state.lang));
+  $("progressBar").style.width=Math.round((state.idx/(list.length-1))*100)+"%";
+  $("count").textContent=tr().stepOf(state.idx+1,list.length);
+  $("outLabel").textContent=tr().log;
+
+  // nav
+  $("btnBack").textContent="◀ "+tr().back;
+  $("btnBack").style.visibility=state.idx===0?"hidden":"visible";
+  $("btnCopy").textContent=tr().copy;
+  $("btnMt").textContent="📋 "+tr().modemtest;
+  $("btnNew").textContent="↺ "+tr().newCase;
+
+  // Next button: hidden on last step; disabled on unanswered modem/branch checks (the forcing)
+  const btnNext=$("btnNext");
+  const isLast = state.idx===list.length-1;
+  btnNext.style.display = isLast ? "none" : "";
+  btnNext.textContent = tr().next+" ▶";
+  let needsAnswer=false;
+  if(step.kind==="modem"||step.kind==="branch"){
+    const a=state.answers[step.check.id];
+    needsAnswer = !(a&&a.status);
+  }
+  if(step.kind==="casetype"){ needsAnswer = !state.caseType; }
+  btnNext.disabled = needsAnswer;
+
+  // lock message: guided until actie/result
+  const onFree = step.kind==="actie"||step.kind==="result";
+  $("lockMsg").textContent = onFree ? tr().lockOpen : tr().lockGuided;
+
+  let crumb="";
+  if(step.kind==="situatie") crumb=STARHEAD[state.lang][0];
+  else if(step.kind==="modem") crumb=STARHEAD[state.lang][1]+" — Modem";
+  else if(step.kind==="casetype") crumb=STARHEAD[state.lang][1];
+  else if(step.kind==="branch") crumb=STARHEAD[state.lang][1]+" — "+CASETYPES[state.caseType].label[state.lang];
+  else if(step.kind==="actie") crumb=STARHEAD[state.lang][2];
+  else if(step.kind==="result") crumb=STARHEAD[state.lang][3];
+  $("crumb").textContent=crumb;
+
+  if(step.kind==="situatie") renderSituatie();
+  else if(step.kind==="modem"||step.kind==="branch") renderCheck(step.check);
+  else if(step.kind==="casetype") renderCaseType();
+  else if(step.kind==="actie") renderFree("actie");
+  else if(step.kind==="result") renderFree("result");
+
+  refreshLog();
+}
+
+function renderSituatie(){
+  const t=tr();
+  host.innerHTML=`<div class="card">
+    <div class="stagebadge">${STARHEAD[state.lang][0]}</div>
+    <h2 class="qtitle">${ {nl:"Wat is de situatie?",fr:"Quelle est la situation ?",en:"What is the situation?"}[state.lang] }</h2>
+    <p class="qsub">${ {nl:"Korte beschrijving van de melding. Elke regel = een puntje.",fr:"Brève description. Chaque ligne = un point.",en:"Short description. Each line = one point."}[state.lang] }</p>
+    <div class="freetype">
+      <textarea id="sitInput" placeholder="${ {nl:'bv. geen internet\nop alle toestellen, gans de dag',fr:"ex. pas d'internet\nsur tous les appareils",en:'e.g. no internet\non all devices, all day'}[state.lang] }">${escapeHtml(state.situatie)}</textarea>
+    </div>
+  </div>`;
+  const ta=$("sitInput");
+  ta.addEventListener("input",()=>{ state.situatie=ta.value; refreshLog(); });
+}
+
+function renderCheck(check){
+  const a=state.answers[check.id]||{status:null,values:{},hints:[]};
+  const t=tr();
+  let valHtml="";
+  if(check.values){
+    valHtml=`<div class="values">`+check.values.map(v=>{
+      const val=(a.values&&a.values[v.key])?a.values[v.key]:"";
+      return `<div class="v"><label>${v.label[state.lang]}</label><input data-vkey="${v.key}" value="${escapeHtml(val)}" inputmode="decimal"></div>`;
+    }).join("")+`</div>`;
+  }
+  let hintsHtml="";
+  if(a.status==="bad" && check.hints && check.hints.length){
+    hintsHtml=`<div class="hints"><div class="htitle">${t.hintsTitle}</div>`+
+      check.hints.map((h,i)=>`<button class="hintbtn" data-hint="${i}"><span class="plus">＋</span>${h.label[state.lang]}</button>`).join("")+
+      `</div>`;
+  }
+  // Answer type: oknok (default) or janee. Each button maps to good/bad internally.
+  const isJaNee = check.answer==="janee";
+  let btns;
+  if(isJaNee){
+    const yesBad = check.bad==="yes";
+    btns = `
+      <button class="${yesBad?'nok':'ok'} ${a.status===(yesBad?'bad':'good')?'sel':''}" data-good="${yesBad?'bad':'good'}">${t.yes}</button>
+      <button class="${yesBad?'ok':'nok'} ${a.status===(yesBad?'good':'bad')?'sel':''}" data-good="${yesBad?'good':'bad'}">${t.no}</button>`;
+  } else {
+    btns = `
+      <button class="ok ${a.status==='good'?'sel':''}" data-good="good">✓ ${t.ok}</button>
+      <button class="nok ${a.status==='bad'?'sel':''}" data-good="bad">✕ ${t.nok}</button>`;
+  }
+  host.innerHTML=`<div class="card">
+    <div class="stagebadge">${STARHEAD[state.lang][1]} — Modem/RF</div>
+    <h2 class="qtitle">${check.title[state.lang]}<span class="qm" id="qmTip">?</span></h2>
+    <div class="normbox">${check.norm[state.lang]}</div>
+    ${valHtml}
+    <div class="oknok">${btns}</div>
+    ${hintsHtml}
+  </div>`;
+
+  attachTip($("qmTip"),()=>check.tip[state.lang]);
+
+  host.querySelectorAll("input[data-vkey]").forEach(inp=>{
+    inp.addEventListener("input",()=>{
+      const cur=state.answers[check.id]||{status:null,values:{},hints:[]};
+      cur.values=cur.values||{}; cur.values[inp.dataset.vkey]=inp.value;
+      state.answers[check.id]=cur; refreshLog();
+    });
+  });
+  host.querySelectorAll(".oknok button").forEach(b=>{
+    b.addEventListener("click",()=>{
+      const cur=state.answers[check.id]||{values:{},hints:[]};
+      cur.status=b.dataset.good; // "good" or "bad"
+      if(cur.status==="good") cur.hints=[]; // clear hints when clean
+      state.answers[check.id]=cur;
+      render();
+      // auto-advance on the clean/good answer for speed
+      if(cur.status==="good"){ setTimeout(()=>{ next(); },160); }
+    });
+  });
+  host.querySelectorAll(".hintbtn").forEach(b=>{
+    b.addEventListener("click",()=>{
+      const i=+b.dataset.hint;
+      const cur=state.answers[check.id]; cur.hints=cur.hints||[];
+      const line=check.hints[i].line[state.lang];
+      cur.hints.push(line);
+      state.answers[check.id]=cur; refreshLog();
+      toast("＋");
+    });
+  });
+}
+
+function renderCaseType(){
+  host.innerHTML=`<div class="card">
+    <div class="stagebadge">${STARHEAD[state.lang][1]}</div>
+    <h2 class="qtitle">${ {nl:"Type case?",fr:"Type de cas ?",en:"Case type?"}[state.lang] }</h2>
+    <p class="qsub">${ {nl:"Modem is gecheckt. Kies waarvoor je verder test.",fr:"Modem vérifié. Choisissez la suite.",en:"Modem checked. Choose what to test next."}[state.lang] }</p>
+    <div class="choice">${Object.keys(CASETYPES).map(k=>{
+      const c=CASETYPES[k];
+      return `<button data-ct="${k}"><span class="ic">${c.ic}</span><span>${c.label[state.lang]}<span class="desc">${c.desc[state.lang]}</span></span></button>`;
+    }).join("")}</div>
+  </div>`;
+  host.querySelectorAll("[data-ct]").forEach(b=>b.addEventListener("click",()=>{
+    state.caseType=b.dataset.ct; render(); setTimeout(()=>next(),160);
+  }));
+}
+
+function renderFree(which){
+  const t=tr();
+  const isActie=which==="actie";
+  const head = isActie?STARHEAD[state.lang][2]:STARHEAD[state.lang][3];
+  const val = isActie?state.actie:state.result;
+  const help = isActie?FREEHELP.actie:FREEHELP.result;
+  host.innerHTML=`<div class="card">
+    <div class="stagebadge">${head}</div>
+    <h2 class="qtitle">${head}</h2>
+    <p class="qsub">${t.freeHint}</p>
+    <div class="freetype"><textarea id="freeInput" placeholder="${isActie? {nl:'-fcon vervangen aan NIU',fr:'-fcon remplacé au NIU',en:'-fcon replaced at NIU'}[state.lang] : {nl:'-alles in dienst',fr:'-tout en service',en:'-all in service'}[state.lang]}">${escapeHtml(val)}</textarea></div>
+    <div class="helpers"><div class="hrow">${help.map((h,i)=>`<button data-h="${i}">${h.label[state.lang]}</button>`).join("")}</div></div>
+  </div>`;
+  const ta=$("freeInput");
+  ta.addEventListener("input",()=>{ if(isActie) state.actie=ta.value; else state.result=ta.value; refreshLog(); });
+  host.querySelectorAll("[data-h]").forEach(b=>b.addEventListener("click",()=>{
+    const line=help[+b.dataset.h].line[state.lang];
+    const cur=ta.value;
+    ta.value = cur && !cur.endsWith("\n") ? cur+"\n"+line : cur+line;
+    if(isActie) state.actie=ta.value; else state.result=ta.value;
+    refreshLog(); ta.focus();
+  }));
+}
+
+/* ---------- tooltip ---------- */
+const tip=$("tip"); let tipT;
+function showTip(el,html){
+  tip.innerHTML=html.replace(/⚠[^.]*\./g,m=>`<span class="warn">${m}</span>`);
+  tip.classList.add("show");
+  const r=el.getBoundingClientRect(); tip.style.left="0px";tip.style.top="0px";
+  const tw=tip.offsetWidth,th=tip.offsetHeight;
+  let left=r.left, top=r.bottom+8;
+  if(left+tw>window.innerWidth-8) left=window.innerWidth-8-tw; if(left<8)left=8;
+  if(top+th>window.innerHeight-8) top=r.top-th-8;
+  tip.style.left=left+"px";tip.style.top=top+"px";
+}
+function hideTip(){tip.classList.remove("show");}
+function attachTip(el,getHtml){
+  if(!el) return;
+  el.addEventListener("mouseenter",()=>{clearTimeout(tipT);showTip(el,getHtml());});
+  el.addEventListener("mouseleave",()=>{tipT=setTimeout(hideTip,80);});
+  el.addEventListener("click",e=>{e.stopPropagation(); tip.classList.contains("show")?hideTip():showTip(el,getHtml());});
+}
+document.addEventListener("click",e=>{ if(!e.target.closest(".qm")) hideTip(); });
+window.addEventListener("scroll",hideTip,true);
+
+function escapeHtml(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+
+/* ---------- nav ---------- */
+function next(){ const list=steps(); if(state.idx<list.length-1){state.idx++; window.scrollTo(0,0); render();} }
+function back(){ if(state.idx>0){state.idx--; window.scrollTo(0,0); render();} }
+$("btnBack").addEventListener("click",back);
+$("btnNext").addEventListener("click",()=>{ if(!$("btnNext").disabled) next(); });
+
+/* allow manual editing of the output on any step (advanced) */
+out.addEventListener("input",()=>{ state.log=out.value; /* manual override not fed back to answers */ save(); });
+
+/* ---------- copy / new ---------- */
+let toastT;
+function toast(msg){const el=$("toast");el.textContent=msg;el.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove("show"),1200);}
+function copyLog(){
+  const text=out.value; const done=()=>toast(tr().copied);
+  if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done,()=>fb(text,done)); else fb(text,done);
+}
+function fb(text,cb){const ta=document.createElement("textarea");ta.value=text;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");}catch(e){}document.body.removeChild(ta);cb&&cb();}
+$("btnCopy").addEventListener("click",copyLog);
+$("btnNew").addEventListener("click",()=>{
+  if(!confirm(tr().newConfirm)) return;
+  state.idx=0;state.answers={};state.situatie="";state.caseType=null;state.actie="";state.result="";state.log="";
+  render();
+});
+
+/* ---------- language ---------- */
+document.querySelectorAll("#langs .chip").forEach(b=>b.addEventListener("click",()=>{
+  state.lang=b.dataset.lang; document.documentElement.lang=state.lang; render();
+}));
+
+/* ---------- modemtest modal ---------- */
+const mt=$("mtModal"); let mttab="align";
+function applyMtText(){
+  $("mtTitle").textContent=tr().mtTitle; $("mtSub").textContent=tr().mtSub;
+  $("mtTabAlign").textContent=tr().tabAlign; $("mtTabFields").textContent=tr().tabFields;
+  $("lblPaste").textContent=tr().paste; $("mtAlignHint").textContent=tr().alignHint;
+  $("mtInsert").textContent=tr().insert; $("mtCancel").textContent=tr().cancel;
+}
+$("btnMt").addEventListener("click",()=>{ applyMtText(); $("mtPaste").value="";["fRx","fTx","fSnr","fMac"].forEach(id=>$(id).value=""); setMtTab(mttab); mt.classList.add("show"); });
+$("mtCancel").addEventListener("click",()=>mt.classList.remove("show"));
+mt.addEventListener("click",e=>{ if(e.target===mt) mt.classList.remove("show"); });
+document.querySelectorAll("#mtTabs .chip").forEach(c=>c.addEventListener("click",()=>setMtTab(c.dataset.mttab)));
+function setMtTab(tab){ mttab=tab; $("mtAlign").style.display=tab==="align"?"block":"none"; $("mtFields").style.display=tab==="fields"?"block":"none";
+  document.querySelectorAll("#mtTabs .chip").forEach(c=>c.classList.toggle("active",c.dataset.mttab===tab)); }
+function alignModemtest(raw){ return raw.replace(/\r/g,"").split("\n").map(l=>l.trim()===""?"":l.trim().replace(/[ \t]{1,}/g,"\t")).join("\n"); }
+$("mtInsert").addEventListener("click",()=>{
+  let block="";
+  if(mttab==="align"){ const raw=$("mtPaste").value; if(raw.trim()) block="MODEMTEST:\n"+alignModemtest(raw); }
+  else { const rx=$("fRx").value.trim(),tx=$("fTx").value.trim(),snr=$("fSnr").value.trim(),mac=$("fMac").value.trim();
+    const ls=[]; if(mac)ls.push("MAC "+mac); if(rx)ls.push("Rx\t"+rx); if(tx)ls.push("Tx\t"+tx); if(snr)ls.push("Snr\t"+snr); block=ls.join("\n"); }
+  if(block){
+    // append modemtest into the Result section text so it lands in the log
+    state.result = state.result ? state.result.replace(/\s*$/,"")+"\n"+block : block;
+    refreshLog();
+    toast(tr().insert);
+  }
+  mt.classList.remove("show");
+});
+
+/* ---------- boot ---------- */
+load(); document.documentElement.lang=state.lang; render();
+</script>
+</body>
+</html>
