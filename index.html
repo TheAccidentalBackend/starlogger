@@ -111,10 +111,11 @@
     padding:8px;font-size:14px;color:var(--txt);resize:vertical;font-family:inherit}
   .freetype textarea:focus{outline:none;border-color:var(--accent)}
 
-  .helpers{margin-top:6px}
-  .helpers h5{margin:9px 0 5px 0;font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--cyan)}
-  .hrow{display:flex;flex-wrap:wrap;gap:5px}
-  .hrow button{background:var(--panel2);border:1px solid var(--line);border-radius:7px;padding:6px 9px;font-size:12px;font-weight:600;color:var(--txt);cursor:pointer}
+  .quickphrases{margin-top:10px;border:1px solid var(--line);border-radius:10px;padding:9px;background:var(--panel2)}
+  .quickphrases .h5{margin:0 0 7px;color:var(--cyan);font-size:10px;text-transform:uppercase;letter-spacing:.05em}
+  .quickphrases .hrow{display:flex;flex-wrap:wrap;gap:5px}
+  .quickphrases button{background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:6px 9px;font-size:12px;font-weight:600;color:var(--txt);cursor:pointer}
+  .quickphrases .qpsep{flex-basis:100%;height:5px}
   .hrow button:hover{border-color:var(--accent)}
   /* Pod-add control */
   .podbox{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:9px;margin-bottom:9px}
@@ -263,7 +264,7 @@ const UI={
       newConfirm:"Nieuwe case starten? Huidige log wordt gewist.",log:"Log (kopieer naar systeem)",
       lockGuided:"Doorloop eerst alle modemchecks. Zo mis je nooit iets.",lockOpen:"Je kan de log vrij aanpassen.",
       stepOf:(a,b)=>`Stap ${a} / ${b}`, ok:"OK", nok:"NOK", yes:"Ja", no:"Nee",
-      hintsTitle:"Wat nu? (tik om toe te voegen)",
+      hintsTitle:"Extra info (tik om toe te voegen)",
       mtTitle:"Modemtest blok",mtSub:"Plak de modemtest om uit te lijnen, of vul snel Rx/Tx/Snr in.",
       tabAlign:"Plakken & uitlijnen",tabFields:"Snel Rx/Tx/Snr",paste:"Plak hier je modemtest",
       alignHint:"Kolommen worden uitgelijnd met tabs.",insert:"Invoegen",cancel:"Annuleer",
@@ -273,7 +274,7 @@ const UI={
       newConfirm:"Nouveau cas ? Le log actuel sera effacé.",log:"Log (copier vers le système)",
       lockGuided:"Faites d'abord tous les checks modem. Vous n'oublierez rien.",lockOpen:"Vous pouvez modifier le log librement.",
       stepOf:(a,b)=>`Étape ${a} / ${b}`, ok:"OK", nok:"NOK", yes:"Oui", no:"Non",
-      hintsTitle:"Et maintenant ? (touchez pour ajouter)",
+      hintsTitle:"Info supplémentaire (touchez pour ajouter)",
       mtTitle:"Bloc test modem",mtSub:"Collez le test modem pour l'aligner, ou saisissez Rx/Tx/Snr.",
       tabAlign:"Coller & aligner",tabFields:"Rapide Rx/Tx/Snr",paste:"Collez ici votre test modem",
       alignHint:"Colonnes alignées avec des tabs.",insert:"Insérer",cancel:"Annuler",
@@ -283,7 +284,7 @@ const UI={
       newConfirm:"Start a new case? Current log will be cleared.",log:"Log (copy into system)",
       lockGuided:"Do all modem checks first. So you never miss anything.",lockOpen:"You can edit the log freely.",
       stepOf:(a,b)=>`Step ${a} / ${b}`, ok:"OK", nok:"NOK", yes:"Yes", no:"No",
-      hintsTitle:"What now? (tap to add)",
+      hintsTitle:"Extra info (tap to add)",
       mtTitle:"Modemtest block",mtSub:"Paste the modemtest to align it, or quickly enter Rx/Tx/Snr.",
       tabAlign:"Paste & align",tabFields:"Quick Rx/Tx/Snr",paste:"Paste your modemtest here",
       alignHint:"Columns aligned with tabs.",insert:"Insert",cancel:"Cancel",
@@ -329,7 +330,7 @@ const MODEM=[
     hints:[
       {label:L("Tx te hoog","Tx trop haut","Tx too high"),line:L(" >tx te hoog → verzwakking tussen tap en modem"," >tx trop haut → atténuation entre tap et modem"," >tx too high → attenuation between tap and modem")},
       {label:L("Rx te laag/hoog","Rx trop bas/haut","Rx too low/high"),line:L(" >rx buiten -4..+17 dBmV"," >rx hors -4..+17 dBmV"," >rx outside -4..+17 dBmV")},
-      {label:L("Deviser aan de tap","Deviser au tap","Deviser at the tap"),line:L(" >gemeten aan de tap met deviser: __"," >mesuré au tap avec deviser: __"," >measured at the tap with deviser: __")},
+      {label:L("Deviser aan de tap","Deviser au tap","Deviser at the tap"),line:L(" >gemeten aan de tap met deviser"," >mesuré au tap avec deviser"," >measured at the tap with deviser")},
       {label:L("NIU overbrugd","NIU ponté","NIU bridged"),line:L(" >NIU overbrugd"," >NIU ponté"," >NIU bridged")}
     ]
   },
@@ -346,11 +347,11 @@ const MODEM=[
     okLine:L("-levels historiek ok: geen schommelingen >6dB","-historique niveaux ok: pas de fluctuations >6dB","-level history ok: no fluctuations >6dB"),
     nokLine:L("-levels historiek nok: schommelingen","-historique niveaux nok: fluctuations","-level history nok: fluctuations"),
     hints:[
-      {label:L("Schommeling TX invullen","Indiquer fluctuation TX","Enter TX fluctuation"),line:L(" >schommelingen tx van __dB"," >fluctuations tx de __dB"," >tx fluctuations of __dB")},
-      {label:L("Schommeling RX invullen","Indiquer fluctuation RX","Enter RX fluctuation"),line:L(" >schommelingen rx van __dB"," >fluctuations rx de __dB"," >rx fluctuations of __dB")},
+      {label:L("Schommeling TX","Fluctuation TX","TX fluctuation"),line:L(" >TX-schommeling vastgesteld"," >fluctuation TX constatée"," >TX fluctuation recorded")},
+      {label:L("Schommeling RX","Fluctuation RX","RX fluctuation"),line:L(" >RX-schommeling vastgesteld"," >fluctuation RX constatée"," >RX fluctuation recorded")},
       {label:L("Continue ~4 dB schommeling","Fluctuation continue ~4 dB","Continuous ~4 dB fluctuation"),line:L(" >continue schommeling ~4dB"," >fluctuation continue ~4dB"," >continuous ~4dB fluctuation")},
       {label:L("Drop/connectoren gecontroleerd","Drop/connecteurs vérifiés","Drop/connectors checked"),line:L(" >drop, connectoren en cm-snoer gecontroleerd"," >drop, connecteurs et cordon cm vérifiés"," >drop, connectors and cm cord checked")},
-      {label:L("TDR beide richtingen","TDR deux sens","TDR both directions"),line:L(" >TDR-meting in beide richtingen: __"," >mesure TDR dans les deux sens: __"," >TDR both directions: __")}
+      {label:L("TDR beide richtingen","TDR deux sens","TDR both directions"),line:L(" >TDR-meting in beide richtingen uitgevoerd"," >mesure TDR effectuée dans les deux sens"," >TDR measurement completed in both directions")}
     ]
   },
   /* 3. Error historiek */
@@ -366,7 +367,7 @@ const MODEM=[
     okLine:L("-error historiek ok: geen relevante uncorrectables","-historique erreurs ok: pas d'uncorrectables pertinents","-error history ok: no relevant uncorrectables"),
     nokLine:L("-error historiek nok: uncorrectable errors","-historique erreurs nok: erreurs uncorrectables","-error history nok: uncorrectable errors"),
     hints:[
-      {label:L("Aantal uncorrectables","Nombre d'uncorrectables","Uncorrectable count"),line:L(" >uncorrectable errors: __"," >erreurs uncorrectables: __"," >uncorrectable errors: __")},
+      {label:L("Aantal uncorrectables","Nombre d'uncorrectables","Uncorrectable count"),line:L(" >uncorrectable errors: "," >erreurs uncorrectables: "," >uncorrectable errors: ")},
       {label:L("Samen met schommelingen","Avec fluctuations","Together with fluctuations"),line:L(" >errors samen met schommelingen → RF-probleem"," >erreurs avec fluctuations → problème RF"," >errors together with fluctuations → RF problem")}
     ]
   },
@@ -384,10 +385,10 @@ const MODEM=[
     nokLine:L("-OFDM nok","-OFDM nok","-OFDM nok"),
     hints:[
       {label:L("NCP errors OFDM 0/1","NCP errors OFDM 0/1","NCP errors OFDM 0/1"),line:L(" >NCP errors op OFDM 0/1"," >NCP errors sur OFDM 0/1"," >NCP errors on OFDM 0/1")},
-      {label:L("Channel/service incidents","Incidents channel/service","Channel/service incidents"),line:L(" >channel/service incidents: __"," >incidents channel/service: __"," >channel/service incidents: __")},
+      {label:L("Channel/service incidents","Incidents channel/service","Channel/service incidents"),line:L(" >channel/service incidents vastgesteld"," >incidents channel/service constatés"," >channel/service incidents recorded")},
       {label:L("Active profile niet 3","Active profile pas 3","Active profile not 3"),line:L(" >active profile niet op 3 (QAM2048)"," >active profile pas sur 3 (QAM2048)"," >active profile not on 3 (QAM2048)")},
       {label:L("RX tilt >9 dB","Tilt RX >9 dB","RX tilt >9 dB"),line:L(" >RX tilt >9 dB over de band (Channel Rx Power)"," >tilt RX >9 dB sur la bande (Channel Rx Power)"," >RX tilt >9 dB across the band (Channel Rx Power)")},
-      {label:L("RX te laag","RX trop bas","RX too low"),line:L(" >RX-signalen te laag: __"," >signaux RX trop bas: __"," >RX signals too low: __")},
+      {label:L("RX te laag","RX trop bas","RX too low"),line:L(" >RX-signalen te laag"," >signaux RX trop bas"," >RX signals too low")},
       {label:L("Ingress (RXMER, bv. 810 MHz)","Ingress (RXMER, ex. 810 MHz)","Ingress (RXMER, e.g. 810 MHz)"),line:L(" >RXMER toont ingress (bv. rond 810 MHz)"," >RXMER montre de l'ingress (ex. ~810 MHz)"," >RXMER shows ingress (e.g. around 810 MHz)")}
     ]
   },
@@ -405,7 +406,7 @@ const MODEM=[
     nokLine:L("-OFDMA nok","-OFDMA nok","-OFDMA nok"),
     hints:[
       {label:L("Ranging state NOK","Ranging state NOK","Ranging state NOK"),line:L(" >ranging state nok"," >ranging state nok"," >ranging state nok")},
-      {label:L("Partial service incidents","Partial service incidents","Partial service incidents"),line:L(" >partial service incidents: __"," >partial service incidents: __"," >partial service incidents: __")},
+      {label:L("Partial service incidents","Partial service incidents","Partial service incidents"),line:L(" >partial service incidents vastgesteld"," >partial service incidents constatés"," >partial service incidents recorded")},
       {label:L("Profiel 12 (QAM64)","Profil 12 (QAM64)","Profile 12 (QAM64)"),line:L(" >profiel 12 (QAM64)"," >profil 12 (QAM64)"," >profile 12 (QAM64)")},
       {label:L("Profiel 13 (QPSK)","Profil 13 (QPSK)","Profile 13 (QPSK)"),line:L(" >profiel 13 (QPSK)"," >profil 13 (QPSK)"," >profile 13 (QPSK)")}
     ]
@@ -423,7 +424,7 @@ const MODEM=[
     okLine:L("-deregs: geen deregs in historiek","-deregs: pas de deregs dans l'historique","-deregs: none in history"),
     nokLine:L("-deregs zichtbaar in historiek","-deregs visibles dans l'historique","-deregs visible in history"),
     hints:[
-      {label:L("Aantal / dagen","Nombre / jours","Count / days"),line:L(" >deregs op __"," >deregs le __"," >deregs on __")}
+      {label:L("Aantal / dagen","Nombre / jours","Count / days"),line:L(" >deregs geregistreerd in historiek"," >deregs geregistreerd in historiek"," >deregs on ")}
     ]
   },
   /* 7. Eventlog — CONDITIONAL: only when deregs=Ja (bad). condOn = check id + status */
@@ -506,8 +507,8 @@ const GATEWAY=[
       {label:L("mb-switch klant","mb-switch client","customer mb-switch"),line:L(" >mb-switch van klant beperkt de snelheid"," >mb-switch du client limite le débit"," >customer mb-switch limits the speed")},
       {label:L("PLC / powerlines","CPL / powerlines","PLC / powerlines"),line:L(" >PLC/powerline-adapters in het pad"," >adaptateurs CPL/powerline dans le chemin"," >PLC/powerline adapters in the path")},
       {label:L("Speedklacht: max ~95 Mbps","Plainte vitesse : max ~95 Mbps","Speed complaint: max ~95 Mbps"),line:L(" >speedtest max ~95 Mbps → 100 Mbit-poort in pad (UTP/switch/PLC)"," >speedtest max ~95 Mbps → port 100 Mbit dans le chemin (UTP/switch/CPL)"," >speedtest max ~95 Mbps → 100 Mbit port in path (UTP/switch/PLC)")},
-      {label:L("Poort Down","Port Down","Port Down"),line:L(" >poort down waar toestel verwacht wordt: __"," >port down où un appareil est attendu : __"," >port down where a device is expected: __")},
-      {label:L("Poort/snelheid noteren","Noter port/débit","Note port/speed"),line:L(" >poort __ : __ Mbps"," >port __ : __ Mbps"," >port __ : __ Mbps")}
+      {label:L("Poort Down","Port Down","Port Down"),line:L(" >poort down waar toestel verwacht wordt: "," >port down où un appareil est attendu : "," >port down where a device is expected: ")},
+      {label:L("Poort/snelheid noteren","Noter port/débit","Note port/speed"),line:L(" >poort  :  Mbps"," >port  :  Mbps"," >port  :  Mbps")}
     ]
   }
 ];
@@ -515,39 +516,59 @@ const GATEWAY=[
 /* ---------- Branch guided checks (short) ---------- */
 const BRANCH={
   wifi_ihc2:[
-    { id:"wifi",title:L("WiFi — IHC2 (Plume pods)","WiFi — IHC2 (pods Plume)","WiFi — IHC2 (Plume pods)"),
-      norm:L("Check per <b>ruimte/client</b> de <b>RSSI</b> (niet slechter dan <b>-68 dBmV</b>) via <b>Plume Frontline</b>. Genoeg pods? Goede QoE? Waar is het signaal te zwak → pod/AP/PWL nodig?",
-             "Vérifiez par <b>pièce/client</b> le <b>RSSI</b> (pas sous <b>-68 dBmV</b>) via <b>Plume Frontline</b>. Assez de pods ? Bon QoE ? Où le signal est-il trop faible → pod/AP/CPL nécessaire ?",
-             "Check per <b>room/client</b> the <b>RSSI</b> (not below <b>-68 dBmV</b>) via <b>Plume Frontline</b>. Enough pods? Good QoE? Where is the signal too weak → pod/AP/PWL needed?"),
-      tip:L("IHC2 = Plume pods, via Frontline (bereikbaar via SPOT). Bekijk QoE, node/pod-health en per toestel de RSSI-historiek (7 dagen). Focus op de ruimte met de klacht (bv. de keuken): is de RSSI daar slechter dan -68 dBmV, dan is de dekking te zwak → extra pod, AP of powerline nodig. Nieuwe klanten krijgen enkel Plume pods; bij bestaande klanten adviseer je pods als er geen UTP in huis ligt. Let ook op sticky/hopping clients.",
-            "IHC2 = pods Plume, via Frontline (accessible via SPOT). Regardez le QoE, la santé node/pod et par appareil l'historique RSSI (7 jours). Concentrez-vous sur la pièce concernée (ex. la cuisine) : si le RSSI y est sous -68 dBmV, la couverture est trop faible → pod, AP ou CPL. Nouveaux clients = pods Plume uniquement ; clients existants = pods conseillés s'il n'y a pas d'UTP.",
-            "IHC2 = Plume pods, via Frontline (accessible through SPOT). Check QoE, node/pod health and per-device RSSI history (7 days). Focus on the room with the complaint (e.g. the kitchen): if RSSI there is below -68 dBmV, coverage is too weak → extra pod, AP or powerline. New customers only get Plume pods; for existing customers advise pods if there's no UTP in the home. Also watch sticky/hopping clients."),
-      okLine:L("+wifi (IHC2/Plume) ok: overal RSSI beter dan -68 dBmV, QoE ok","+wifi (IHC2/Plume) ok : RSSI partout mieux que -68 dBmV, QoE ok","+wifi (IHC2/Plume) ok: RSSI everywhere better than -68 dBmV, QoE ok"),
-      nokLine:L("-wifi (IHC2/Plume) nok","-wifi (IHC2/Plume) nok","-wifi (IHC2/Plume) nok"),
-      hints:[
-        {label:L("Ruimte + RSSI","Pièce + RSSI","Room + RSSI"),line:L(" >te lage RSSI in __ : __ dBmV"," >RSSI trop bas dans __ : __ dBmV"," >RSSI too low in __ : __ dBmV")},
-        {label:L("Aantal pods","Nombre de pods","Number of pods"),line:L(" >__ pods aanwezig"," >__ pods présents"," >__ pods present")},
-        {label:L("Extra pod/AP/PWL nodig","Pod/AP/CPL nécessaire","Extra pod/AP/PWL needed"),line:L(" >extra pod/AP/powerline nodig in __"," >pod/AP/CPL supplémentaire nécessaire dans __"," >extra pod/AP/powerline needed in __")},
-        {label:L("QoE / sticky / roaming","QoE / sticky / roaming","QoE / sticky / roaming"),line:L(" >QoE/sticky/roaming-probleem (Frontline)"," >problème QoE/sticky/roaming (Frontline)"," >QoE/sticky/roaming issue (Frontline)")},
-        {label:L("Eigen hardware klant","Matériel propre client","Customer's own hardware"),line:L(" >eigen hardware klant: __"," >matériel propre du client: __"," >customer's own hardware: __")}
-      ] }
+    { id:"ihc2_healthscore",title:L("Frontline Healthscore? (1-100)","Healthscore Frontline ? (1-100)","Frontline Healthscore? (1-100)"),
+      norm:L("Open <b>Frontline</b> en noteer de Healthscore van <b>1 tot 100</b>. Vul de score in en beoordeel daarna OK/NOK voor deze case.",
+             "Ouvrez <b>Frontline</b> et notez le Healthscore de <b>1 à 100</b>. Saisissez le score puis évaluez OK/NOK pour ce cas.",
+             "Open <b>Frontline</b> and record the Healthscore from <b>1 to 100</b>. Enter the score and then mark OK/NOK for this case."),
+      tip:L("De Healthscore geeft een snelle algemene indicatie. Noteer altijd de waarde zelf, niet alleen OK/NOK, zodat de klant en opvolging de situatie kunnen reconstrueren.",
+            "Le Healthscore donne une indication générale rapide. Notez toujours la valeur elle-même, pas seulement OK/NOK, afin de garder le contexte du client.",
+            "The Healthscore gives a quick overall indication. Always record the value itself, not only OK/NOK, so the customer context can be reconstructed."),
+      values:[{key:"score",label:L("Healthscore (1-100)","Healthscore (1-100)","Healthscore (1-100)")}],
+      okLine:L("-Frontline Healthscore ok: {score}/100","-Healthscore Frontline ok : {score}/100","-Frontline Healthscore ok: {score}/100"),
+      nokLine:L("-Frontline Healthscore nok: {score}/100","-Healthscore Frontline nok : {score}/100","-Frontline Healthscore nok: {score}/100")
+    },
+    { id:"ihc2_qoe",title:L("Frontline QoE ok? Alle toestellen groen?","QoE Frontline ok ? Tous les appareils sont verts ?","Frontline QoE ok? Are all devices green?"),
+      norm:L("Ga in <b>Frontline → Devices</b> naar het toestel dat de klacht veroorzaakt. Is de QoE ok en is het toestel groen? Noteer <b>toestel, ruimte en verbinding</b>.",
+             "Dans <b>Frontline → Devices</b>, ouvrez l'appareil lié à la plainte. La QoE est-elle correcte et l'appareil est-il vert ? Notez <b>l'appareil, la pièce et la connexion</b>.",
+             "In <b>Frontline → Devices</b>, open the device related to the complaint. Is QoE okay and is the device green? Record the <b>device, room and connection</b>."),
+      tip:L("Gebruik de Devices-tab in QoE, niet alleen de algemene Healthscore. Een Apollo in de keuken kan bijvoorbeeld slecht verbonden zijn met de modem in de woonkamer. Controleer of het toestel via WiFi/Plume pod werkt terwijl er UTP beschikbaar is. Geen UTP en slechte verbinding → extra Plume pod in Actie; wel UTP maar WiFi gebruikt → aansluiten via UTP in Actie.",
+            "Utilisez l'onglet Devices de QoE, pas seulement le Healthscore général. Un Apollo dans la cuisine peut par exemple être mal connecté au modem dans le salon. Vérifiez si l'appareil passe par WiFi/pod Plume alors que l'UTP est disponible. Pas d'UTP et mauvaise connexion → pod Plume supplémentaire dans Action ; UTP disponible mais WiFi utilisé → connecter en UTP dans Action.",
+            "Use the QoE Devices tab, not only the overall Healthscore. An Apollo in the kitchen may have a poor connection to the modem in the living room. Check whether it uses WiFi/a Plume pod while UTP is available. No UTP and poor connection → add a Plume pod in Action; UTP available but WiFi used → connect via UTP in Action."),
+      values:[
+        {key:"device",label:L("Affected device","Appareil concerné","Affected device")},
+        {key:"room",label:L("Room","Pièce","Room")},
+        {key:"connection",label:L("Connection (WiFi / UTP)","Connexion (WiFi / UTP)","Connection (WiFi / UTP)")}
+      ],
+      answer:"janee",bad:"no",
+      okLine:L("-Frontline QoE ok: toestel {device} in {room} via {connection}; alle toestellen groen","-QoE Frontline ok : appareil {device} dans {room} via {connection} ; tous les appareils sont verts","-Frontline QoE ok: device {device} in {room} via {connection}; all devices green"),
+      nokLine:L("-Frontline QoE nok: toestel {device} in {room} via {connection} heeft slechte verbinding","-QoE Frontline nok : appareil {device} dans {room} via {connection} avec mauvaise connexion","-Frontline QoE nok: device {device} in {room} via {connection} has a poor connection")
+    },
+    { id:"ihc2_rssi",title:L("Frontline clients: RSSI tussen -68 en -54?","Clients Frontline : RSSI entre -68 et -54 ?","Frontline clients: RSSI between -68 and -54?"),
+      norm:L("Controleer de clients in de getroffen ruimte. Is de RSSI tussen <b>-68 en -54 dBm</b>? Noteer afwijkende ruimte/client in Actie.",
+             "Vérifiez les clients dans la pièce concernée. Le RSSI est-il entre <b>-68 et -54 dBm</b> ? Notez la pièce/client anormal dans Action.",
+             "Check the clients in the affected room. Is RSSI between <b>-68 and -54 dBm</b>? Record an affected room/client in Action."),
+      tip:L("Gebruik de clientwaarden van Frontline, niet alleen een algemene indruk van de dekking. Focus op de client en ruimte die de klacht veroorzaakt.",
+            "Utilisez les valeurs client de Frontline, pas seulement une impression générale de la couverture. Concentrez-vous sur le client et la pièce concernés.",
+            "Use the Frontline client values, not only a general impression of coverage. Focus on the client and room related to the complaint."),
+      answer:"janee",bad:"no",
+      okLine:L("-Frontline clients RSSI ok: tussen -68 en -54 dBm","-RSSI clients Frontline ok : entre -68 et -54 dBm","-Frontline client RSSI ok: between -68 and -54 dBm"),
+      nokLine:L("-Frontline clients RSSI nok: buiten -68 tot -54 dBm","-RSSI clients Frontline nok : hors de -68 à -54 dBm","-Frontline client RSSI nok: outside -68 to -54 dBm")
+    }
   ],
   wifi_ihc1:[
     { id:"wifi",title:L("WiFi — IHC1 (WiFi Statistics)","WiFi — IHC1 (WiFi Statistics)","WiFi — IHC1 (WiFi Statistics)"),
-      norm:L("Ouder platform via <b>WiFi Statistics</b> (SPOT). Check per <b>ruimte/client</b> de <b>RSSI</b> (niet slechter dan <b>-68 dBmV</b>), sticky clients en kanaal/interferentie. Waar te zwak → pod/AP/PWL nodig?",
-             "Ancienne plateforme via <b>WiFi Statistics</b> (SPOT). Vérifiez par <b>pièce/client</b> le <b>RSSI</b> (pas sous <b>-68 dBmV</b>), clients sticky et canal/interférence. Où trop faible → pod/AP/CPL ?",
-             "Older platform via <b>WiFi Statistics</b> (SPOT). Check per <b>room/client</b> the <b>RSSI</b> (not below <b>-68 dBmV</b>), sticky clients and channel/interference. Where too weak → pod/AP/PWL?"),
-      tip:L("IHC1 = het oudere WiFi-platform, via 'In Home WiFi Statistics' in SPOT. Check client-RSSI, sticky clients (blijven hangen aan een zwak AP) en hopping clients (wisselen te vaak). Controleer kanaal, kanaalbreedte en SSID/versleuteling. Focus op de ruimte met de klacht: RSSI slechter dan -68 dBmV = te zwak → pod/AP/powerline. Bij bestaande klanten zonder UTP adviseer je pods.",
-            "IHC1 = l'ancienne plateforme WiFi, via 'In Home WiFi Statistics' dans SPOT. Vérifiez le RSSI client, les clients sticky et hopping. Contrôlez canal, largeur de canal et SSID/chiffrement. Concentrez-vous sur la pièce concernée : RSSI sous -68 dBmV = trop faible → pod/AP/CPL. Clients existants sans UTP → conseillez des pods.",
-            "IHC1 = the older WiFi platform, via 'In Home WiFi Statistics' in SPOT. Check client RSSI, sticky clients and hopping clients. Check channel, channel width and SSID/encryption. Focus on the room with the complaint: RSSI below -68 dBmV = too weak → pod/AP/powerline. For existing customers without UTP, advise pods."),
-      okLine:L("+wifi (IHC1) ok: overal RSSI beter dan -68 dBmV","+wifi (IHC1) ok : RSSI partout mieux que -68 dBmV","+wifi (IHC1) ok: RSSI everywhere better than -68 dBmV"),
+      norm:L("Ouder platform via <b>WiFi Statistics</b> (SPOT). Check per <b>ruimte/client</b> de <b>RSSI</b> (niet slechter dan <b>-68 dBm</b>), sticky clients en kanaal/interferentie. Noteer de vaststellingen; oplossingen horen bij Actie.",
+             "Ancienne plateforme via <b>WiFi Statistics</b> (SPOT). Vérifiez par <b>pièce/client</b> le <b>RSSI</b> (pas sous <b>-68 dBm</b>), les clients sticky et le canal/interférence. Notez les constatations ; les solutions vont dans Action.",
+             "Older platform via <b>WiFi Statistics</b> (SPOT). Check per <b>room/client</b> the <b>RSSI</b> (not below <b>-68 dBm</b>), sticky clients and channel/interference. Record findings; solutions belong in Action."),
+      tip:L("IHC1 = het oudere WiFi-platform via In Home WiFi Statistics in SPOT. Check client-RSSI, sticky/hopping clients en kanaal/interferentie. Focus op de ruimte met de klacht en noteer de metingen. Gebruik Actie voor de gekozen oplossing.",
+            "IHC1 = l'ancienne plateforme WiFi via In Home WiFi Statistics dans SPOT. Vérifiez le RSSI client, les clients sticky/hopping et le canal/interférence. Concentrez-vous sur la pièce concernée et notez les mesures. Utilisez Action pour la solution choisie.",
+            "IHC1 = the older WiFi platform via In Home WiFi Statistics in SPOT. Check client RSSI, sticky/hopping clients and channel/interference. Focus on the affected room and record the measurements. Use Action for the chosen solution."),
+      okLine:L("+wifi (IHC1) ok: overal RSSI en WiFi Statistics zonder relevante afwijking","+wifi (IHC1) ok : RSSI et WiFi Statistics sans anomalie relevante","+wifi (IHC1) ok: RSSI and WiFi Statistics without a relevant issue"),
       nokLine:L("-wifi (IHC1) nok","-wifi (IHC1) nok","-wifi (IHC1) nok"),
       hints:[
-        {label:L("Ruimte + RSSI","Pièce + RSSI","Room + RSSI"),line:L(" >te lage RSSI in __ : __ dBmV"," >RSSI trop bas dans __ : __ dBmV"," >RSSI too low in __ : __ dBmV")},
+        {label:L("Ruimte + RSSI","Pièce + RSSI","Room + RSSI"),line:L(" >te lage RSSI in  :  dBm"," >RSSI trop bas dans  :  dBm"," >RSSI too low in  :  dBm")},
         {label:L("Sticky/hopping clients","Clients sticky/hopping","Sticky/hopping clients"),line:L(" >sticky/hopping clients (WiFi Statistics)"," >clients sticky/hopping (WiFi Statistics)"," >sticky/hopping clients (WiFi Statistics)")},
-        {label:L("Kanaal/interferentie","Canal/interférence","Channel/interference"),line:L(" >kanaal/interferentie-probleem: __"," >problème canal/interférence: __"," >channel/interference issue: __")},
-        {label:L("Extra pod/AP/PWL nodig","Pod/AP/CPL nécessaire","Extra pod/AP/PWL needed"),line:L(" >extra pod/AP/powerline nodig in __"," >pod/AP/CPL supplémentaire nécessaire dans __"," >extra pod/AP/powerline needed in __")},
-        {label:L("Eigen hardware klant","Matériel propre client","Customer's own hardware"),line:L(" >eigen hardware klant: __"," >matériel propre du client: __"," >customer's own hardware: __")}
+        {label:L("Kanaal/interferentie","Canal/interférence","Channel/interference"),line:L(" >kanaal/interferentie-probleem: "," >problème canal/interférence: "," >channel/interference issue: ")}
       ] }
   ],
   stb_qam:[
@@ -562,12 +583,12 @@ const BRANCH={
       nokLine:L("-TV box (QAM) nok","-TV box (QAM) nok","-TV box (QAM) nok"),
       hints:[
         {label:L("Perfecte signalen → binnenhuis","Signaux parfaits → intérieur","Perfect signals → indoor"),line:L(" >modem perfect → binnenhuisbekabeling/connectoren klant nakijken"," >modem parfait → vérifier câblage interne/connecteurs client"," >modem perfect → check customer indoor cabling/connectors")},
-        {label:L("Binnenbekabeling/connectoren","Câblage interne/connecteurs","Indoor cabling/connectors"),line:L(" >binnenhuisbekabeling/connectoren: __"," >câblage interne/connecteurs: __"," >indoor cabling/connectors: __")},
-        {label:L("CATV-box","Box CATV","CATV box"),line:L(" >CATV-box: __"," >box CATV: __"," >CATV box: __")},
+        {label:L("Binnenbekabeling/connectoren","Câblage interne/connecteurs","Indoor cabling/connectors"),line:L(" >binnenhuisbekabeling/connectoren: "," >câblage interne/connecteurs: "," >indoor cabling/connectors: ")},
+        {label:L("CATV-box","Box CATV","CATV box"),line:L(" >CATV-box: "," >box CATV: "," >CATV box: ")},
         {label:L("Laatste coax-snoer","Dernier cordon coax","Last coax cord"),line:L(" >laatste coax-snoer vervangen/gecontroleerd"," >dernier cordon coax remplacé/vérifié"," >last coax cord replaced/checked")},
         {label:L("Service menu 120MHz","Menu service 120MHz","Service menu 120MHz"),line:L(" >service menu 120MHz nok (tiktest)"," >menu service 120MHz nok (test tik)"," >service menu 120MHz nok (tik test)")},
         {label:L("IP-check / ingress","IP-check / ingress","IP check / ingress"),line:L(" >IP-check/ingress nok"," >IP-check/ingress nok"," >IP check/ingress nok")},
-        {label:L("BER","BER","BER"),line:L(" >BER buiten norm: __"," >BER hors norme: __"," >BER out of spec: __")},
+        {label:L("BER","BER","BER"),line:L(" >BER buiten norm: "," >BER hors norme: "," >BER out of spec: ")},
         {label:L("V1/V2: enkel apps falen → IP","V1/V2 : seules apps → IP","V1/V2: only apps fail → IP"),line:L(" >enkel apps/streaming falen (V1/V2) → IP/inhome-probleem, geen coax"," >seules apps/streaming échouent (V1/V2) → problème IP/inhome"," >only apps/streaming fail (V1/V2) → IP/in-home issue, not coax")}
       ] }
   ],
@@ -583,13 +604,13 @@ const BRANCH={
       nokLine:L("-Apollo (IP) nok","-Apollo (IP) nok","-Apollo (IP) nok"),
       hints:[
         {label:L("Verbinding: UTP","Connexion : UTP","Connection: UTP"),line:L(" >box via UTP verbonden"," >box connectée en UTP"," >box connected via UTP")},
-        {label:L("Verbinding: WiFi","Connexion : WiFi","Connection: WiFi"),line:L(" >box via WiFi (band/RSSI: __)"," >box en WiFi (bande/RSSI: __)"," >box via WiFi (band/RSSI: __)")},
-        {label:L("Verbinding: powerline","Connexion : CPL","Connection: powerline"),line:L(" >box via powerline (PHY rate: __)"," >box via CPL (débit PHY: __)"," >box via powerline (PHY rate: __)")},
+        {label:L("Verbinding: WiFi","Connexion : WiFi","Connection: WiFi"),line:L(" >box via WiFi (band/RSSI: )"," >box en WiFi (bande/RSSI: )"," >box via WiFi (band/RSSI: )")},
+        {label:L("Verbinding: powerline","Connexion : CPL","Connection: powerline"),line:L(" >box via powerline (PHY rate: )"," >box via CPL (débit PHY: )"," >box via powerline (PHY rate: )")},
         {label:L("WiFi op 2.4 i.p.v. 5 GHz","WiFi sur 2.4 au lieu de 5 GHz","WiFi on 2.4 instead of 5 GHz"),line:L(" >box hangt op 2.4 GHz i.p.v. WiFi 6 / 5 GHz"," >box sur 2.4 GHz au lieu de WiFi 6 / 5 GHz"," >box stuck on 2.4 GHz instead of WiFi 6 / 5 GHz")},
-        {label:L("Frontline QoE","Frontline QoE","Frontline QoE"),line:L(" >Frontline QoE: __"," >QoE Frontline: __"," >Frontline QoE: __")},
+        {label:L("Frontline QoE","Frontline QoE","Frontline QoE"),line:L(" >Frontline QoE: "," >QoE Frontline: "," >Frontline QoE: ")},
         {label:L("Slecht geplaatste pods","Pods mal placés","Badly placed pods"),line:L(" >slecht geplaatste pods in mesh"," >pods mal placés dans le mesh"," >badly placed pods in mesh")},
         {label:L("Node / OFDM profielwissels","Nœud / OFDM change profil","Node / OFDM profile changes"),line:L(" >node/OFDM wisselt te vaak van profiel"," >nœud/OFDM change trop souvent de profil"," >node/OFDM changing profile too often")},
-        {label:L("SPOT historiek-log","Log historique SPOT","SPOT history log"),line:L(" >SPOT historiek-log gecontroleerd: __"," >log historique SPOT vérifié: __"," >SPOT history log checked: __")}
+        {label:L("SPOT historiek-log","Log historique SPOT","SPOT history log"),line:L(" >SPOT historiek-log gecontroleerd: "," >log historique SPOT vérifié: "," >SPOT history log checked: ")}
       ] }
   ],
   phone:[
@@ -614,22 +635,26 @@ const BRANCH={
 /* ---------- Free-type helper snippets for Actie/Resultaat ---------- */
 const FREEHELP={
   actie:[
-    {label:L("Fcon vervangen","Fcon remplacé","Fcon replaced"),line:L("-fcon vervangen aan __","-fcon remplacé au __","-fcon replaced at __")},
-    {label:L("Connector vervangen","Connecteur remplacé","Connector replaced"),line:L("-connector vervangen aan __","-connecteur remplacé au __","-connector replaced at __")},
+    {label:L("Fcon vervangen","Fcon remplacé","Fcon replaced"),line:L("-fcon vervangen aan ","-fcon remplacé au ","-fcon replaced at ")},
+    {label:L("Connector vervangen","Connecteur remplacé","Connector replaced"),line:L("-connector vervangen aan ","-connecteur remplacé au ","-connector replaced at ")},
     {label:L("Drop vervangen","Drop remplacé","Drop replaced"),line:L("-drop vervangen","-drop remplacé","-drop replaced")},
-    {label:L("Modem vervangen","Modem remplacé","Modem replaced"),line:L("-modem vervangen door __","-modem remplacé par __","-modem replaced by __")},
-    {label:L("Hardware toegevoegd","Matériel ajouté","Hardware added"),line:L("-hardware toegevoegd: __","-matériel ajouté: __","-hardware added: __")},
+    {label:L("Modem vervangen","Modem remplacé","Modem replaced"),line:L("-modem vervangen door ","-modem remplacé par ","-modem replaced by ")},
+    {label:L("Hardware toegevoegd","Matériel ajouté","Hardware added"),line:L("-hardware toegevoegd: ","-matériel ajouté: ","-hardware added: ")},
+    {label:L("Extra pod bijgeplaatst","Pod supplémentaire ajouté","Extra pod added"),line:L("-extra pod bijgeplaatst in ","-pod supplémentaire ajouté dans ","-extra pod added in ")},
+    {label:L("Apollo via UTP aangesloten","Apollo connecté en UTP","Apollo connected via UTP"),line:L("-Apollo via UTP aangesloten in ","-Apollo connecté en UTP dans ","-Apollo connected via UTP in ")},
+    {label:L("UTP beschikbaar: WiFi vervangen","UTP disponible : remplacer WiFi","UTP available: replace WiFi"),line:L("-UTP beschikbaar; Apollo van WiFi naar UTP aangesloten","-UTP disponible ; Apollo connecté en UTP au lieu du WiFi","-UTP available; Apollo connected via UTP instead of WiFi")},
+    {label:L("Eigen hardware klant","Matériel propre du client","Customer-owned hardware"),line:L("-eigen hardware klant: geen support; basisinfo gegeven: ","-matériel propre du client : pas de support ; informations de base données : ","-customer-owned hardware: no support; basic guidance given: ")},
     {label:L("PWL vervangen","CPL remplacé","PWL replaced"),line:L("-powerlines vervangen door nieuw type","-CPL remplacés par nouveau type","-powerlines replaced with new type")},
-    {label:L("SOS SWAT","SOS SWAT","SOS SWAT"),line:L("-SOS SWAT gecontacteerd voor 2de opinie: __","-SOS SWAT contacté pour 2e avis: __","-SOS SWAT contacted for 2nd opinion: __")},
+    {label:L("SOS SWAT","SOS SWAT","SOS SWAT"),line:L("-SOS SWAT gecontacteerd voor 2de opinie: ","-SOS SWAT contacté pour 2e avis: ","-SOS SWAT contacted for 2nd opinion: ")},
     {label:L("Klant ingelicht","Client informé","Customer informed"),line:L("-klant hierover ingelicht","-client informé","-customer informed")}
   ],
   result:[
     {label:L("Modem online","Modem en ligne","Modem online"),line:L("-modem meteen online met goede signalen","-modem en ligne avec de bons signaux","-modem online with good signals")},
     {label:L("Alles in dienst","Tout en service","All in service"),line:L("-alles in dienst","-tout en service","-all in service")},
-    {label:L("Gratis interventie","Intervention gratuite","Free intervention"),line:L("-gratis interventie: __","-intervention gratuite: __","-free intervention: __")},
+    {label:L("Gratis interventie","Intervention gratuite","Free intervention"),line:L("-gratis interventie: ","-intervention gratuite: ","-free intervention: ")},
     {label:L("Klant getest ok","Testé client ok","Customer tested ok"),line:L("-klant getest op laptop/tablet: ok","-testé chez le client sur laptop/tablette: ok","-tested at customer on laptop/tablet: ok")},
     {label:L("Opgelost","Résolu","Solved"),line:L("=>probleem opgelost ter plaatse","=>problème résolu sur place","=>problem solved on site")},
-    {label:L("Niet opgelost","Non résolu","Not solved"),line:L("=>niet opgelost → vervolgactie: __","=>non résolu → suivi: __","=>not solved → follow-up: __")}
+    {label:L("Niet opgelost","Non résolu","Not solved"),line:L("=>niet opgelost → vervolgactie: ","=>non résolu → suivi: ","=>not solved → follow-up: ")}
   ]
 };
 /* Rooms for the pod-add action (pickable) */
@@ -650,15 +675,38 @@ function selectedTypes(){ return TYPE_ORDER.filter(t=>state.caseTypes.includes(t
 function save(){ try{ localStorage.setItem("starlogger_v3", JSON.stringify(state)); }catch(e){} }
 function load(){ try{ const s=JSON.parse(localStorage.getItem("starlogger_v3")); if(s) Object.assign(state,s);}catch(e){} }
 
+function wifiBranch(){
+  if(state.wifiplat==="ihc1") return BRANCH.wifi_ihc1;
+  if(state.wifiplat==="ihc2") return BRANCH.wifi_ihc2;
+  return []; // own hardware: no supported in-home WiFi checks
+}
+
+function apolloBranch(){
+  if(state.wifiplat!=="ihc2") return BRANCH.stb_apollo;
+  return BRANCH.stb_apollo.map(c=>{
+    if(c.id!=="apollo") return c;
+    return {
+      ...c,
+      norm:L("Apollo draait over <b>IP</b>. Bij IHC2: verbinding via <b>UTP of WiFi via een Plume pod</b>. Controleer de Apollo-verbinding en de relevante IP-informatie.",
+             "Apollo passe par <b>IP</b>. Avec IHC2 : connexion via <b>UTP ou WiFi via un pod Plume</b>. Vérifiez la connexion Apollo et les informations IP pertinentes.",
+             "Apollo runs over <b>IP</b>. With IHC2: connect via <b>UTP or WiFi through a Plume pod</b>. Check the Apollo connection and relevant IP information."),
+      tip:L("De Frontline Healthscore, QoE en client-RSSI worden al gecontroleerd in de IHC2-stappen. Voor Apollo controleer je hier alleen de IP-verbinding: UTP of WiFi via een Plume pod.",
+            "Le Healthscore Frontline, la QoE et le RSSI client sont déjà contrôlés dans les étapes IHC2. Pour Apollo, vérifiez ici uniquement la connexion IP : UTP ou WiFi via un pod Plume.",
+            "Frontline Healthscore, QoE and client RSSI are already checked in the IHC2 steps. For Apollo, check only the IP connection here: UTP or WiFi through a Plume pod."),
+      hints:c.hints.filter(h=>!["Verbinding: powerline","Frontline QoE","Slecht geplaatste pods"].includes(h.label.nl))
+    };
+  });
+}
+
 /* Which branch check-groups run for the current selection */
 function branchGroups(){
   const groups=[];
   selectedTypes().forEach(t=>{
-    if(t==="internet") groups.push(...(state.wifiplat==="ihc1"?BRANCH.wifi_ihc1:BRANCH.wifi_ihc2));
+    if(t==="internet") groups.push(...wifiBranch());
     else if(t==="phone") groups.push(...BRANCH.phone);
     else if(t==="idtv"){
       // iDTV routes on box type; boxtype step is added separately in steps()
-      if(state.boxtype==="apollo") groups.push(...BRANCH.stb_apollo);
+      if(state.boxtype==="apollo") groups.push(...apolloBranch());
       else groups.push(...BRANCH.stb_qam); // default/qam (Sipadan, V1, V2)
     }
   });
@@ -685,9 +733,9 @@ function steps(){
   selectedTypes().forEach(t=>{
     if(t==="internet") arr.push({kind:"wifiplat"});
     if(t==="idtv") arr.push({kind:"boxtype"});
-    const set = t==="internet"?(state.wifiplat==="ihc1"?BRANCH.wifi_ihc1:BRANCH.wifi_ihc2)
+    const set = t==="internet"?wifiBranch()
               : t==="phone"?BRANCH.phone
-              : (state.boxtype==="apollo"?BRANCH.stb_apollo:BRANCH.stb_qam);
+              : (state.boxtype==="apollo"?apolloBranch():BRANCH.stb_qam);
     set.forEach(c=>arr.push({kind:"branch",check:c}));
   });
   arr.push({kind:"actie"});
@@ -876,11 +924,28 @@ function renderSituatie(){
     <div class="stagebadge">${STARHEAD[state.lang][0]}</div>
     <h2 class="qtitle">${ {nl:"Wat is de situatie?",fr:"Quelle est la situation ?",en:"What is the situation?"}[state.lang] }</h2>
     <p class="qsub">${ {nl:"Korte beschrijving van de melding. Elke regel = een puntje.",fr:"Brève description. Chaque ligne = un point.",en:"Short description. Each line = one point."}[state.lang] }</p>
+    <div class="quickphrases">
+      <button data-sit="-geen internet">Geen internet</button>
+      <button data-sit="-traag internet">Traag internet</button>
+      <button data-sit="-WiFi valt weg">WiFi valt weg</button>
+      <button data-sit="-buffering op">Buffering op</button>
+      <button data-sit="-beeld bevriest op">Beeld bevriest op</button>
+      <button data-sit="-werkt niet op">Werkt niet op</button>
+      <button data-sit="in de keuken">Keuken</button>
+      <button data-sit="in de woonkamer">Woonkamer</button>
+      <button data-sit="in de slaapkamer">Slaapkamer</button>
+      <button data-sit="de hele dag">De hele dag</button>
+      <button data-sit="willekeurig">Willekeurig</button>
+      <button data-sit="vooral 's avonds">Vooral 's avonds</button>
+    </div>
     <div class="freetype">
-      <textarea id="sitInput" placeholder="${ {nl:'bv. geen internet\nop alle toestellen, gans de dag',fr:"ex. pas d'internet\nsur tous les appareils",en:'e.g. no internet\non all devices, all day'}[state.lang] }">${escapeHtml(state.situatie)}</textarea>
+      <textarea id="sitInput" placeholder="${ {nl:'bv. buffering op Apollo in de keuken, vooral \'s avonds',fr:"ex. buffering sur Apollo dans la cuisine, surtout le soir",en:'e.g. Apollo buffering in the kitchen, mostly in the evening'}[state.lang] }">${escapeHtml(state.situatie)}</textarea>
     </div>
   </div>`;
   const ta=$("sitInput");
+  const qp=host.querySelector(".quickphrases");
+  if(qp){ qp.classList.add("helpers"); const bs=Array.from(host.querySelectorAll("[data-sit]")); bs.forEach((b,i)=>{ qp.appendChild(b); if(i===5||i===8){ const s=document.createElement("span"); s.className="qpsep"; qp.appendChild(s); } }); ta.parentElement.after(qp); }
+  host.querySelectorAll("[data-sit]").forEach(b=>b.addEventListener("click",()=>{ const v=b.dataset.sit; const cur=ta.value.trim(); ta.value=cur ? cur+" "+v : v; state.situatie=ta.value; refreshLog(); ta.focus(); }));
   ta.addEventListener("input",()=>{ state.situatie=ta.value; refreshLog(); });
 }
 
@@ -1041,14 +1106,16 @@ function renderBoxtype(){
 function renderWifiplat(){
   const opts=[
     {k:"ihc2",ic:"🟢",label:{nl:"IHC2 — Plume pods",fr:"IHC2 — pods Plume",en:"IHC2 — Plume pods"},
-      desc:{nl:"Frontline (nieuw, pods)",fr:"Frontline (nouveau, pods)",en:"Frontline (new, pods)"}},
+      desc:{nl:"Frontline (nieuw, enkel pods)",fr:"Frontline (nouveau, pods uniquement)",en:"Frontline (new, pods only)"}},
     {k:"ihc1",ic:"⚪",label:{nl:"IHC1 — WiFi Statistics",fr:"IHC1 — WiFi Statistics",en:"IHC1 — WiFi Statistics"},
-      desc:{nl:"ouder platform (SPOT)",fr:"ancienne plateforme (SPOT)",en:"older platform (SPOT)"}}
+      desc:{nl:"ouder platform (SPOT)",fr:"ancienne plateforme (SPOT)",en:"older platform (SPOT)"}},
+    {k:"own",ic:"⚠️",label:{nl:"Eigen hardware klant",fr:"Matériel propre du client",en:"Customer-owned hardware"},
+      desc:{nl:"geen ondersteuning — basisinfo",fr:"pas de support — informations de base",en:"no support — basic guidance"}}
   ];
   host.innerHTML=`<div class="card">
     <div class="stagebadge">${STARHEAD[state.lang][1]} — In Home Connectivity</div>
     <h2 class="qtitle">${ {nl:"Welk WiFi-platform?",fr:"Quelle plateforme WiFi ?",en:"Which WiFi platform?"}[state.lang] }</h2>
-    <p class="qsub">${ {nl:"IHC2 = Plume pods (Frontline). IHC1 = ouder (WiFi Statistics). Beide via SPOT.",fr:"IHC2 = pods Plume (Frontline). IHC1 = ancien (WiFi Statistics). Tous deux via SPOT.",en:"IHC2 = Plume pods (Frontline). IHC1 = older (WiFi Statistics). Both via SPOT."}[state.lang] }</p>
+    <p class="qsub">${ {nl:"IHC2 = Plume pods (Frontline). IHC1 = ouder (WiFi Statistics). Eigen hardware = geen ondersteuning, enkel basisinfo.",fr:"IHC2 = pods Plume (Frontline). IHC1 = ancien (WiFi Statistics). Matériel propre = pas de support, informations de base uniquement.",en:"IHC2 = Plume pods (Frontline). IHC1 = older (WiFi Statistics). Customer-owned hardware = no support, basic guidance only."}[state.lang] }</p>
     <div class="choice">${opts.map(o=>{
       const on=state.wifiplat===o.k;
       return `<button class="${on?'sel':''}" data-wp="${o.k}"><span class="ic">${o.ic}</span><span>${o.label[state.lang]}<span class="desc">${o.desc[state.lang]}</span></span></button>`;
@@ -1065,7 +1132,9 @@ function renderFree(which){
   const head = isActie?STARHEAD[state.lang][2]:STARHEAD[state.lang][3];
   const val = isActie?state.actie:state.result;
   const help = isActie?FREEHELP.actie:FREEHELP.result;
-  // Pod-add control (Actie only)
+  const sub = isActie
+    ? {nl:"Wat nu? Kies wat je hebt uitgevoerd of wat nog moet gebeuren. Je kan ook vrij typen.",fr:"Et maintenant ? Choisissez ce qui a été fait ou ce qui doit encore être fait. Vous pouvez aussi écrire librement.",en:"What now? Choose what you did or what still needs to happen. You can also type freely."}[state.lang]
+    : t.freeHint;
   let podHtml="";
   if(isActie){
     const podTitle={nl:"Pods toevoegen",fr:"Ajouter des pods",en:"Add pods"}[state.lang];
@@ -1082,7 +1151,7 @@ function renderFree(which){
   host.innerHTML=`<div class="card">
     <div class="stagebadge">${head}</div>
     <h2 class="qtitle">${head}</h2>
-    <p class="qsub">${t.freeHint}</p>
+    <p class="qsub">${sub}</p>
     ${podHtml}
     <div class="freetype"><textarea id="freeInput" placeholder="${isActie? {nl:'-fcon vervangen aan NIU',fr:'-fcon remplacé au NIU',en:'-fcon replaced at NIU'}[state.lang] : {nl:'-alles in dienst',fr:'-tout en service',en:'-all in service'}[state.lang]}">${escapeHtml(val)}</textarea></div>
     <div class="helpers"><div class="hrow">${help.map((h,i)=>`<button data-h="${i}">${h.label[state.lang]}</button>`).join("")}</div></div>
