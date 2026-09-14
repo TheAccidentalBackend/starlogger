@@ -297,114 +297,92 @@ function L(nl,fr,en){return{nl,fr,en};}
      okLine{}, nokLine{}, hints:[{label{},line{}}]
    ============================================================ */
 const MODEM=[
+  /* 1. Actuele RF-check — live Rx/Tx/SNR */
+  { id:"rf",
+    title:L("Actuele RF-check","Contrôle RF actuel","Current RF check"),
+    norm:L("Meet de <b>actuele</b> waarden. <b>Rx: -4 tot +17 dBmV</b>. <b>Tx: 25 tot 47 dBmV</b>. SNR zo hoog mogelijk (richtwaarde >36).",
+           "Mesurez les valeurs <b>actuelles</b>. <b>Rx : -4 à +17 dBmV</b>. <b>Tx : 25 à 47 dBmV</b>. SNR le plus haut possible (>36).",
+           "Measure the <b>current</b> values. <b>Rx: -4 to +17 dBmV</b>. <b>Tx: 25 to 47 dBmV</b>. SNR as high as possible (>36)."),
+    tip:L("De momentopname van de RF: Rx tussen -4 en +17 dBmV, Tx tussen 25 en 47 dBmV, SNR liefst >36. Ligt Tx te hoog of Rx te laag → verzwakking/verlies tussen tap en modem. Meet aan de tap met de deviser, overbrug de NIU en gebruik de dropkabelverzwakkingstool om te lokaliseren.",
+          "L'instantané RF : Rx entre -4 et +17 dBmV, Tx entre 25 et 47 dBmV, SNR de préférence >36. Tx trop haut ou Rx trop bas → atténuation entre tap et modem. Mesurez au tap avec le deviser, pontez le NIU.",
+          "The RF snapshot: Rx between -4 and +17 dBmV, Tx between 25 and 47 dBmV, SNR preferably >36. Tx too high or Rx too low → attenuation/loss between tap and modem. Measure at the tap with the deviser, bridge the NIU."),
+    values:[{key:"rx",label:L("Rx","Rx","Rx")},{key:"tx",label:L("Tx","Tx","Tx")},{key:"snr",label:L("SNR","SNR","SNR")}],
+    nbparam:L("US TX + DS RX + SNR","US TX + DS RX + SNR","US TX + DS RX + SNR"),
+    okLine:L("-actuele rf ok: Rx {rx} / Tx {tx} / SNR {snr}","-rf actuel ok: Rx {rx} / Tx {tx} / SNR {snr}","-current rf ok: Rx {rx} / Tx {tx} / SNR {snr}"),
+    nokLine:L("-actuele rf nok: Rx {rx} / Tx {tx} / SNR {snr}","-rf actuel nok: Rx {rx} / Tx {tx} / SNR {snr}","-current rf nok: Rx {rx} / Tx {tx} / SNR {snr}"),
+    hints:[
+      {label:L("Tx te hoog","Tx trop haut","Tx too high"),line:L(" >tx te hoog → verzwakking tussen tap en modem"," >tx trop haut → atténuation entre tap et modem"," >tx too high → attenuation between tap and modem")},
+      {label:L("Rx te laag/hoog","Rx trop bas/haut","Rx too low/high"),line:L(" >rx buiten -4..+17 dBmV"," >rx hors -4..+17 dBmV"," >rx outside -4..+17 dBmV")},
+      {label:L("Deviser aan de tap","Deviser au tap","Deviser at the tap"),line:L(" >gemeten aan de tap met deviser: __"," >mesuré au tap avec deviser: __"," >measured at the tap with deviser: __")},
+      {label:L("NIU overbrugd","NIU ponté","NIU bridged"),line:L(" >NIU overbrugd"," >NIU ponté"," >NIU bridged")}
+    ]
+  },
+  /* 2. Levels summary — 2 week fluctuations */
   { id:"levels",
-    title:L("Levels Summary (historiek)","Levels Summary (historique)","Levels Summary (history)"),
-    norm:L("Tx, Rx én SNR mogen <b>niet meer dan 6 dB</b> schommelen. Schommelingen = meestal probleem tussen tap en modem (koppelingen, connectoren, water).",
-           "Tx, Rx et SNR ne doivent <b>pas fluctuer de plus de 6 dB</b>. Fluctuations = souvent problème entre le tap et le modem.",
-           "Tx, Rx and SNR must <b>not fluctuate more than 6 dB</b>. Fluctuations = usually a problem between tap and modem."),
-    tip:L("Max 6 dB schommeling op Tx/Rx/SNR. Vergelijk met de buren. Controleer drop, connectoren, cm-snoer. TDR in beide richtingen.",
-          "Max 6 dB de fluctuation sur Tx/Rx/SNR. Comparez aux voisins. Vérifiez drop, connecteurs, cordon cm. TDR dans les deux sens.",
-          "Max 6 dB fluctuation on Tx/Rx/SNR. Compare with neighbours. Check drop, connectors, cm cord. TDR both directions."),
+    title:L("Levels Summary (2 wk historiek)","Levels Summary (historique 2 sem.)","Levels Summary (2 wk history)"),
+    norm:L("Bekijk de laatste ~2 weken. Tx, Rx én SNR mogen <b>niet meer dan 6 dB</b> schommelen. Let op: ook een <b>continue schommeling van ~4 dB</b> kan al een probleem zijn.",
+           "Regardez les ~2 dernières semaines. Tx, Rx et SNR ne doivent <b>pas fluctuer de plus de 6 dB</b>. Attention : une <b>fluctuation continue de ~4 dB</b> peut déjà poser problème.",
+           "Look at the last ~2 weeks. Tx, Rx and SNR must <b>not fluctuate more than 6 dB</b>. Note: a <b>continuous ~4 dB fluctuation</b> can already be an issue."),
+    tip:L("De historiek (±2 weken) toont schommelingen die je op een momentopname mist. >6 dB delta = NOK, maar een aanhoudende schommeling van ~4 dB wijst ook op een probleem tussen tap en modem (koppelingen, connectoren, water). Controleer drop, connectoren en cm-snoer; doe een TDR-meting in beide richtingen.",
+          "L'historique (±2 semaines) montre des fluctuations invisibles sur un instantané. >6 dB = NOK, mais une fluctuation soutenue de ~4 dB indique aussi un problème entre tap et modem. Vérifiez drop, connecteurs, cordon cm ; TDR dans les deux sens.",
+          "The history (±2 weeks) shows fluctuations you miss on a snapshot. >6 dB delta = NOK, but a sustained ~4 dB fluctuation also points to a problem between tap and modem. Check drop, connectors, cm cord; TDR both directions."),
+    nbparam:L("US TX + DS RX (historiek)","US TX + DS RX (historique)","US TX + DS RX (history)"),
     okLine:L("-levels historiek ok: geen schommelingen >6dB","-historique niveaux ok: pas de fluctuations >6dB","-level history ok: no fluctuations >6dB"),
     nokLine:L("-levels historiek nok: schommelingen","-historique niveaux nok: fluctuations","-level history nok: fluctuations"),
     hints:[
       {label:L("Schommeling TX invullen","Indiquer fluctuation TX","Enter TX fluctuation"),line:L(" >schommelingen tx van __dB"," >fluctuations tx de __dB"," >tx fluctuations of __dB")},
       {label:L("Schommeling RX invullen","Indiquer fluctuation RX","Enter RX fluctuation"),line:L(" >schommelingen rx van __dB"," >fluctuations rx de __dB"," >rx fluctuations of __dB")},
-      {label:L("Vergeleken met buren","Comparé aux voisins","Compared with neighbours"),line:L(" >vergeleken met buren","  >comparé aux voisins"," >compared with neighbours")},
+      {label:L("Continue ~4 dB schommeling","Fluctuation continue ~4 dB","Continuous ~4 dB fluctuation"),line:L(" >continue schommeling ~4dB"," >fluctuation continue ~4dB"," >continuous ~4dB fluctuation")},
       {label:L("Drop/connectoren gecontroleerd","Drop/connecteurs vérifiés","Drop/connectors checked"),line:L(" >drop, connectoren en cm-snoer gecontroleerd"," >drop, connecteurs et cordon cm vérifiés"," >drop, connectors and cm cord checked")},
       {label:L("TDR beide richtingen","TDR deux sens","TDR both directions"),line:L(" >TDR-meting in beide richtingen: __"," >mesure TDR dans les deux sens: __"," >TDR both directions: __")}
     ]
   },
-  { id:"levelsnow",
-    title:L("Down & Upstream signalen","Signaux Down & Upstream","Down & Upstream signals"),
-    norm:L("<b>Rx-modem: -4 tot +17 dBmV</b>. <b>Tx-modem: 25 tot 47 dBmV</b>.",
-           "<b>Rx-modem : -4 à +17 dBmV</b>. <b>Tx-modem : 25 à 47 dBmV</b>.",
-           "<b>Rx-modem: -4 to +17 dBmV</b>. <b>Tx-modem: 25 to 47 dBmV</b>."),
-    tip:L("Rx tussen -4 en +17 dBmV, Tx tussen 25 en 47 dBmV. Vergelijk met buren. Deviser aan de tap. Overbrug de NIU. Gebruik dropkabelverzwakkingstool.",
-          "Rx entre -4 et +17 dBmV, Tx entre 25 et 47 dBmV. Comparez aux voisins. Deviser au tap. Pontez le NIU.",
-          "Rx between -4 and +17 dBmV, Tx between 25 and 47 dBmV. Compare with neighbours. Deviser at the tap. Bridge the NIU."),
-    values:[{key:"rx",label:L("Rx","Rx","Rx")},{key:"tx",label:L("Tx","Tx","Tx")},{key:"snr",label:L("SNR","SNR","SNR")}],
-    okLine:L("-signalen ok: Rx {rx} / Tx {tx} / SNR {snr}","-signaux ok: Rx {rx} / Tx {tx} / SNR {snr}","-signals ok: Rx {rx} / Tx {tx} / SNR {snr}"),
-    nokLine:L("-signalen nok: Rx {rx} / Tx {tx} / SNR {snr}","-signaux nok: Rx {rx} / Tx {tx} / SNR {snr}","-signals nok: Rx {rx} / Tx {tx} / SNR {snr}"),
+  /* 3. Error historiek */
+  { id:"errors",
+    title:L("Error historiek","Historique des erreurs","Error history"),
+    norm:L("Check de <b>uncorrectable codewords</b> (errors). Veel uncorrectables = signaal-/kabelprobleem. Corrected mag; uncorrected niet.",
+           "Vérifiez les <b>uncorrectable codewords</b> (erreurs). Beaucoup d'uncorrectables = problème signal/câble. Corrected acceptable ; uncorrected non.",
+           "Check the <b>uncorrectable codewords</b> (errors). Many uncorrectables = signal/cable issue. Corrected is fine; uncorrected is not."),
+    tip:L("Corrected codewords zijn normaal (fouten die het modem herstelt). Uncorrectable codewords zijn echte fouten → wijzen op een signaal- of kabelprobleem. Veel errors samen met schommelingen of deregs versterken het vermoeden van een RF-probleem tussen tap en modem.",
+          "Les corrected codewords sont normaux. Les uncorrectable codewords sont de vraies erreurs → problème signal/câble. Beaucoup d'erreurs avec fluctuations ou deregs renforcent le soupçon d'un problème RF.",
+          "Corrected codewords are normal (errors the modem repairs). Uncorrectable codewords are real errors → signal/cable issue. Many errors together with fluctuations or deregs strengthen the RF-problem suspicion."),
+    nbparam:L("Uncorrected Rate + Corrected Rate (US/DS)","Uncorrected Rate + Corrected Rate (US/DS)","Uncorrected Rate + Corrected Rate (US/DS)"),
+    okLine:L("-error historiek ok: geen relevante uncorrectables","-historique erreurs ok: pas d'uncorrectables pertinents","-error history ok: no relevant uncorrectables"),
+    nokLine:L("-error historiek nok: uncorrectable errors","-historique erreurs nok: erreurs uncorrectables","-error history nok: uncorrectable errors"),
     hints:[
-      {label:L("Vergeleken met buren","Comparé aux voisins","Compared with neighbours"),line:L(" >vergeleken met buren"," >comparé aux voisins"," >compared with neighbours")},
-      {label:L("Deviser aan de tap","Deviser au tap","Deviser at the tap"),line:L(" >signalen gemeten aan de tap met deviser: __"," >signaux mesurés au tap avec deviser: __"," >signals measured at the tap with deviser: __")},
-      {label:L("NIU overbrugd","NIU ponté","NIU bridged"),line:L(" >NIU overbrugd"," >NIU ponté"," >NIU bridged")}
+      {label:L("Aantal uncorrectables","Nombre d'uncorrectables","Uncorrectable count"),line:L(" >uncorrectable errors: __"," >erreurs uncorrectables: __"," >uncorrectable errors: __")},
+      {label:L("Samen met schommelingen","Avec fluctuations","Together with fluctuations"),line:L(" >errors samen met schommelingen → RF-probleem"," >erreurs avec fluctuations → problème RF"," >errors together with fluctuations → RF problem")}
     ]
   },
-  { id:"status", answer:"janee", bad:"yes",
-    title:L("Status Historiek","Historique de statut","Status History"),
-    norm:L("Zijn er <b>deregs</b>? Vergelijk met de buren. Lees de event log om te achterhalen waarom de modem herstartte.",
-           "Y a-t-il des <b>deregs</b> ? Comparez aux voisins. Lisez l'event log pour comprendre le redémarrage.",
-           "Any <b>deregs</b>? Compare with neighbours. Read the event log to see why the modem restarted."),
-    tip:L("Deregs = modem uit dienst. T4 timeouts = mogelijk RF-issue. Check power resets (klant/stroom). SOS SWAT bij twijfel.",
-          "Deregs = modem hors service. T4 timeouts = possible RF-issue. Vérifiez power resets. SOS SWAT en cas de doute.",
-          "Deregs = modem out of service. T4 timeouts = possible RF issue. Check power resets. SOS SWAT if in doubt."),
-    okLine:L("-status historiek ok: geen deregs","-historique statut ok: pas de deregs","-status history ok: no deregs"),
-    nokLine:L("-status historiek nok: deregs zichtbaar","-historique statut nok: deregs visibles","-status history nok: deregs visible"),
-    hints:[
-      {label:L("Aantal / dagen invullen","Nombre / jours","Count / days"),line:L(" >deregs op __"," >deregs le __"," >deregs on __")},
-      {label:L("T4 timeouts (RF-issue)","T4 timeouts (RF)","T4 timeouts (RF)"),line:L(" >T4 timeouts zichtbaar → mogelijk RF-issue"," >T4 timeouts visibles → possible RF-issue"," >T4 timeouts visible → possible RF issue")},
-      {label:L("Power resets klant/stroom","Power resets client/courant","Power resets customer/power"),line:L(" >deregs door power resets (klant/stroom)"," >deregs dus aux power resets (client/courant)"," >deregs due to power resets (customer/power)")},
-      {label:L("Vergeleken met buren","Comparé aux voisins","Compared with neighbours"),line:L(" >buren vertonen geen deregs"," >les voisins n'ont pas de deregs"," >neighbours show no deregs")}
-    ]
-  },
-  { id:"streetping",
-    title:L("Streetping (Spot Charts)","Streetping (Spot Charts)","Streetping (Spot Charts)"),
-    norm:L("Tx, Rx en SNR mogen <b>niet meer dan 6 dB</b> schommelen. Vergelijk met meerdere klanten. Zelfde tap & zelfde probleem → Aftakdoos. Verder dan één tap → MO.",
-           "Tx, Rx et SNR ne doivent <b>pas fluctuer de plus de 6 dB</b>. Comparez plusieurs clients. Même tap & même problème → Aftakdoos. Au-delà d'un tap → MO.",
-           "Tx, Rx and SNR must <b>not fluctuate more than 6 dB</b>. Compare several customers. Same tap & same problem → Aftakdoos. Beyond one tap → MO."),
-    tip:L("Vergelijk Tx/Rx/SNR/errors met meerdere klanten. Zelfde tap + zelfde probleem → boek een Aftakdoos. Probleem verder dan één tap → vraag een MO aan.",
-          "Comparez Tx/Rx/SNR/erreurs avec plusieurs clients. Même tap + même problème → Aftakdoos. Au-delà d'un tap → MO.",
-          "Compare Tx/Rx/SNR/errors with several customers. Same tap + same problem → Aftakdoos. Beyond one tap → request an MO."),
-    okLine:L("+streetping ok: buren geen schommelingen of deregs","+streetping ok: voisins pas de fluctuations ni deregs","+streetping ok: neighbours no fluctuations or deregs"),
-    nokLine:L("-streetping nok: ook problemen bij buren","-streetping nok: problèmes aussi chez les voisins","-streetping nok: problems at neighbours too"),
-    hints:[
-      {label:L("Zelfde tap → Aftakdoos boeken","Même tap → Aftakdoos","Same tap → book Aftakdoos"),line:L(" >zelfde tap & zelfde probleem → aftakdoos geboekt"," >même tap & même problème → aftakdoos réservée"," >same tap & same problem → aftakdoos booked")},
-      {label:L("Verder dan tap → MO aanvragen","Au-delà tap → MO","Beyond tap → request MO"),line:L(" >probleem verder dan één tap → MO aangevraagd"," >problème au-delà d'un tap → MO demandée"," >problem beyond one tap → MO requested")}
-    ]
-  },
+  /* 4. DOCSIS 3.1 OFDM downstream — right after errors */
   { id:"ofdm",
-    title:L("Docsis 3.1 OFDM (downstream)","Docsis 3.1 OFDM (downstream)","Docsis 3.1 OFDM (downstream)"),
-    norm:L("Check partial service incidents (elk = wijziging modulatieprofiel). <b>Active profile moet 3 zijn (QAM2048)</b>. Check uncorrectable codewords (errors).",
-           "Vérifiez les partial service incidents (chacun = changement de profil). <b>Active profile doit être 3 (QAM2048)</b>. Vérifiez les uncorrectable codewords.",
-           "Check partial service incidents (each = profile change). <b>Active profile must be 3 (QAM2048)</b>. Check uncorrectable codewords."),
-    tip:L("Op sommige nodes 2 OFDM kanalen (scroll rechts). Active profile 3 = QAM2048. Elk partial service incident = modulatiewijziging. Kijk errorhistoriek na.",
-          "Sur certains nœuds 2 canaux OFDM (défilez à droite). Active profile 3 = QAM2048. Chaque partial service incident = changement de modulation.",
-          "Some nodes have 2 OFDM channels (scroll right). Active profile 3 = QAM2048. Each partial service incident = modulation change."),
-    okLine:L("+OFDM ok: active profile 3 (QAM2048), geen partial service","+OFDM ok: active profile 3 (QAM2048), pas de partial service","+OFDM ok: active profile 3 (QAM2048), no partial service"),
+    title:L("DOCSIS 3.1 OFDM (downstream)","DOCSIS 3.1 OFDM (downstream)","DOCSIS 3.1 OFDM (downstream)"),
+    norm:L("<b>Active profile 3 (QAM2048)</b>. Geen <b>NCP errors</b> op OFDM 0/1 en niet te veel errors in andere profielen. Niet te veel <b>channel- en/of service-incidents</b> (aparte tabs).",
+           "<b>Active profile 3 (QAM2048)</b>. Pas de <b>NCP errors</b> sur OFDM 0/1 ni trop d'erreurs dans d'autres profils. Pas trop d'<b>incidents channel/service</b> (onglets séparés).",
+           "<b>Active profile 3 (QAM2048)</b>. No <b>NCP errors</b> on OFDM 0/1 and not too many errors in other profiles. Not too many <b>channel/service incidents</b> (separate tabs)."),
+    tip:L("OFDM 0 en 1 (noot: SPOT toont ze als 1 & 2, ANTS als 0 & 1). Active profile hoort 3 (QAM2048) te zijn. NCP errors of veel errors in andere profielen = probleem. Te veel channel-/service-incidents (elk = een modulatiewijziging) wijzen op instabiliteit. Deze staan in aparte tabs in de testtool.",
+          "OFDM 0 et 1 (note : SPOT les montre en 1 & 2, ANTS en 0 & 1). Active profile doit être 3 (QAM2048). NCP errors ou beaucoup d'erreurs dans d'autres profils = problème. Trop d'incidents channel/service = instabilité. Onglets séparés dans l'outil.",
+          "OFDM 0 and 1 (note: SPOT shows them as 1 & 2, ANTS as 0 & 1). Active profile should be 3 (QAM2048). NCP errors or many errors in other profiles = problem. Too many channel/service incidents (each = a modulation change) indicate instability. These are separate tabs in the test tool."),
+    nbparam:L("RxMER OFDM 0/1 (SPOT: 1/2)","RxMER OFDM 0/1 (SPOT : 1/2)","RxMER OFDM 0/1 (SPOT: 1/2)"),
+    okLine:L("+OFDM ok: profile 3 (QAM2048), geen NCP errors, geen channel/service incidents","+OFDM ok: profile 3 (QAM2048), pas de NCP errors ni incidents channel/service","+OFDM ok: profile 3 (QAM2048), no NCP errors, no channel/service incidents"),
     nokLine:L("-OFDM nok","-OFDM nok","-OFDM nok"),
     hints:[
-      {label:L("Partial service incidents","Partial service incidents","Partial service incidents"),line:L(" >partial service incidents: __"," >partial service incidents: __"," >partial service incidents: __")},
+      {label:L("NCP errors OFDM 0/1","NCP errors OFDM 0/1","NCP errors OFDM 0/1"),line:L(" >NCP errors op OFDM 0/1"," >NCP errors sur OFDM 0/1"," >NCP errors on OFDM 0/1")},
+      {label:L("Channel/service incidents","Incidents channel/service","Channel/service incidents"),line:L(" >channel/service incidents: __"," >incidents channel/service: __"," >channel/service incidents: __")},
       {label:L("Active profile niet 3","Active profile pas 3","Active profile not 3"),line:L(" >active profile niet op 3 (QAM2048)"," >active profile pas sur 3 (QAM2048)"," >active profile not on 3 (QAM2048)")},
-      {label:L("Uncorrectable codewords","Uncorrectable codewords","Uncorrectable codewords"),line:L(" >uncorrectable codewords (errors): __"," >uncorrectable codewords (erreurs): __"," >uncorrectable codewords (errors): __")}
+      {label:L("Ingress (RXMER, bv. 810 MHz)","Ingress (RXMER, ex. 810 MHz)","Ingress (RXMER, e.g. 810 MHz)"),line:L(" >RXMER toont ingress (bv. rond 810 MHz)"," >RXMER montre de l'ingress (ex. ~810 MHz)"," >RXMER shows ingress (e.g. around 810 MHz)")}
     ]
   },
-  { id:"rxmer",
-    title:L("OFDM RXMER","OFDM RXMER","OFDM RXMER"),
-    norm:L("<b>MER minimum 32,4</b> over heel de band om QAM2048 aan te houden. Grafiek NOK + andere klanten identiek → MO prio 4. Individueel → TDR beide kanten, connectoren, koppelingen.",
-           "<b>MER minimum 32,4</b> sur toute la bande pour QAM2048. Graphe NOK + autres clients identiques → MO prio 4. Individuel → TDR deux sens, connecteurs, raccords.",
-           "<b>MER minimum 32.4</b> across the whole band for QAM2048. Graph NOK + other customers identical → MO prio 4. Individual → TDR both sides, connectors, couplings."),
-    tip:L("MER ≥32,4 over de hele band nodig voor QAM2048. Vergelijk met andere 3.1 modems. Identiek → MO prio 4. Escalatie: drop op modem → outdoor drop (dag+7) → SOS SWAT bij deregs/hoge errors.",
-          "MER ≥32,4 sur toute la bande pour QAM2048. Comparez aux autres modems 3.1. Identique → MO prio 4. Escalade : drop sur modem → outdoor drop (jour+7) → SOS SWAT.",
-          "MER ≥32.4 across the band for QAM2048. Compare to other 3.1 modems. Identical → MO prio 4. Escalation: drop on modem → outdoor drop (day+7) → SOS SWAT."),
-    okLine:L("+RXMER ok: MER >32,4 over de band","+RXMER ok: MER >32,4 sur la bande","+RXMER ok: MER >32.4 across the band"),
-    nokLine:L("-RXMER nok: MER onder 32,4","-RXMER nok: MER sous 32,4","-RXMER nok: MER below 32.4"),
-    hints:[
-      {label:L("Andere klanten identiek → MO prio 4","Autres clients identiques → MO prio 4","Others identical → MO prio 4"),line:L(" >grafiek identiek bij andere klanten → MO prio 4"," >graphe identique chez d'autres → MO prio 4"," >graph identical at other customers → MO prio 4")},
-      {label:L("Individueel → TDR beide kanten","Individuel → TDR deux sens","Individual → TDR both sides"),line:L(" >individueel probleem: TDR beide kanten, connectoren/koppelingen"," >problème individuel: TDR deux sens, connecteurs/raccords"," >individual problem: TDR both sides, connectors/couplings")},
-      {label:L("Drop rechtstreeks op modem","Drop direct sur modem","Drop directly on modem"),line:L(" >drop rechtstreeks op modem aangesloten: __"," >drop raccordé direct sur modem: __"," >drop connected directly to modem: __")},
-      {label:L("Outdoor drop (dag+7)","Outdoor drop (jour+7)","Outdoor drop (day+7)"),line:L(" >outdoor type drop geboekt (dag+7)"," >outdoor type drop réservé (jour+7)"," >outdoor type drop booked (day+7)")}
-    ]
-  },
+  /* 5. OFDMA upstream */
   { id:"ofdma",
     title:L("OFDMA (upstream)","OFDMA (upstream)","OFDMA (upstream)"),
-    norm:L("Check <b>ranging state</b>, partial service en partial service incidents. Check het profiel: <b>11 = QAM256, 12 = QAM64, 13 = QPSK</b>.",
-           "Vérifiez le <b>ranging state</b>, partial service et incidents. Vérifiez le profil : <b>11 = QAM256, 12 = QAM64, 13 = QPSK</b>.",
-           "Check <b>ranging state</b>, partial service and incidents. Check the profile: <b>11 = QAM256, 12 = QAM64, 13 = QPSK</b>."),
-    tip:L("Ranging state OK? Partial service / incidents? Profiel 11 (QAM256) is best; 12 (QAM64) en 13 (QPSK) wijzen op een slechtere upstream.",
-          "Ranging state OK ? Partial service / incidents ? Profil 11 (QAM256) est le meilleur ; 12 (QAM64) et 13 (QPSK) = upstream moins bon.",
-          "Ranging state OK? Partial service / incidents? Profile 11 (QAM256) is best; 12 (QAM64) and 13 (QPSK) indicate a worse upstream."),
+    norm:L("Check <b>ranging state</b>, partial service en partial service incidents. Profiel: <b>11 = QAM256, 12 = QAM64, 13 = QPSK</b>.",
+           "Vérifiez le <b>ranging state</b>, partial service et incidents. Profil : <b>11 = QAM256, 12 = QAM64, 13 = QPSK</b>.",
+           "Check <b>ranging state</b>, partial service and incidents. Profile: <b>11 = QAM256, 12 = QAM64, 13 = QPSK</b>."),
+    tip:L("Upstream OFDMA: ranging state moet ok zijn. Partial service / incidents wijzen op instabiliteit. Profiel 11 (QAM256) is het best; 12 (QAM64) en zeker 13 (QPSK) betekenen een slechtere/robuustere maar tragere upstream → vaak US-verstoring of te hoge Tx.",
+          "OFDMA upstream : ranging state doit être ok. Partial service / incidents = instabilité. Profil 11 (QAM256) est le meilleur ; 12 (QAM64) et surtout 13 (QPSK) = upstream moins bon → souvent perturbation US ou Tx trop haut.",
+          "Upstream OFDMA: ranging state must be ok. Partial service / incidents indicate instability. Profile 11 (QAM256) is best; 12 (QAM64) and especially 13 (QPSK) mean a worse upstream → often US disturbance or Tx too high."),
+    nbparam:L("US SNR + US Uncorrected Rate","US SNR + US Uncorrected Rate","US SNR + US Uncorrected Rate"),
     okLine:L("+OFDMA ok: ranging ok, profiel 11 (QAM256), geen partial service","+OFDMA ok: ranging ok, profil 11 (QAM256), pas de partial service","+OFDMA ok: ranging ok, profile 11 (QAM256), no partial service"),
     nokLine:L("-OFDMA nok","-OFDMA nok","-OFDMA nok"),
     hints:[
@@ -413,8 +391,46 @@ const MODEM=[
       {label:L("Profiel 12 (QAM64)","Profil 12 (QAM64)","Profile 12 (QAM64)"),line:L(" >profiel 12 (QAM64)"," >profil 12 (QAM64)"," >profile 12 (QAM64)")},
       {label:L("Profiel 13 (QPSK)","Profil 13 (QPSK)","Profile 13 (QPSK)"),line:L(" >profiel 13 (QPSK)"," >profil 13 (QPSK)"," >profile 13 (QPSK)")}
     ]
+  },
+  /* 6. Deregs (Ja/Nee) — if Ja, eventlog step is revealed */
+  { id:"deregs", answer:"janee", bad:"yes",
+    title:L("Deregs (in/uit dienst)","Deregs (en/hors service)","Deregs (in/out of service)"),
+    norm:L("Zijn er <b>deregs</b> in de historiek? Dit toont enkel <b>in service / uit service</b>. Bij deregs → vergelijk de tijdstippen met de eventlog voor de reden.",
+           "Y a-t-il des <b>deregs</b> dans l'historique ? Cela montre seulement <b>en service / hors service</b>. Si deregs → comparez les heures avec l'eventlog pour la raison.",
+           "Any <b>deregs</b> in the history? This only shows <b>in service / out of service</b>. If deregs → compare the timestamps with the eventlog for the reason."),
+    tip:L("De deregs-historiek toont enkel wanneer het modem in/uit dienst ging. Het waarom vind je door die tijdstippen in de eventlog te vergelijken. Zijn er deregs → dan volgt de eventlog-stap.",
+          "L'historique deregs montre seulement quand le modem passe en/hors service. Le pourquoi se trouve en comparant ces heures dans l'eventlog. S'il y a des deregs → l'étape eventlog suit.",
+          "The deregs history only shows when the modem went in/out of service. The why is found by comparing those timestamps in the eventlog. If there are deregs → the eventlog step follows."),
+    nbparam:L("deregs-patroon (in/uit dienst)","motif deregs (en/hors service)","deregs pattern (in/out of service)"),
+    okLine:L("-deregs: geen deregs in historiek","-deregs: pas de deregs dans l'historique","-deregs: none in history"),
+    nokLine:L("-deregs zichtbaar in historiek","-deregs visibles dans l'historique","-deregs visible in history"),
+    hints:[
+      {label:L("Aantal / dagen","Nombre / jours","Count / days"),line:L(" >deregs op __"," >deregs le __"," >deregs on __")}
+    ]
+  },
+  /* 7. Eventlog — CONDITIONAL: only when deregs=Ja (bad). condOn = check id + status */
+  { id:"eventlog", condOn:"deregs",
+    title:L("Eventlog (reden herstart)","Eventlog (raison du redémarrage)","Eventlog (reboot reason)"),
+    norm:L("Vergelijk de deregs-tijdstippen in de eventlog. Meestal zie je <b>'registration complete'</b>; de event(s) er net onder geven de <b>reden</b>.",
+           "Comparez les heures des deregs dans l'eventlog. On voit souvent <b>'registration complete'</b> ; l'event juste en dessous donne la <b>raison</b>.",
+           "Compare the deregs timestamps in the eventlog. Usually you see <b>'registration complete'</b>; the event(s) just below give the <b>reason</b>."),
+    tip:L("Zoek in de eventlog het 'registration complete'-event op het dereg-tijdstip; de event(s) eronder verklaren de herstart: 16x T3 / 1x T4 (RF), kernel panic, power reset, SNMP reset, factory reset, low-power/PSU-issues. T3/T4 → RF-probleem; power reset → stroom/klant; kernel panic/low-power → modem/PSU defect.",
+          "Cherchez l'event 'registration complete' à l'heure du dereg ; les events en dessous expliquent : 16x T3 / 1x T4 (RF), kernel panic, power reset, SNMP reset, factory reset, low-power/PSU. T3/T4 → RF ; power reset → courant/client ; kernel panic/low-power → modem/PSU défectueux.",
+          "Find the 'registration complete' event at the dereg time; the events below explain the reboot: 16x T3 / 1x T4 (RF), kernel panic, power reset, SNMP reset, factory reset, low-power/PSU. T3/T4 → RF; power reset → power/customer; kernel panic/low-power → modem/PSU fault."),
+    okLine:L("-eventlog: reden herstart nagekeken","-eventlog : raison du redémarrage vérifiée","-eventlog: reboot reason checked"),
+    nokLine:L("-eventlog: reden herstart","-eventlog : raison du redémarrage","-eventlog: reboot reason"),
+    hints:[
+      {label:L("16x T3 / T4 (RF)","16x T3 / T4 (RF)","16x T3 / T4 (RF)"),line:L(" >T3/T4 timeouts → RF-probleem"," >T3/T4 timeouts → problème RF"," >T3/T4 timeouts → RF problem")},
+      {label:L("Power reset (stroom/klant)","Power reset (courant/client)","Power reset (power/customer)"),line:L(" >power reset → stroom/klant"," >power reset → courant/client"," >power reset → power/customer")},
+      {label:L("SNMP reset","SNMP reset","SNMP reset"),line:L(" >SNMP reset (op afstand)"," >SNMP reset (à distance)"," >SNMP reset (remote)")},
+      {label:L("Factory reset","Factory reset","Factory reset"),line:L(" >factory reset"," >factory reset"," >factory reset")},
+      {label:L("Kernel panic","Kernel panic","Kernel panic"),line:L(" >kernel panic → modem defect"," >kernel panic → modem défectueux"," >kernel panic → faulty modem")},
+      {label:L("Low-power / PSU","Low-power / PSU","Low-power / PSU"),line:L(" >low-power messages → PSU-probleem"," >messages low-power → problème PSU"," >low-power messages → PSU issue")}
+    ]
   }
 ];
+/* Phase-1 checks eligible for the Phase-2 neighbour (Spot Charts) comparison */
+const NB_ELIGIBLE=["rf","levels","errors","ofdm","ofdma","deregs"];
 
 /* ---------- Branch guided checks (short) ---------- */
 const BRANCH={
@@ -437,16 +453,19 @@ const BRANCH={
   ],
   stb_qam:[
     { id:"stb",title:L("TV Box (QAM/DTV)","TV Box (QAM/DTV)","TV Box (QAM/DTV)"),
-      norm:L("Visuele controle coax + connecties. STB service menu 120 MHz (tiktest). Sipadan IP-check 10.x.x.x (ingress). BER-meting.",
-             "Contrôle visuel coax + connexions. Menu service 120 MHz (test tik). IP-check 10.x.x.x (ingress). Mesure BER.",
-             "Visual check coax + connections. STB service menu 120 MHz (tik test). IP check 10.x.x.x (ingress). BER measurement."),
-      tip:L("Coax/connecties visueel, service menu 120 MHz tiktest, IP 10.x.x.x geen ingress, BER binnen norm.",
-            "Coax/connexions visuel, menu 120 MHz test tik, IP 10.x.x.x pas d'ingress, BER dans la norme.",
-            "Coax/connections visual, 120 MHz menu tik test, IP 10.x.x.x no ingress, BER within spec."),
+      norm:L("Als de modem <b>perfecte signalen</b> heeft, is een outdoor/installatieprobleem onwaarschijnlijk → check dan de <b>binnenhuisbekabeling en connectoren van de klant</b>, de <b>CATV-box</b> en het <b>laatste coax-snoer</b>. Verder: service menu 120 MHz (tiktest), IP-check 10.x.x.x (ingress), BER-meting. Sipadan = QAM.",
+             "Si le modem a des <b>signaux parfaits</b>, un problème outdoor/installation est peu probable → vérifiez le <b>câblage interne et les connecteurs du client</b>, la <b>box CATV</b> et le <b>dernier cordon coax</b>. Puis : menu service 120 MHz (test tik), IP-check 10.x.x.x (ingress), mesure BER. Sipadan = QAM.",
+             "If the modem has <b>perfect signals</b>, an outdoor/install problem is unlikely → check the <b>customer's indoor cabling and connectors</b>, the <b>CATV box</b> and the <b>last coax cord</b>. Also: service menu 120 MHz (tik test), IP check 10.x.x.x (ingress), BER measurement. Sipadan = QAM."),
+      tip:L("QAM/DTV-box over de coax. Bij perfecte modemsignalen ligt de oorzaak zelden buiten/installatie, maar meestal binnenshuis: klant zijn binnenbekabeling, connectoren, de CATV-box en het laatste coax-snoer naar de box. Sipadan-errordatasets (EOS/SIPADAN) in Spot Charts kunnen helpen. Tiktest via service menu 120 MHz, IP 10.x.x.x zonder ingress, BER binnen norm.",
+            "Box QAM/DTV via coax. Avec des signaux modem parfaits, la cause est rarement outdoor mais souvent en intérieur : câblage interne du client, connecteurs, box CATV et dernier cordon coax. Datasets Sipadan (EOS/SIPADAN) dans Spot Charts. Test tik via menu 120 MHz, IP 10.x.x.x sans ingress, BER dans la norme.",
+            "QAM/DTV box over coax. With perfect modem signals the cause is rarely outdoor but usually indoor: customer's indoor cabling, connectors, the CATV box and the last coax cord to the box. Sipadan error datasets (EOS/SIPADAN) in Spot Charts can help. Tik test via 120 MHz service menu, IP 10.x.x.x without ingress, BER within spec."),
       okLine:L("+TV box (QAM) ok: coax, service menu 120MHz, IP-check en BER ok","+TV box (QAM) ok: coax, menu 120MHz, IP-check et BER ok","+TV box (QAM) ok: coax, 120MHz menu, IP check and BER ok"),
       nokLine:L("-TV box (QAM) nok","-TV box (QAM) nok","-TV box (QAM) nok"),
       hints:[
-        {label:L("Coax/connecties","Coax/connexions","Coax/connections"),line:L(" >probleem coax/connecties: __"," >problème coax/connexions: __"," >coax/connection issue: __")},
+        {label:L("Perfecte signalen → binnenhuis","Signaux parfaits → intérieur","Perfect signals → indoor"),line:L(" >modem perfect → binnenhuisbekabeling/connectoren klant nakijken"," >modem parfait → vérifier câblage interne/connecteurs client"," >modem perfect → check customer indoor cabling/connectors")},
+        {label:L("Binnenbekabeling/connectoren","Câblage interne/connecteurs","Indoor cabling/connectors"),line:L(" >binnenhuisbekabeling/connectoren: __"," >câblage interne/connecteurs: __"," >indoor cabling/connectors: __")},
+        {label:L("CATV-box","Box CATV","CATV box"),line:L(" >CATV-box: __"," >box CATV: __"," >CATV box: __")},
+        {label:L("Laatste coax-snoer","Dernier cordon coax","Last coax cord"),line:L(" >laatste coax-snoer vervangen/gecontroleerd"," >dernier cordon coax remplacé/vérifié"," >last coax cord replaced/checked")},
         {label:L("Service menu 120MHz","Menu service 120MHz","Service menu 120MHz"),line:L(" >service menu 120MHz nok (tiktest)"," >menu service 120MHz nok (test tik)"," >service menu 120MHz nok (tik test)")},
         {label:L("IP-check / ingress","IP-check / ingress","IP check / ingress"),line:L(" >IP-check/ingress nok"," >IP-check/ingress nok"," >IP check/ingress nok")},
         {label:L("BER","BER","BER"),line:L(" >BER buiten norm: __"," >BER hors norme: __"," >BER out of spec: __")}
@@ -542,7 +561,15 @@ function steps(){
   const arr=[];
   arr.push({kind:"casetype"});           // 1. type first (multi-select)
   arr.push({kind:"situatie"});           // 2. situatie
-  MODEM.forEach(m=>arr.push({kind:"modem",check:m})); // 3. forced modem block
+  // 3. forced modem block (Phase 1). Conditional checks (condOn) only appear
+  //    when the check they depend on was answered "bad".
+  MODEM.forEach(m=>{
+    if(m.condOn){ const dep=state.answers[m.condOn]; if(!(dep&&dep.status==="bad")) return; }
+    arr.push({kind:"modem",check:m});
+  });
+  // 3b. Phase 2 — neighbour comparison via Spot Charts, only for NOK items
+  const nb=nokForNeighbour();
+  nb.forEach(c=>arr.push({kind:"neighbour",check:c}));
   // 4. branch per selected type; iDTV gets a box-type sub-step first
   selectedTypes().forEach(t=>{
     if(t==="idtv") arr.push({kind:"boxtype"});
@@ -553,6 +580,15 @@ function steps(){
   arr.push({kind:"actie"});
   arr.push({kind:"result"});
   return arr;
+}
+
+/* Phase-1 checks that were answered "bad" AND are eligible for neighbour comparison */
+function nokForNeighbour(){
+  return MODEM.filter(m=>{
+    if(!NB_ELIGIBLE.includes(m.id)) return false;
+    const a=state.answers[m.id];
+    return a && a.status==="bad";
+  });
 }
 
 function tr(){ return UI[state.lang]; }
@@ -579,6 +615,8 @@ function buildLog(){
   const emit=(check)=>{
     const a=state.answers[check.id];
     if(!a) return;
+    // skip conditional checks not triggered
+    if(check.condOn){ const dep=state.answers[check.condOn]; if(!(dep&&dep.status==="bad")) return; }
     let line = a.status==="good" ? check.okLine[state.lang] : check.nokLine[state.lang];
     // fill values
     if(check.values){ check.values.forEach(v=>{ line=line.replace("{"+v.key+"}", (a.values&&a.values[v.key])?a.values[v.key]:"?"); }); }
@@ -586,6 +624,20 @@ function buildLog(){
     (a.hints||[]).forEach(hl=>T.push(hl));
   };
   MODEM.forEach(emit);
+  // Phase 2 — neighbour comparison lines (Spot Charts)
+  nokForNeighbour().forEach(check=>{
+    const nb=state.answers["nb_"+check.id];
+    if(!nb || !nb.status) return;
+    const same = nb.status==="same";
+    const conc = same
+      ? {nl:` >buren identiek (Spot Charts) → node-/netwerkprobleem, MO/Aftakdoos`,
+         fr:` >voisins identiques (Spot Charts) → problème nœud/réseau, MO/Aftakdoos`,
+         en:` >neighbours identical (Spot Charts) → node/network issue, MO/Aftakdoos`}[state.lang]
+      : {nl:` >buren ok (Spot Charts) → individueel probleem (klant/drop)`,
+         fr:` >voisins ok (Spot Charts) → problème individuel (client/drop)`,
+         en:` >neighbours ok (Spot Charts) → individual problem (customer/drop)`}[state.lang];
+    T.push(conc);
+  });
   branchGroups().forEach(emit);
   // Actie / Resultaat free text
   if(state.actie && state.actie.trim()) state.actie.split("\n").forEach(l=>{ if(l.trim()) A.push(l); });
@@ -638,6 +690,10 @@ function render(){
     const a=state.answers[step.check.id];
     needsAnswer = !(a&&a.status);
   }
+  if(step.kind==="neighbour"){
+    const a=state.answers["nb_"+step.check.id];
+    needsAnswer = !(a&&a.status);
+  }
   if(step.kind==="casetype"){ needsAnswer = selectedTypes().length===0; }
   if(step.kind==="boxtype"){ needsAnswer = !state.boxtype; }
   btnNext.disabled = needsAnswer;
@@ -649,6 +705,7 @@ function render(){
   let crumb="";
   if(step.kind==="situatie") crumb=STARHEAD[state.lang][0];
   else if(step.kind==="modem") crumb=STARHEAD[state.lang][1]+" — Modem";
+  else if(step.kind==="neighbour") crumb=STARHEAD[state.lang][1]+" — Buren";
   else if(step.kind==="casetype") crumb=STARHEAD[state.lang][1];
   else if(step.kind==="boxtype") crumb=STARHEAD[state.lang][1]+" — iDTV";
   else if(step.kind==="branch") crumb=STARHEAD[state.lang][1];
@@ -658,6 +715,7 @@ function render(){
 
   if(step.kind==="situatie") renderSituatie();
   else if(step.kind==="modem"||step.kind==="branch") renderCheck(step.check);
+  else if(step.kind==="neighbour") renderNeighbour(step.check);
   else if(step.kind==="casetype") renderCaseType();
   else if(step.kind==="boxtype") renderBoxtype();
   else if(step.kind==="actie") renderFree("actie");
@@ -750,6 +808,35 @@ function renderCheck(check){
       toast("＋");
     });
   });
+}
+
+function renderNeighbour(check){
+  const a=state.answers["nb_"+check.id]||{status:null};
+  const nbp = check.nbparam?check.nbparam[state.lang]:"Spot Charts";
+  const title={nl:"Buren vergelijken",fr:"Comparer les voisins",en:"Compare neighbours"}[state.lang];
+  const flagged = check.title[state.lang];
+  const q={nl:`<b>${flagged}</b> was NOK. Vergelijk met de buren in <b>Spot Charts</b>. Zet deze parameter(s) aan: <b>${nbp}</b>. Zijn de buren identiek getroffen?`,
+           fr:`<b>${flagged}</b> était NOK. Comparez avec les voisins dans <b>Spot Charts</b>. Activez : <b>${nbp}</b>. Les voisins sont-ils touchés à l'identique ?`,
+           en:`<b>${flagged}</b> was NOK. Compare with neighbours in <b>Spot Charts</b>. Enable: <b>${nbp}</b>. Are the neighbours affected identically?`}[state.lang];
+  const tip={nl:"Selecteer meerdere klanten in Spot Charts en kies dezelfde parameter. Identiek beeld bij de buren → node-/netwerkprobleem (MO of Aftakdoos). Buren OK → individueel probleem (deze klant/drop/ingress).",
+             fr:"Sélectionnez plusieurs clients dans Spot Charts avec la même parameter. Image identique → problème nœud/réseau (MO ou Aftakdoos). Voisins OK → problème individuel.",
+             en:"Select several customers in Spot Charts with the same parameter. Identical pattern → node/network problem (MO or Aftakdoos). Neighbours OK → individual problem."}[state.lang];
+  const same={nl:"Buren identiek",fr:"Voisins identiques",en:"Neighbours identical"}[state.lang];
+  const clean={nl:"Buren OK",fr:"Voisins OK",en:"Neighbours OK"}[state.lang];
+  host.innerHTML=`<div class="card">
+    <div class="stagebadge">${STARHEAD[state.lang][1]} — Buren (Spot Charts)</div>
+    <h2 class="qtitle">${title}<span class="qm" id="qmTip">?</span></h2>
+    <div class="normbox">${q}</div>
+    <div class="oknok">
+      <button class="nok ${a.status==='same'?'sel':''}" data-nb="same">${same}</button>
+      <button class="ok ${a.status==='clean'?'sel':''}" data-nb="clean">${clean}</button>
+    </div>
+  </div>`;
+  attachTip($("qmTip"),()=>tip);
+  host.querySelectorAll("[data-nb]").forEach(b=>b.addEventListener("click",()=>{
+    state.answers["nb_"+check.id]={status:b.dataset.nb};
+    render(); setTimeout(()=>next(),160);
+  }));
 }
 
 function renderCaseType(){
