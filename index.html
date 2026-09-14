@@ -111,6 +111,17 @@
   .hrow{display:flex;flex-wrap:wrap;gap:6px}
   .hrow button{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:12.5px;font-weight:600;color:var(--txt);cursor:pointer}
   .hrow button:hover{border-color:var(--accent)}
+  /* Pod-add control */
+  .podbox{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:12px}
+  .podtitle{font-weight:800;font-size:13px;color:var(--cyan);margin-bottom:8px}
+  .podcount{display:flex;gap:6px;margin-bottom:10px}
+  .podcount button{flex:1;padding:10px;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--txt);font-weight:800;font-size:15px;cursor:pointer}
+  .podcount button.sel{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .podroomlbl{font-size:11px;color:var(--muted);font-weight:700;margin-bottom:5px}
+  .podrooms{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+  .podrooms button{padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--txt);font-size:12.5px;font-weight:600;cursor:pointer}
+  .podrooms button.sel{background:var(--cyan);color:#fff;border-color:var(--cyan)}
+  .podadd{width:100%;padding:11px;border-radius:9px;border:1px solid var(--cta);background:var(--cta);color:#fff;font-weight:800;cursor:pointer}
 
   /* Output notepad */
   #out{width:100%;background:#fbfbfb;color:var(--txt);border:1px solid var(--line);border-radius:var(--radius);
@@ -598,11 +609,13 @@ const FREEHELP={
     {label:L("Connector vervangen","Connecteur remplacé","Connector replaced"),line:L("-connector vervangen aan __","-connecteur remplacé au __","-connector replaced at __")},
     {label:L("Drop vervangen","Drop remplacé","Drop replaced"),line:L("-drop vervangen","-drop remplacé","-drop replaced")},
     {label:L("Modem vervangen","Modem remplacé","Modem replaced"),line:L("-modem vervangen door __","-modem remplacé par __","-modem replaced by __")},
-    {label:L("Modem online","Modem en ligne","Modem online"),line:L("-modem meteen online met goede signalen","-modem en ligne avec de bons signaux","-modem online with good signals")},
+    {label:L("Hardware toegevoegd","Matériel ajouté","Hardware added"),line:L("-hardware toegevoegd: __","-matériel ajouté: __","-hardware added: __")},
+    {label:L("PWL vervangen","CPL remplacé","PWL replaced"),line:L("-powerlines vervangen door nieuw type","-CPL remplacés par nouveau type","-powerlines replaced with new type")},
     {label:L("SOS SWAT","SOS SWAT","SOS SWAT"),line:L("-SOS SWAT gecontacteerd voor 2de opinie: __","-SOS SWAT contacté pour 2e avis: __","-SOS SWAT contacted for 2nd opinion: __")},
     {label:L("Klant ingelicht","Client informé","Customer informed"),line:L("-klant hierover ingelicht","-client informé","-customer informed")}
   ],
   result:[
+    {label:L("Modem online","Modem en ligne","Modem online"),line:L("-modem meteen online met goede signalen","-modem en ligne avec de bons signaux","-modem online with good signals")},
     {label:L("Alles in dienst","Tout en service","All in service"),line:L("-alles in dienst","-tout en service","-all in service")},
     {label:L("Gratis interventie","Intervention gratuite","Free intervention"),line:L("-gratis interventie: __","-intervention gratuite: __","-free intervention: __")},
     {label:L("Klant getest ok","Testé client ok","Customer tested ok"),line:L("-klant getest op laptop/tablet: ok","-testé chez le client sur laptop/tablette: ok","-tested at customer on laptop/tablet: ok")},
@@ -610,6 +623,13 @@ const FREEHELP={
     {label:L("Niet opgelost","Non résolu","Not solved"),line:L("=>niet opgelost → vervolgactie: __","=>non résolu → suivi: __","=>not solved → follow-up: __")}
   ]
 };
+/* Rooms for the pod-add action (pickable) */
+const ROOMS=[
+  {k:"woonkamer",label:L("Woonkamer","Salon","Living room")},
+  {k:"slaapkamer",label:L("Slaapkamer","Chambre","Bedroom")},
+  {k:"keuken",label:L("Keuken","Cuisine","Kitchen")},
+  {k:"andere",label:L("Andere","Autre","Other")}
+];
 
 /* ============================================================
    State + step list
@@ -1035,22 +1055,55 @@ function renderFree(which){
   const head = isActie?STARHEAD[state.lang][2]:STARHEAD[state.lang][3];
   const val = isActie?state.actie:state.result;
   const help = isActie?FREEHELP.actie:FREEHELP.result;
+  // Pod-add control (Actie only)
+  let podHtml="";
+  if(isActie){
+    const podTitle={nl:"Pods toevoegen",fr:"Ajouter des pods",en:"Add pods"}[state.lang];
+    const roomLbl={nl:"Waar? (optioneel)",fr:"Où ? (optionnel)",en:"Where? (optional)"}[state.lang];
+    const addLbl={nl:"Toevoegen",fr:"Ajouter",en:"Add"}[state.lang];
+    podHtml=`<div class="podbox">
+      <div class="podtitle">＋ ${podTitle}</div>
+      <div class="podcount" id="podCount">${[1,2,3,4,5].map(n=>`<button data-pod="${n}">${n}</button>`).join("")}</div>
+      <div class="podroomlbl">${roomLbl}</div>
+      <div class="podrooms" id="podRooms">${ROOMS.map(r=>`<button data-room="${r.k}">${r.label[state.lang]}</button>`).join("")}</div>
+      <button class="podadd" id="podAdd">${addLbl}</button>
+    </div>`;
+  }
   host.innerHTML=`<div class="card">
     <div class="stagebadge">${head}</div>
     <h2 class="qtitle">${head}</h2>
     <p class="qsub">${t.freeHint}</p>
+    ${podHtml}
     <div class="freetype"><textarea id="freeInput" placeholder="${isActie? {nl:'-fcon vervangen aan NIU',fr:'-fcon remplacé au NIU',en:'-fcon replaced at NIU'}[state.lang] : {nl:'-alles in dienst',fr:'-tout en service',en:'-all in service'}[state.lang]}">${escapeHtml(val)}</textarea></div>
     <div class="helpers"><div class="hrow">${help.map((h,i)=>`<button data-h="${i}">${h.label[state.lang]}</button>`).join("")}</div></div>
   </div>`;
   const ta=$("freeInput");
+  const insert=(line)=>{ const cur=ta.value; ta.value = cur && !cur.endsWith("\n") ? cur+"\n"+line : cur+line;
+    if(isActie) state.actie=ta.value; else state.result=ta.value; refreshLog(); ta.focus(); };
   ta.addEventListener("input",()=>{ if(isActie) state.actie=ta.value; else state.result=ta.value; refreshLog(); });
-  host.querySelectorAll("[data-h]").forEach(b=>b.addEventListener("click",()=>{
-    const line=help[+b.dataset.h].line[state.lang];
-    const cur=ta.value;
-    ta.value = cur && !cur.endsWith("\n") ? cur+"\n"+line : cur+line;
-    if(isActie) state.actie=ta.value; else state.result=ta.value;
-    refreshLog(); ta.focus();
-  }));
+  host.querySelectorAll("[data-h]").forEach(b=>b.addEventListener("click",()=>insert(help[+b.dataset.h].line[state.lang])));
+  if(isActie){
+    let podN=0; const rooms=new Set();
+    host.querySelectorAll("#podCount button").forEach(b=>b.addEventListener("click",()=>{
+      podN=+b.dataset.pod;
+      host.querySelectorAll("#podCount button").forEach(x=>x.classList.toggle("sel",x===b));
+    }));
+    host.querySelectorAll("#podRooms button").forEach(b=>b.addEventListener("click",()=>{
+      const k=b.dataset.room; if(rooms.has(k)){rooms.delete(k);b.classList.remove("sel");} else {rooms.add(k);b.classList.add("sel");}
+    }));
+    $("podAdd").addEventListener("click",()=>{
+      const n=podN||1;
+      const roomNames=ROOMS.filter(r=>rooms.has(r.k)).map(r=>r.label[state.lang].toLowerCase());
+      const word={nl:"pods bijgeplaatst",fr:"pods ajoutés",en:"pods added"}[state.lang];
+      const one={nl:"pod bijgeplaatst",fr:"pod ajouté",en:"pod added"}[state.lang];
+      let line="-"+n+" "+(n===1?one:word);
+      if(roomNames.length) line+=": "+roomNames.join(", ");
+      insert(line);
+      // reset picker
+      podN=0; rooms.clear();
+      host.querySelectorAll("#podCount button,#podRooms button").forEach(x=>x.classList.remove("sel"));
+    });
+  }
 }
 
 /* ---------- tooltip ---------- */
