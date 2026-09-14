@@ -714,16 +714,17 @@ const host=$("stepHost"), out=$("out");
 function buildLog(){
   const H=STARHEAD[state.lang], div="____________________";
   const S=[], T=[], A=[], R=[];
-  // Situatie
-  if(state.situatie && state.situatie.trim()) state.situatie.split("\n").forEach(l=>{ if(l.trim()) S.push(l.replace(/^\s*-?\s*/,"-")); });
+  // Keep the selected case type as the first top-level line of the STAR output
   const sel=selectedTypes();
+  let typeLine="";
   if(sel.length){
     let types=sel.map(t=>{
       if(t==="idtv"){ const btm={sipadan:"Sipadan/QAM",v1:"TV-box V1",v2:"TV-box V2",apollo:"Apollo/IP"}; const bt=btm[state.boxtype]||null; return "iDTV"+(bt?" ("+bt+")":""); }
       return CASETYPES[t].label[state.lang];
     });
-    S.push("-type: "+types.join(" + "));
+    typeLine="-type: "+types.join(" + ");
   }
+  if(state.situatie && state.situatie.trim()) state.situatie.split("\n").forEach(l=>{ if(l.trim()) S.push(l.replace(/^\s*-?\s*/,"-")); });
   // Testen: modem + branch
   const emit=(check)=>{
     const a=state.answers[check.id];
@@ -758,7 +759,7 @@ function buildLog(){
   if(state.result && state.result.trim()) state.result.split("\n").forEach(l=>{ if(l.trim()) R.push(l); });
 
   const sec=(title,lines)=>`${title}\n${div}\n${lines.length?lines.join("\n"):"-"}\n`;
-  return [sec(H[0],S),sec(H[1],T),sec(H[2],A),sec(H[3],R)].join("\n");
+  return (typeLine ? typeLine+"\n\n" : "") + [sec(H[0],S),sec(H[1],T),sec(H[2],A),sec(H[3],R)].join("\n");
 }
 
 /* Sync log into the textarea unless the user manually edited it on the last step */
