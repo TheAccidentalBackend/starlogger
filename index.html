@@ -36,11 +36,28 @@
   .progress>div{height:100%;background:#fff;width:0;transition:width .25s}
   .pmeta{display:flex;justify-content:space-between;margin-top:6px;font-size:11.5px;color:rgba(255,255,255,.9)}
 
-  main{flex:1;display:flex;flex-direction:column;max-width:1040px;width:100%;margin:0 auto;padding:12px 12px 0 12px}
-  .layout{display:flex;gap:14px;align-items:flex-start;flex:1;min-height:0}
-  .guidewrap{flex:1 1 52%;min-width:0}
-  .outwrap{flex:1 1 48%;min-width:0;display:flex;flex-direction:column}
-  @media(max-width:860px){ .layout{flex-direction:column} .outwrap{width:100%} }
+  main{flex:1;display:flex;flex-direction:column;max-width:680px;width:100%;margin:0 auto;padding:16px 14px 0 14px}
+  .layout{display:flex;flex-direction:column;gap:12px;flex:1;min-height:0}
+  .guidewrap{width:100%;min-width:0}
+  /* Log = compact preview, secondary */
+  .outwrap{width:100%;display:flex;flex-direction:column}
+  .outhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+  .outhead h3{margin:0;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+  .expandbtn{background:var(--panel2);border:1px solid var(--line);border-radius:8px;color:var(--cyan);
+    font-weight:800;font-size:12px;padding:4px 10px;cursor:pointer;display:inline-flex;align-items:center;gap:5px}
+  .expandbtn:hover{border-color:var(--accent)}
+  #out{min-height:150px;max-height:190px}
+  /* Full-screen log overlay */
+  .logmodal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:210;display:none;align-items:stretch;justify-content:center;padding:16px}
+  .logmodal-bg.show{display:flex}
+  .logmodal{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;max-width:760px;width:100%;display:flex;flex-direction:column}
+  .logmodal .lmhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+  .logmodal .lmhead h3{margin:0;font-size:14px;color:var(--cyan);text-transform:uppercase;letter-spacing:.05em}
+  #outBig{flex:1;width:100%;background:#fff;color:var(--txt);border:1px solid var(--line);border-radius:10px;padding:14px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14px;line-height:1.55;white-space:pre;overflow:auto;resize:none;tab-size:8}
+  #outBig:focus{outline:none;border-color:var(--accent)}
+  .lmactions{display:flex;gap:8px;margin-top:12px}
+  .lmactions button{flex:1;padding:12px;border-radius:10px;font-weight:800;cursor:pointer;border:1px solid var(--line)}
 
   .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
   .stagebadge{display:inline-block;background:var(--panel2);color:var(--cyan);border:1px solid var(--line);
@@ -78,6 +95,8 @@
   .choice button{display:flex;align-items:center;gap:12px;text-align:left;background:#fff;border:2px solid var(--line);
     border-radius:12px;padding:16px;font-size:16px;font-weight:800;color:var(--txt);cursor:pointer}
   .choice button:hover{border-color:var(--accent)}
+  .choice button.sel{border-color:var(--accent);background:#fff7ef}
+  .choice button .tick{margin-left:auto;color:var(--accent);font-weight:900;font-size:18px;min-width:18px}
   .choice .ic{font-size:22px}
   .choice .desc{display:block;font-weight:500;color:var(--muted);font-size:12.5px;margin-top:2px}
 
@@ -94,16 +113,14 @@
   .hrow button:hover{border-color:var(--accent)}
 
   /* Output notepad */
-  .outhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-  .outhead h3{margin:0;font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--cyan)}
-  #out{width:100%;flex:1;min-height:320px;background:#fff;color:var(--txt);border:1px solid var(--line);border-radius:var(--radius);
-    padding:14px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13.5px;line-height:1.55;
-    white-space:pre;overflow:auto;resize:none;tab-size:8;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+  #out{width:100%;background:#fbfbfb;color:var(--txt);border:1px solid var(--line);border-radius:var(--radius);
+    padding:12px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;line-height:1.5;
+    white-space:pre;overflow:auto;resize:none;tab-size:8}
   #out:focus{outline:none;border-color:var(--accent)}
   .lockmsg{background:#fff7ef;border:1px solid #f0c99b;color:#7a4a12;border-radius:8px;padding:8px 10px;font-size:12.5px;margin-top:6px}
 
   .navbar{position:sticky;bottom:0;z-index:20;background:var(--panel);border-top:1px solid var(--line);
-    padding:10px 12px calc(10px + env(safe-area-inset-bottom,0)) 12px;display:flex;gap:8px;max-width:1040px;width:100%;margin:14px auto 0 auto;box-shadow:0 -2px 8px rgba(0,0,0,.05)}
+    padding:10px 14px calc(10px + env(safe-area-inset-bottom,0)) 14px;display:flex;gap:8px;max-width:680px;width:100%;margin:14px auto 0 auto;box-shadow:0 -2px 8px rgba(0,0,0,.05)}
   .navbar button{padding:13px;border-radius:11px;font-weight:800;font-size:14px;cursor:pointer;border:1px solid var(--line)}
   .btn-back{background:var(--panel2);color:var(--txt);flex:0 0 auto;min-width:76px}
   .btn-next{background:var(--accent);color:#fff;border-color:var(--accent);flex:1;min-width:120px}
@@ -159,7 +176,7 @@
   <div class="layout">
     <div class="guidewrap"><div id="stepHost"></div></div>
     <div class="outwrap">
-      <div class="outhead"><h3 id="outLabel">Log</h3></div>
+      <div class="outhead"><h3 id="outLabel">Log</h3><button class="expandbtn" id="btnExpand">⛶ <span id="expandLbl">Vergroten</span></button></div>
       <textarea id="out" spellcheck="false"></textarea>
       <div class="lockmsg" id="lockMsg"></div>
     </div>
@@ -176,6 +193,17 @@
 
 <div class="tip" id="tip"></div>
 <div class="toast" id="toast"></div>
+
+<div class="logmodal-bg" id="logModal">
+  <div class="logmodal">
+    <div class="lmhead"><h3 id="lmTitle">Log</h3><button class="expandbtn" id="lmClose">✕</button></div>
+    <textarea id="outBig" spellcheck="false"></textarea>
+    <div class="lmactions">
+      <button class="btn-copy" id="lmCopy">Kopieer</button>
+      <button class="btn-grey" id="lmDone">Sluiten</button>
+    </div>
+  </div>
+</div>
 
 <div class="modal-bg" id="mtModal">
   <div class="modal">
@@ -223,7 +251,8 @@ const UI={
       mtTitle:"Modemtest blok",mtSub:"Plak de modemtest om uit te lijnen, of vul snel Rx/Tx/Snr in.",
       tabAlign:"Plakken & uitlijnen",tabFields:"Snel Rx/Tx/Snr",paste:"Plak hier je modemtest",
       alignHint:"Kolommen worden uitgelijnd met tabs.",insert:"Invoegen",cancel:"Annuleer",
-      addNote:"Vrije notitie toevoegen", freeHint:"Typ vrij; tik hierboven voor vaste zinnen."},
+      addNote:"Vrije notitie toevoegen", freeHint:"Typ vrij; tik hierboven voor vaste zinnen.",
+      expand:"Vergroten", close:"Sluiten"},
   fr:{appTitle:"STAR LOGGER",back:"Retour",next:"Suivant",skip:"Passer",copy:"Copier",copied:"Copié !",modemtest:"Test modem",newCase:"Nouveau",
       newConfirm:"Nouveau cas ? Le log actuel sera effacé.",log:"Log (copier vers le système)",
       lockGuided:"Faites d'abord tous les checks modem. Vous n'oublierez rien.",lockOpen:"Vous pouvez modifier le log librement.",
@@ -232,7 +261,8 @@ const UI={
       mtTitle:"Bloc test modem",mtSub:"Collez le test modem pour l'aligner, ou saisissez Rx/Tx/Snr.",
       tabAlign:"Coller & aligner",tabFields:"Rapide Rx/Tx/Snr",paste:"Collez ici votre test modem",
       alignHint:"Colonnes alignées avec des tabs.",insert:"Insérer",cancel:"Annuler",
-      addNote:"Ajouter une note libre", freeHint:"Écrivez librement ; touchez ci-dessus pour des phrases."},
+      addNote:"Ajouter une note libre", freeHint:"Écrivez librement ; touchez ci-dessus pour des phrases.",
+      expand:"Agrandir", close:"Fermer"},
   en:{appTitle:"STAR LOGGER",back:"Back",next:"Next",skip:"Skip",copy:"Copy",copied:"Copied!",modemtest:"Modemtest",newCase:"New",
       newConfirm:"Start a new case? Current log will be cleared.",log:"Log (copy into system)",
       lockGuided:"Do all modem checks first. So you never miss anything.",lockOpen:"You can edit the log freely.",
@@ -241,7 +271,8 @@ const UI={
       mtTitle:"Modemtest block",mtSub:"Paste the modemtest to align it, or quickly enter Rx/Tx/Snr.",
       tabAlign:"Paste & align",tabFields:"Quick Rx/Tx/Snr",paste:"Paste your modemtest here",
       alignHint:"Columns aligned with tabs.",insert:"Insert",cancel:"Cancel",
-      addNote:"Add free note", freeHint:"Type freely; tap above for fixed phrases."}
+      addNote:"Add free note", freeHint:"Type freely; tap above for fixed phrases.",
+      expand:"Expand", close:"Close"}
 };
 
 const STARHEAD={nl:["Situatie","Testen","Actie","Resultaat"],fr:["Situation","Tests","Action","Résultat"],en:["Situation","Tests","Action","Result"]};
@@ -250,7 +281,7 @@ const CASETYPES={
   internet:{label:{nl:"Internet",fr:"Internet",en:"Internet"},ic:"🌐",
     desc:{nl:"na modem → WiFi & inhome",fr:"après modem → WiFi & inhome",en:"after modem → WiFi & in-home"}},
   idtv:{label:{nl:"iDTV",fr:"iDTV",en:"iDTV"},ic:"📺",
-    desc:{nl:"na modem → STB",fr:"après modem → décodeur",en:"after modem → STB"}},
+    desc:{nl:"na modem → TV box (QAM) of Apollo (IP)",fr:"après modem → TV box (QAM) ou Apollo (IP)",en:"after modem → TV box (QAM) or Apollo (IP)"}},
   phone:{label:{nl:"Telefonie",fr:"Téléphonie",en:"Telephony"},ic:"📞",
     desc:{nl:"na modem → lijn & testtoestel",fr:"après modem → ligne & test",en:"after modem → line & test phone"}}
 };
@@ -404,21 +435,42 @@ const BRANCH={
         {label:L("Eigen hardware klant","Matériel propre client","Customer's own hardware"),line:L(" >eigen hardware klant: __"," >matériel propre du client: __"," >customer's own hardware: __")}
       ] }
   ],
-  idtv:[
-    { id:"stb",title:L("STB / iDTV","STB / iDTV","STB / iDTV"),
+  stb_qam:[
+    { id:"stb",title:L("TV Box (QAM/DTV)","TV Box (QAM/DTV)","TV Box (QAM/DTV)"),
       norm:L("Visuele controle coax + connecties. STB service menu 120 MHz (tiktest). Sipadan IP-check 10.x.x.x (ingress). BER-meting.",
              "Contrôle visuel coax + connexions. Menu service 120 MHz (test tik). IP-check 10.x.x.x (ingress). Mesure BER.",
              "Visual check coax + connections. STB service menu 120 MHz (tik test). IP check 10.x.x.x (ingress). BER measurement."),
       tip:L("Coax/connecties visueel, service menu 120 MHz tiktest, IP 10.x.x.x geen ingress, BER binnen norm.",
             "Coax/connexions visuel, menu 120 MHz test tik, IP 10.x.x.x pas d'ingress, BER dans la norme.",
             "Coax/connections visual, 120 MHz menu tik test, IP 10.x.x.x no ingress, BER within spec."),
-      okLine:L("+STB ok: coax, service menu 120MHz, IP-check en BER ok","+STB ok: coax, menu 120MHz, IP-check et BER ok","+STB ok: coax, 120MHz menu, IP check and BER ok"),
-      nokLine:L("-STB nok","-STB nok","-STB nok"),
+      okLine:L("+TV box (QAM) ok: coax, service menu 120MHz, IP-check en BER ok","+TV box (QAM) ok: coax, menu 120MHz, IP-check et BER ok","+TV box (QAM) ok: coax, 120MHz menu, IP check and BER ok"),
+      nokLine:L("-TV box (QAM) nok","-TV box (QAM) nok","-TV box (QAM) nok"),
       hints:[
         {label:L("Coax/connecties","Coax/connexions","Coax/connections"),line:L(" >probleem coax/connecties: __"," >problème coax/connexions: __"," >coax/connection issue: __")},
         {label:L("Service menu 120MHz","Menu service 120MHz","Service menu 120MHz"),line:L(" >service menu 120MHz nok (tiktest)"," >menu service 120MHz nok (test tik)"," >service menu 120MHz nok (tik test)")},
         {label:L("IP-check / ingress","IP-check / ingress","IP check / ingress"),line:L(" >IP-check/ingress nok"," >IP-check/ingress nok"," >IP check/ingress nok")},
         {label:L("BER","BER","BER"),line:L(" >BER buiten norm: __"," >BER hors norme: __"," >BER out of spec: __")}
+      ] }
+  ],
+  stb_apollo:[
+    { id:"apollo",title:L("Apollo TV box (IP)","Apollo TV box (IP)","Apollo TV box (IP)"),
+      norm:L("Apollo draait over <b>IP</b>. Hoe is de box verbonden: <b>UTP / WiFi / powerline</b>? WiFi = liefst WiFi 6 op 5 GHz. Check RSSI, QoE in Frontline en de SPOT-historiek. (draft — verfijnen)",
+             "Apollo passe par <b>IP</b>. Comment la box est-elle connectée : <b>UTP / WiFi / CPL</b> ? WiFi = de préférence WiFi 6 sur 5 GHz. Vérifiez RSSI, QoE dans Frontline et l'historique SPOT. (brouillon)",
+             "Apollo runs over <b>IP</b>. How is the box connected: <b>UTP / WiFi / powerline</b>? WiFi = preferably WiFi 6 on 5 GHz. Check RSSI, QoE in Frontline and the SPOT history. (draft)"),
+      tip:L("Apollo = IP, dus netwerkcheck. WiFi: RSSI sterk, WiFi 6 op 5 GHz (niet blijven hangen op 2.4). QoE in Frontline: connecteert de box goed? Let op slecht geplaatste pods in de mesh, powerlines, node-problemen en OFDM dat te vaak van profiel wisselt. SPOT heeft een historiek-log. (details verfijnen we stap voor stap)",
+            "Apollo = IP, donc check réseau. WiFi : RSSI fort, WiFi 6 sur 5 GHz. QoE dans Frontline : la box se connecte-t-elle bien ? Attention aux pods mal placés, CPL, problèmes de nœud, OFDM qui change trop de profil. SPOT a un log d'historique.",
+            "Apollo = IP, so a network check. WiFi: strong RSSI, WiFi 6 on 5 GHz. QoE in Frontline: is the box connecting well? Watch for badly placed pods, powerlines, node issues, OFDM changing profile too often. SPOT has a history log."),
+      okLine:L("+Apollo (IP) ok: box goed verbonden, QoE ok","+Apollo (IP) ok: box bien connectée, QoE ok","+Apollo (IP) ok: box well connected, QoE ok"),
+      nokLine:L("-Apollo (IP) nok","-Apollo (IP) nok","-Apollo (IP) nok"),
+      hints:[
+        {label:L("Verbinding: UTP","Connexion : UTP","Connection: UTP"),line:L(" >box via UTP verbonden"," >box connectée en UTP"," >box connected via UTP")},
+        {label:L("Verbinding: WiFi","Connexion : WiFi","Connection: WiFi"),line:L(" >box via WiFi (band/RSSI: __)"," >box en WiFi (bande/RSSI: __)"," >box via WiFi (band/RSSI: __)")},
+        {label:L("Verbinding: powerline","Connexion : CPL","Connection: powerline"),line:L(" >box via powerline (PHY rate: __)"," >box via CPL (débit PHY: __)"," >box via powerline (PHY rate: __)")},
+        {label:L("WiFi op 2.4 i.p.v. 5 GHz","WiFi sur 2.4 au lieu de 5 GHz","WiFi on 2.4 instead of 5 GHz"),line:L(" >box hangt op 2.4 GHz i.p.v. WiFi 6 / 5 GHz"," >box sur 2.4 GHz au lieu de WiFi 6 / 5 GHz"," >box stuck on 2.4 GHz instead of WiFi 6 / 5 GHz")},
+        {label:L("Frontline QoE","Frontline QoE","Frontline QoE"),line:L(" >Frontline QoE: __"," >QoE Frontline: __"," >Frontline QoE: __")},
+        {label:L("Slecht geplaatste pods","Pods mal placés","Badly placed pods"),line:L(" >slecht geplaatste pods in mesh"," >pods mal placés dans le mesh"," >badly placed pods in mesh")},
+        {label:L("Node / OFDM profielwissels","Nœud / OFDM change profil","Node / OFDM profile changes"),line:L(" >node/OFDM wisselt te vaak van profiel"," >nœud/OFDM change trop souvent de profil"," >node/OFDM changing profile too often")},
+        {label:L("SPOT historiek-log","Log historique SPOT","SPOT history log"),line:L(" >SPOT historiek-log gecontroleerd: __"," >log historique SPOT vérifié: __"," >SPOT history log checked: __")}
       ] }
   ],
   phone:[
@@ -463,19 +515,41 @@ const FREEHELP={
 /* ============================================================
    State + step list
    ============================================================ */
-const state={ lang:"nl", idx:0, answers:{}, situatie:"", caseType:null, actie:"", result:"", log:"", unlocked:false };
+const state={ lang:"nl", idx:0, answers:{}, situatie:"", caseTypes:[], boxtype:null, actie:"", result:"", log:"", unlocked:false };
+const TYPE_ORDER=["internet","idtv","phone"];
+function selectedTypes(){ return TYPE_ORDER.filter(t=>state.caseTypes.includes(t)); }
 
 function save(){ try{ localStorage.setItem("starlogger_v3", JSON.stringify(state)); }catch(e){} }
 function load(){ try{ const s=JSON.parse(localStorage.getItem("starlogger_v3")); if(s) Object.assign(state,s);}catch(e){} }
 
+/* Which branch check-groups run for the current selection */
+function branchGroups(){
+  const groups=[];
+  selectedTypes().forEach(t=>{
+    if(t==="internet") groups.push(...BRANCH.internet);
+    else if(t==="phone") groups.push(...BRANCH.phone);
+    else if(t==="idtv"){
+      // iDTV routes on box type; boxtype step is added separately in steps()
+      if(state.boxtype==="apollo") groups.push(...BRANCH.stb_apollo);
+      else groups.push(...BRANCH.stb_qam); // default/qam
+    }
+  });
+  return groups;
+}
+
 /* Build the ordered list of steps */
 function steps(){
   const arr=[];
-  arr.push({kind:"situatie"});
-  MODEM.forEach(m=>arr.push({kind:"modem",check:m}));
-  arr.push({kind:"casetype"});
-  const b = state.caseType?BRANCH[state.caseType]:[];
-  b.forEach(c=>arr.push({kind:"branch",check:c}));
+  arr.push({kind:"casetype"});           // 1. type first (multi-select)
+  arr.push({kind:"situatie"});           // 2. situatie
+  MODEM.forEach(m=>arr.push({kind:"modem",check:m})); // 3. forced modem block
+  // 4. branch per selected type; iDTV gets a box-type sub-step first
+  selectedTypes().forEach(t=>{
+    if(t==="idtv") arr.push({kind:"boxtype"});
+    const set = t==="internet"?BRANCH.internet : t==="phone"?BRANCH.phone
+              : (state.boxtype==="apollo"?BRANCH.stb_apollo:BRANCH.stb_qam);
+    set.forEach(c=>arr.push({kind:"branch",check:c}));
+  });
   arr.push({kind:"actie"});
   arr.push({kind:"result"});
   return arr;
@@ -493,7 +567,14 @@ function buildLog(){
   const S=[], T=[], A=[], R=[];
   // Situatie
   if(state.situatie && state.situatie.trim()) state.situatie.split("\n").forEach(l=>{ if(l.trim()) S.push(l.replace(/^\s*-?\s*/,"-")); });
-  if(state.caseType) S.push("-type: "+CASETYPES[state.caseType].label[state.lang]);
+  const sel=selectedTypes();
+  if(sel.length){
+    let types=sel.map(t=>{
+      if(t==="idtv"){ const bt=state.boxtype==="apollo"?"Apollo/IP":state.boxtype==="qam"?"TV box/QAM":null; return "iDTV"+(bt?" ("+bt+")":""); }
+      return CASETYPES[t].label[state.lang];
+    });
+    S.push("-type: "+types.join(" + "));
+  }
   // Testen: modem + branch
   const emit=(check)=>{
     const a=state.answers[check.id];
@@ -505,7 +586,7 @@ function buildLog(){
     (a.hints||[]).forEach(hl=>T.push(hl));
   };
   MODEM.forEach(emit);
-  if(state.caseType) (BRANCH[state.caseType]||[]).forEach(emit);
+  branchGroups().forEach(emit);
   // Actie / Resultaat free text
   if(state.actie && state.actie.trim()) state.actie.split("\n").forEach(l=>{ if(l.trim()) A.push(l); });
   if(state.result && state.result.trim()) state.result.split("\n").forEach(l=>{ if(l.trim()) R.push(l); });
@@ -543,6 +624,9 @@ function render(){
   $("btnCopy").textContent=tr().copy;
   $("btnMt").textContent="📋 "+tr().modemtest;
   $("btnNew").textContent="↺ "+tr().newCase;
+  $("expandLbl").textContent=tr().expand;
+  $("outLabel").textContent=tr().log; $("lmTitle").textContent=tr().log;
+  $("lmCopy").textContent=tr().copy; $("lmDone").textContent=tr().close;
 
   // Next button: hidden on last step; disabled on unanswered modem/branch checks (the forcing)
   const btnNext=$("btnNext");
@@ -554,7 +638,8 @@ function render(){
     const a=state.answers[step.check.id];
     needsAnswer = !(a&&a.status);
   }
-  if(step.kind==="casetype"){ needsAnswer = !state.caseType; }
+  if(step.kind==="casetype"){ needsAnswer = selectedTypes().length===0; }
+  if(step.kind==="boxtype"){ needsAnswer = !state.boxtype; }
   btnNext.disabled = needsAnswer;
 
   // lock message: guided until actie/result
@@ -565,7 +650,8 @@ function render(){
   if(step.kind==="situatie") crumb=STARHEAD[state.lang][0];
   else if(step.kind==="modem") crumb=STARHEAD[state.lang][1]+" — Modem";
   else if(step.kind==="casetype") crumb=STARHEAD[state.lang][1];
-  else if(step.kind==="branch") crumb=STARHEAD[state.lang][1]+" — "+CASETYPES[state.caseType].label[state.lang];
+  else if(step.kind==="boxtype") crumb=STARHEAD[state.lang][1]+" — iDTV";
+  else if(step.kind==="branch") crumb=STARHEAD[state.lang][1];
   else if(step.kind==="actie") crumb=STARHEAD[state.lang][2];
   else if(step.kind==="result") crumb=STARHEAD[state.lang][3];
   $("crumb").textContent=crumb;
@@ -573,6 +659,7 @@ function render(){
   if(step.kind==="situatie") renderSituatie();
   else if(step.kind==="modem"||step.kind==="branch") renderCheck(step.check);
   else if(step.kind==="casetype") renderCaseType();
+  else if(step.kind==="boxtype") renderBoxtype();
   else if(step.kind==="actie") renderFree("actie");
   else if(step.kind==="result") renderFree("result");
 
@@ -622,8 +709,10 @@ function renderCheck(check){
       <button class="ok ${a.status==='good'?'sel':''}" data-good="good">✓ ${t.ok}</button>
       <button class="nok ${a.status==='bad'?'sel':''}" data-good="bad">✕ ${t.nok}</button>`;
   }
+  const isModem = MODEM.some(m=>m.id===check.id);
+  const badge = isModem ? STARHEAD[state.lang][1]+" — Modem/RF" : STARHEAD[state.lang][1]+" — Inhome";
   host.innerHTML=`<div class="card">
-    <div class="stagebadge">${STARHEAD[state.lang][1]} — Modem/RF</div>
+    <div class="stagebadge">${badge}</div>
     <h2 class="qtitle">${check.title[state.lang]}<span class="qm" id="qmTip">?</span></h2>
     <div class="normbox">${check.norm[state.lang]}</div>
     ${valHtml}
@@ -664,17 +753,47 @@ function renderCheck(check){
 }
 
 function renderCaseType(){
+  const sub={nl:"Waarvoor kom je? Meerdere mogelijk (Apollo-tv loopt vaak samen met internet).",
+             fr:"Pourquoi cette intervention ? Plusieurs possibles (Apollo-tv va souvent avec internet).",
+             en:"What are you here for? Multiple allowed (Apollo TV often goes with internet)."}[state.lang];
   host.innerHTML=`<div class="card">
     <div class="stagebadge">${STARHEAD[state.lang][1]}</div>
     <h2 class="qtitle">${ {nl:"Type case?",fr:"Type de cas ?",en:"Case type?"}[state.lang] }</h2>
-    <p class="qsub">${ {nl:"Modem is gecheckt. Kies waarvoor je verder test.",fr:"Modem vérifié. Choisissez la suite.",en:"Modem checked. Choose what to test next."}[state.lang] }</p>
+    <p class="qsub">${sub}</p>
     <div class="choice">${Object.keys(CASETYPES).map(k=>{
       const c=CASETYPES[k];
-      return `<button data-ct="${k}"><span class="ic">${c.ic}</span><span>${c.label[state.lang]}<span class="desc">${c.desc[state.lang]}</span></span></button>`;
+      const on=state.caseTypes.includes(k);
+      return `<button class="multi ${on?'sel':''}" data-ct="${k}"><span class="ic">${c.ic}</span><span>${c.label[state.lang]}<span class="desc">${c.desc[state.lang]}</span></span><span class="tick">${on?'✓':''}</span></button>`;
     }).join("")}</div>
   </div>`;
   host.querySelectorAll("[data-ct]").forEach(b=>b.addEventListener("click",()=>{
-    state.caseType=b.dataset.ct; render(); setTimeout(()=>next(),160);
+    const k=b.dataset.ct;
+    if(state.caseTypes.includes(k)) state.caseTypes=state.caseTypes.filter(x=>x!==k);
+    else state.caseTypes.push(k);
+    if(!state.caseTypes.includes("idtv")) state.boxtype=null; // reset box type if iDTV deselected
+    render();
+  }));
+}
+
+function renderBoxtype(){
+  const t=tr();
+  const opts=[
+    {k:"qam",ic:"📺",label:{nl:"TV Box (QAM/DTV)",fr:"TV Box (QAM/DTV)",en:"TV Box (QAM/DTV)"},
+      desc:{nl:"klassieke box over coax-mux",fr:"box classique via mux coax",en:"classic box over coax mux"}},
+    {k:"apollo",ic:"🛰️",label:{nl:"Apollo (IP)",fr:"Apollo (IP)",en:"Apollo (IP)"},
+      desc:{nl:"nieuwe box, loopt over IP",fr:"nouvelle box, passe par IP",en:"new box, runs over IP"}}
+  ];
+  host.innerHTML=`<div class="card">
+    <div class="stagebadge">${STARHEAD[state.lang][1]} — iDTV</div>
+    <h2 class="qtitle">${ {nl:"TV Box of Apollo?",fr:"TV Box ou Apollo ?",en:"TV Box or Apollo?"}[state.lang] }</h2>
+    <p class="qsub">${ {nl:"Welke box? Dit bepaalt of je QAM (coax) of IP (netwerk) checkt.",fr:"Quelle box ? Cela détermine QAM (coax) ou IP (réseau).",en:"Which box? This decides QAM (coax) vs IP (network) checks."}[state.lang] }</p>
+    <div class="choice">${opts.map(o=>{
+      const on=state.boxtype===o.k;
+      return `<button class="${on?'sel':''}" data-bt="${o.k}"><span class="ic">${o.ic}</span><span>${o.label[state.lang]}<span class="desc">${o.desc[state.lang]}</span></span></button>`;
+    }).join("")}</div>
+  </div>`;
+  host.querySelectorAll("[data-bt]").forEach(b=>b.addEventListener("click",()=>{
+    state.boxtype=b.dataset.bt; render(); setTimeout(()=>next(),160);
   }));
 }
 
@@ -746,7 +865,7 @@ function fb(text,cb){const ta=document.createElement("textarea");ta.value=text;d
 $("btnCopy").addEventListener("click",copyLog);
 $("btnNew").addEventListener("click",()=>{
   if(!confirm(tr().newConfirm)) return;
-  state.idx=0;state.answers={};state.situatie="";state.caseType=null;state.actie="";state.result="";state.log="";
+  state.idx=0;state.answers={};state.situatie="";state.caseTypes=[];state.boxtype=null;state.actie="";state.result="";state.log="";
   render();
 });
 
@@ -782,6 +901,20 @@ $("mtInsert").addEventListener("click",()=>{
     toast(tr().insert);
   }
   mt.classList.remove("show");
+});
+
+/* ---------- log expand overlay ---------- */
+const logModal=$("logModal"), outBig=$("outBig");
+function openLog(){ outBig.value=out.value; logModal.classList.add("show"); outBig.focus(); }
+function closeLog(){ out.value=outBig.value; state.log=out.value; save(); logModal.classList.remove("show"); }
+$("btnExpand").addEventListener("click",openLog);
+$("lmClose").addEventListener("click",closeLog);
+$("lmDone").addEventListener("click",closeLog);
+logModal.addEventListener("click",e=>{ if(e.target===logModal) closeLog(); });
+outBig.addEventListener("input",()=>{ out.value=outBig.value; state.log=out.value; save(); });
+$("lmCopy").addEventListener("click",()=>{
+  const text=outBig.value; const done=()=>toast(tr().copied);
+  if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done,()=>fb(text,done)); else fb(text,done);
 });
 
 /* ---------- boot ---------- */
