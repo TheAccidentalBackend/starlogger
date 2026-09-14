@@ -737,6 +737,33 @@ function refreshLog(){
   state.log=buildLog();
   out.value=state.log;
   save();
+  scrollPreviewToNewest();
+}
+
+/* Scroll the compact log preview so the most recently added input is visible.
+   Anchors on the last "real" content line (not a header, divider or empty "-"). */
+function scrollPreviewToNewest(){
+  const text=out.value;
+  const lines=text.split("\n");
+  const isDivider=l=>/^_+$/.test(l.trim());
+  const isHeader=l=>STARHEAD[state.lang].includes(l.trim());
+  // find last meaningful line (a check/hint/free line), skip empty, "-", headers, dividers
+  let target=-1;
+  for(let i=lines.length-1;i>=0;i--){
+    const t=lines[i].trim();
+    if(!t||t==="-"||isDivider(lines[i])||isHeader(lines[i])) continue;
+    target=i; break;
+  }
+  if(target<0) return;
+  // char offset at end of the target line
+  let pos=0; for(let i=0;i<=target;i++) pos+=lines[i].length+1;
+  // approximate scroll: line height * target line, keep it a bit above the bottom
+  const cs=getComputedStyle(out);
+  const lh=parseFloat(cs.lineHeight)|| (parseFloat(cs.fontSize)*1.5) || 18;
+  const pad=parseFloat(cs.paddingTop)||0;
+  const y=pad + target*lh;
+  const desired=y - out.clientHeight + lh*2; // show target near the bottom with a little context
+  out.scrollTop=Math.max(0, desired);
 }
 
 /* ============================================================
