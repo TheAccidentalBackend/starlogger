@@ -117,6 +117,50 @@
   .quickphrases button{background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:6px 9px;font-size:12px;font-weight:600;color:var(--txt);cursor:pointer}
   .quickphrases .qpsep{flex-basis:100%;height:5px}
   .hrow button:hover{border-color:var(--accent)}
+  .sitcard{padding-bottom:10px}
+  .sitcard .qtitle{margin-bottom:8px}
+  .sitgroup{margin-top:8px}
+  .situationRowTitle{font-size:10px;font-weight:800;color:var(--cyan);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+  .situationButtons{display:flex;flex-wrap:wrap;gap:5px}
+  .situationButtons button{background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:8px 11px;font-size:13px;font-weight:700;color:var(--txt);cursor:pointer}
+  .situationButtons button:hover{border-color:var(--accent)}
+  .situationButtons button.sel{background:#fff7ef;border-color:var(--accent);color:var(--txt)}
+  .modelTrigger{background:transparent!important;border-style:dashed!important}
+  .instchecks{gap:6px}
+  .instchecks button{padding:9px 12px;font-size:13px}
+  .outheadbtns{display:flex;gap:6px}
+  .values input.bad{border-color:#d64545;background:#fdecec;color:#a12020}
+  .scorepill{display:inline-block;margin-top:6px;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:800}
+  .scorepill.good{background:#e3f6e8;color:#1c7a3a;border:1px solid #9ed9b1}
+  .scorepill.medium{background:#fff4e0;color:#8a5a12;border:1px solid #f0c988}
+  .scorepill.bad{background:#fdecec;color:#a12020;border:1px solid #e6a3a3}
+  .lockedhint{margin-top:7px;font-size:11.5px;color:#a12020;background:#fdecec;border:1px solid #e6a3a3;border-radius:7px;padding:6px 9px}
+  .subchecks{display:grid;gap:9px;margin-top:4px}
+  .subrow{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:8px 9px}
+  .sublbl{font-size:13px;font-weight:700;margin-bottom:6px}
+  .subrow .oknok{display:flex;gap:7px}
+  .subrow .oknok button{flex:1;padding:9px;border-radius:8px;font-weight:800;font-size:13px;cursor:pointer;border:1px solid var(--line)}
+  .devrows{display:grid;gap:10px}
+  .devrow{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:9px}
+  .devrow .oknok{display:flex;gap:7px;margin-top:7px}
+  .devrow .oknok button{flex:1;padding:9px;border-radius:8px;font-weight:800;font-size:13px;cursor:pointer;border:1px solid var(--line)}
+  .devdel{flex:0 0 auto!important;background:var(--panel);color:var(--muted);min-width:40px}
+  .adddev{margin-top:9px;width:100%;padding:9px;border-radius:8px;border:1px dashed var(--cyan);background:transparent;color:var(--cyan);font-weight:800;font-size:13px;cursor:pointer}
+  .adddev:hover{background:#eef9fb}
+  .card.stepout{animation:stepout .22s ease forwards}
+  @keyframes stepout{to{opacity:.25;transform:translateX(-10px)}}
+  .sitlines{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:4px}
+  .sitlines.empty{color:var(--muted);font-style:italic;font-size:12px;padding:4px 0}
+  .sitchip{display:inline-flex;align-items:center;gap:6px;background:var(--panel2);border:1px solid var(--line);border-radius:999px;padding:5px 6px 5px 11px;font-size:12.5px;font-weight:700;color:var(--txt);cursor:pointer}
+  .sitchip.sel{background:#fff7ef;border-color:var(--accent)}
+  .sitx{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:rgba(0,0,0,.08);color:var(--muted);font-weight:900;font-size:13px}
+  .sitx:hover{background:var(--accent);color:#fff}
+  .sitfree{margin-top:9px;margin-bottom:0}
+  .sitfree textarea{min-height:46px}
+  .modelmodal .modal{max-width:280px}
+  .modelmodal .modelopts{display:flex;flex-direction:column;gap:8px}
+  .modelmodal .modelopt{width:100%;text-align:left;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:14px 14px;font-size:15px;font-weight:800;color:var(--txt);cursor:pointer}
+  .modelmodal .modelopt:hover{border-color:var(--accent);background:#fff7ef}
   /* Pod-add control */
   .podbox{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:9px;margin-bottom:9px}
   .podtitle{font-weight:800;font-size:12px;color:var(--cyan);margin-bottom:6px}
@@ -142,6 +186,10 @@
   .btn-back{background:var(--panel2);color:var(--txt);flex:0 0 auto;min-width:64px}
   .btn-next{background:var(--accent);color:#fff;border-color:var(--accent);flex:1;min-width:110px}
   .btn-next:disabled{background:var(--panel2);color:var(--muted);border-color:var(--line);cursor:not-allowed}
+  .btn-next{display:inline-flex;align-items:center;justify-content:center;gap:8px}
+  .kbdhint{font-size:10px;font-weight:700;opacity:.85;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.35);border-radius:5px;padding:2px 6px;white-space:nowrap}
+  .btn-next:disabled .kbdhint{opacity:.5;background:transparent;border-color:var(--line)}
+  @media(max-width:520px){ .kbdhint{display:none} }
   .btn-skip{background:transparent;color:var(--muted);flex:0 0 auto}
   .btn-copy{background:var(--cta);color:#fff;border-color:var(--cta);flex:1}
   .btn-mt{background:transparent;color:var(--cyan);border-color:var(--cyan);flex:0 0 auto;font-weight:800}
@@ -193,7 +241,7 @@
   <div class="layout">
     <div class="guidewrap"><div id="stepHost"></div></div>
     <div class="outwrap">
-      <div class="outhead"><h3 id="outLabel">Log</h3><button class="expandbtn" id="btnExpand">⛶ <span id="expandLbl">Vergroten</span></button></div>
+      <div class="outhead"><h3 id="outLabel">Log</h3><div class="outheadbtns"><button class="expandbtn" id="btnCopy">⧉ <span id="copyLbl">Kopieer</span></button><button class="expandbtn" id="btnExpand">⛶ <span id="expandLbl">Vergroten</span></button></div></div>
       <textarea id="out" spellcheck="false"></textarea>
       <div class="lockmsg" id="lockMsg"></div>
     </div>
@@ -202,9 +250,8 @@
 
 <div class="navbar">
   <button class="btn-back" id="btnBack">◀</button>
-  <button class="btn-next" id="btnNext">▶</button>
+  <button class="btn-next" id="btnNext"><span id="btnNextLbl"></span>▶</span><span class="kbdhint">Ctrl+Enter</span></button>
   <button class="btn-mt" id="btnMt">📋</button>
-  <button class="btn-copy" id="btnCopy">Kopieer</button>
   <button class="btn-new" id="btnNew">↺</button>
 </div>
 
@@ -248,6 +295,15 @@
     <div class="actions">
       <button class="btn-copy2" id="mtInsert">Invoegen</button>
       <button class="btn-grey" id="mtCancel">Annuleer</button>
+    </div>
+  </div>
+</div>
+<div class="modal-bg modelmodal" id="modelModal">
+  <div class="modal">
+    <h3 id="modelTitle">Kies modem</h3>
+    <div class="modelopts" id="modelOptions"></div>
+    <div class="actions">
+      <button class="btn-grey" id="modelCancel">Annuleer</button>
     </div>
   </div>
 </div>
@@ -324,6 +380,7 @@ const MODEM=[
           "Voir US & DS dans ANTS. L'instantané RF : Rx entre -4 et +17 dBmV, Tx entre 25 et 47 dBmV, SNR minimum 34 (plus haut = mieux). Tx trop haut ou Rx trop bas → atténuation entre tap et modem. Mesurez au tap avec le deviser, pontez le NIU.",
           "See US & DS in ANTS. The RF snapshot: Rx between -4 and +17 dBmV, Tx between 25 and 47 dBmV, SNR minimum 34 (higher is better). Tx too high or Rx too low → attenuation/loss between tap and modem. Measure at the tap with the deviser, bridge the NIU."),
     values:[{key:"rx",label:L("Rx","Rx","Rx")},{key:"tx",label:L("Tx","Tx","Tx")},{key:"snr",label:L("SNR","SNR","SNR")}],
+    thresholds:{rx:{min:-4,max:17},tx:{min:25,max:47},snr:{min:34}},
     nbparam:L("US TX + DS RX + SNR","US TX + DS RX + SNR","US TX + DS RX + SNR"),
     okLine:L("-actuele rf ok: Rx {rx} / Tx {tx} / SNR {snr}","-rf actuel ok: Rx {rx} / Tx {tx} / SNR {snr}","-current rf ok: Rx {rx} / Tx {tx} / SNR {snr}"),
     nokLine:L("-actuele rf nok: Rx {rx} / Tx {tx} / SNR {snr}","-rf actuel nok: Rx {rx} / Tx {tx} / SNR {snr}","-current rf nok: Rx {rx} / Tx {tx} / SNR {snr}"),
@@ -457,58 +514,27 @@ const NB_ELIGIBLE=["rf","levels","errors","ofdm","ofdma","deregs"];
    Cuca advisor may miss. Procera can solve a case before driving out.
    ============================================================ */
 const GATEWAY=[
-  { id:"procera", answer:"janee", bad:"no",
-    title:L("Procera / Netwerk Access","Procera / Accès réseau","Procera / Network Access"),
-    norm:L("Zie <b>Status in ANTS</b>. Staat Procera op <b>Broadband</b> en Netwerk Access op <b>operational</b>? Alles behalve Broadband kan de klacht al verklaren <u>vóór je vertrekt</u>.",
-           "Voir <b>Status dans ANTS</b>. Procera sur <b>Broadband</b> et Network Access sur <b>operational</b> ? Tout sauf Broadband peut expliquer la plainte <u>avant de partir</u>.",
-           "See <b>Status in ANTS</b>. Is Procera on <b>Broadband</b> and Network Access <b>operational</b>? Anything but Broadband can explain the complaint <u>before you drive out</u>."),
-    tip:L("Procera-status (Status-tab in ANTS). Broadband = volle snelheid, niet gelimiteerd. Smallband = volume op → gelimiteerde snelheid (ook FUP). Warning = waarschuwingspagina bij % volume. Redirect = 100% volume op. Block Collection = openstaand saldo → geblokkeerd. Block Manual/Virus/Abuse/TempCancel/Modem = manueel geblokkeerd door Telenet. Netwerk Access hoort 'operational' te zijn; 'forwarding denied' → mogelijk node-wissel nodig (vergelijk Node vs Registered Node). LET OP: adviseurs sturen soms techs voor een Smallband/Block — dat los je op zonder rit.",
-          "Statut Procera (onglet Status ANTS). Broadband = pleine vitesse. Smallband = volume épuisé → vitesse limitée (aussi FUP). Warning = page d'avertissement à % du volume. Redirect = 100% volume. Block Collection = solde impayé → bloqué. Block Manual/Virus/Abuse/TempCancel/Modem = bloqué manuellement par Telenet. Network Access doit être 'operational' ; 'forwarding denied' → changement de nœud possible (comparez Node vs Registered Node).",
-          "Procera status (Status tab in ANTS). Broadband = full speed. Smallband = volume used up → limited speed (also FUP). Warning = warning page at % of volume. Redirect = 100% volume. Block Collection = outstanding balance → blocked. Block Manual/Virus/Abuse/TempCancel/Modem = manually blocked by Telenet. Network Access should be 'operational'; 'forwarding denied' → possible node change (compare Node vs Registered Node)."),
-    okLine:L("+procera: Broadband, netwerk access operational","+procera : Broadband, network access operational","+procera: Broadband, network access operational"),
-    nokLine:L("-procera nok","-procera nok","-procera nok"),
-    hints:[
-      {label:L("Smallband (volume op)","Smallband (volume épuisé)","Smallband (volume used up)"),line:L(" >Procera: Smallband → volume op, gelimiteerde snelheid (geen RF-issue)"," >Procera : Smallband → volume épuisé, vitesse limitée"," >Procera: Smallband → volume used up, limited speed")},
-      {label:L("Warning / Redirect","Warning / Redirect","Warning / Redirect"),line:L(" >Procera: Warning/Redirect → volume (bijna) op"," >Procera : Warning/Redirect → volume (presque) épuisé"," >Procera: Warning/Redirect → volume (nearly) used up")},
-      {label:L("Block Collection (saldo)","Block Collection (solde)","Block Collection (balance)"),line:L(" >Procera: Block Collection → openstaand saldo, geblokkeerd"," >Procera : Block Collection → solde impayé, bloqué"," >Procera: Block Collection → outstanding balance, blocked")},
-      {label:L("Block (manueel Telenet)","Block (manuel Telenet)","Block (manual Telenet)"),line:L(" >Procera: manueel geblokkeerd door Telenet"," >Procera : bloqué manuellement par Telenet"," >Procera: manually blocked by Telenet")},
-      {label:L("Netwerk Access niet operational","Network Access pas operational","Network Access not operational"),line:L(" >netwerk access niet operational (bv. forwarding denied)"," >network access pas operational (ex. forwarding denied)"," >network access not operational (e.g. forwarding denied)")},
-      {label:L("Node ≠ Registered Node","Node ≠ Registered Node","Node ≠ Registered Node"),line:L(" >Node ≠ Registered Node → node-wissel mogelijk nodig"," >Node ≠ Registered Node → changement de nœud possible"," >Node ≠ Registered Node → node change possibly needed")}
-    ]
-  },
-  { id:"hgw", answer:"janee", bad:"no",
-    title:L("HGW (WAN IP & DHCP)","HGW (IP WAN & DHCP)","HGW (WAN IP & DHCP)"),
-    norm:L("Zie <b>HGW in ANTS</b>. Is er een correcte <b>publieke WAN IPv4</b>? Start het <b>DHCP-bereik op .100</b> (standaard 192.168.0.100)?",
-           "Voir <b>HGW dans ANTS</b>. Y a-t-il une <b>WAN IPv4 publique</b> correcte ? Le <b>DHCP démarre-t-il en .100</b> (standard 192.168.0.100) ?",
-           "See <b>HGW in ANTS</b>. Is there a correct <b>public WAN IPv4</b>? Does the <b>DHCP range start at .100</b> (standard 192.168.0.100)?"),
-    tip:L("HGW/eRouter-tab in ANTS (data komt uit ACS, ~15 min ververst). Een geldige publieke WAN IPv4 (bv. 84.x.x.x) betekent dat de gateway routeert; geen of een private WAN IP = provisioning/connectiviteitsprobleem. DHCP address Start hoort .100 te zijn (192.168.0.100); een afwijkend bereik wijst vaak op een eigen setup/aanpassing van de klant.",
-          "Onglet HGW/eRouter dans ANTS (données ACS, ~15 min). Une WAN IPv4 publique valide (ex. 84.x.x.x) = la gateway route ; pas de WAN IP ou privée = problème provisioning/connectivité. DHCP address Start doit être .100 (192.168.0.100) ; une plage différente = souvent config propre du client.",
-          "HGW/eRouter tab in ANTS (ACS data, ~15 min refresh). A valid public WAN IPv4 (e.g. 84.x.x.x) means the gateway routes; no/private WAN IP = provisioning/connectivity problem. DHCP address Start should be .100 (192.168.0.100); a different range often indicates the customer's own setup."),
-    okLine:L("+HGW ok: publieke WAN IPv4 aanwezig, DHCP start .100","+HGW ok : WAN IPv4 publique présente, DHCP démarre en .100","+HGW ok: public WAN IPv4 present, DHCP starts at .100"),
-    nokLine:L("-HGW nok","-HGW nok","-HGW nok"),
-    hints:[
-      {label:L("Geen/foute WAN IPv4","Pas de WAN IPv4 valide","No/invalid WAN IPv4"),line:L(" >geen geldige publieke WAN IPv4 → provisioning/connectiviteit"," >pas de WAN IPv4 publique valide → provisioning/connectivité"," >no valid public WAN IPv4 → provisioning/connectivity")},
-      {label:L("DHCP start niet .100","DHCP pas en .100","DHCP not starting .100"),line:L(" >DHCP start niet op .100 → eigen setup klant?"," >DHCP ne démarre pas en .100 → config propre du client ?"," >DHCP not starting at .100 → customer's own setup?")}
-    ]
-  },
-  { id:"cm",
-    title:L("CM (poorten & snelheden)","CM (ports & débits)","CM (ports & speeds)"),
-    norm:L("Zie <b>CM in ANTS</b>. Check de ethernet-poorten (Up/Down + snelheid). Vooral bij een <b>snelheidsklacht</b>: een poort op 100 Mbps in het pad geeft max ~95 Mbps. Een TV-box op UTP draait normaal op 100 Mbps.",
-           "Voir <b>CM dans ANTS</b>. Vérifiez les ports ethernet (Up/Down + débit). Surtout en cas de <b>plainte vitesse</b> : un port à 100 Mbps dans le chemin donne max ~95 Mbps. Une TV-box en UTP tourne normalement à 100 Mbps.",
-           "See <b>CM in ANTS</b>. Check the ethernet ports (Up/Down + speed). Especially for a <b>speed complaint</b>: a 100 Mbps port in the path gives max ~95 Mbps. A TV box over UTP normally runs at 100 Mbps."),
-    tip:L("CM-tab in ANTS: per poort (sw_1..sw_4, erouter0) status (Up/Down) en snelheid (Mbps). Een TV-box op UTP = 100 Mbps is normaal. Maar een clienttoestel of erouter-poort op 100 Mbps terwijl 1 Gbps verwacht wordt = slechte RJ45/kabel, of een mb-switch / PLC-adapters (powerlines) van de klant in het pad. Klassieke tell bij een snelheidsklacht: speedtest blijft steken rond max ~95 Mbps → ergens een 100 Mbit-poort. Down-poort waar een toestel hoort = kabel-/poortprobleem.",
-          "Onglet CM dans ANTS : par port (sw_1..sw_4, erouter0) statut (Up/Down) et débit (Mbps). Une TV-box en UTP = 100 Mbps normal. Mais un appareil client ou le port erouter à 100 Mbps alors qu'on attend 1 Gbps = mauvais RJ45/câble, ou un mb-switch / adaptateurs CPL du client dans le chemin. Tell classique en cas de plainte vitesse : le speedtest plafonne à ~95 Mbps → un port 100 Mbit quelque part. Port Down où un appareil est attendu = problème câble/port.",
-          "CM tab in ANTS: per port (sw_1..sw_4, erouter0) status (Up/Down) and speed (Mbps). A TV box over UTP = 100 Mbps is normal. But a client device or the erouter port at 100 Mbps when 1 Gbps is expected = bad RJ45/cable, or a customer mb-switch / PLC (powerline) adapters in the path. Classic tell on a speed complaint: the speedtest caps at ~95 Mbps → a 100 Mbit port somewhere. Down port where a device is expected = cable/port issue."),
-    okLine:L("+CM ok: poorten up op verwachte snelheid","+CM ok : ports up au débit attendu","+CM ok: ports up at expected speed"),
-    nokLine:L("-CM nok","-CM nok","-CM nok"),
-    hints:[
-      {label:L("TV-box op 100 Mbps (normaal)","TV-box à 100 Mbps (normal)","TV box at 100 Mbps (normal)"),line:L(" >TV-box op UTP: 100 Mbps (normaal)"," >TV-box en UTP : 100 Mbps (normal)"," >TV box over UTP: 100 Mbps (normal)")},
-      {label:L("Client/erouter op 100 i.p.v. 1 Gbps","Client/erouter à 100 au lieu de 1 Gbps","Client/erouter at 100 vs 1 Gbps"),line:L(" >poort op 100 Mbps i.p.v. 1 Gbps → RJ45/kabel"," >port à 100 Mbps au lieu de 1 Gbps → RJ45/câble"," >port at 100 Mbps instead of 1 Gbps → RJ45/cable")},
-      {label:L("mb-switch klant","mb-switch client","customer mb-switch"),line:L(" >mb-switch van klant beperkt de snelheid"," >mb-switch du client limite le débit"," >customer mb-switch limits the speed")},
-      {label:L("PLC / powerlines","CPL / powerlines","PLC / powerlines"),line:L(" >PLC/powerline-adapters in het pad"," >adaptateurs CPL/powerline dans le chemin"," >PLC/powerline adapters in the path")},
-      {label:L("Speedklacht: max ~95 Mbps","Plainte vitesse : max ~95 Mbps","Speed complaint: max ~95 Mbps"),line:L(" >speedtest max ~95 Mbps → 100 Mbit-poort in pad (UTP/switch/PLC)"," >speedtest max ~95 Mbps → port 100 Mbit dans le chemin (UTP/switch/CPL)"," >speedtest max ~95 Mbps → 100 Mbit port in path (UTP/switch/PLC)")},
-      {label:L("Poort Down","Port Down","Port Down"),line:L(" >poort down waar toestel verwacht wordt: "," >port down où un appareil est attendu : "," >port down where a device is expected: ")},
-      {label:L("Poort/snelheid noteren","Noter port/débit","Note port/speed"),line:L(" >poort  :  Mbps"," >port  :  Mbps"," >port  :  Mbps")}
+  { id:"provisioning", answer:"multi",
+    title:L("WAN IPv4 & modem RJ45 speed","WAN IPv4 & débit RJ45 modem","WAN IPv4 & modem RJ45 speed"),
+    norm:L("Check in ANTS: <b>publieke WAN IPv4</b> aanwezig (HGW) en de <b>modem RJ45-poorten</b> op de verwachte snelheid (CM). Een poort op 100 Mbps in het pad geeft max ~95 Mbps.",
+           "Vérifiez dans ANTS : <b>WAN IPv4 publique</b> présente (HGW) et les <b>ports RJ45 du modem</b> au débit attendu (CM). Un port à 100 Mbps dans le chemin donne max ~95 Mbps.",
+           "Check in ANTS: <b>public WAN IPv4</b> present (HGW) and the <b>modem RJ45 ports</b> at expected speed (CM). A 100 Mbps port in the path caps at ~95 Mbps."),
+    tip:L("HGW/eRouter-tab: geldige publieke WAN IPv4 (bv. 84.x.x.x) = gateway routeert; geen/private WAN IP = provisioning/connectiviteit. CM-tab: RJ45-poorten (sw_1..sw_4, erouter0) Up/Down + snelheid. TV-box op UTP = 100 Mbps normaal; client/erouter op 100 i.p.v. 1 Gbps = RJ45/kabel, mb-switch of PLC. Speedklacht die rond ~95 Mbps plafonneert = een 100 Mbit-poort in het pad.",
+          "Onglet HGW/eRouter : WAN IPv4 publique valide = la gateway route ; pas de WAN IP / privée = provisioning/connectivité. Onglet CM : ports RJ45 (sw_1..sw_4, erouter0) Up/Down + débit. TV-box en UTP = 100 Mbps normal ; client/erouter à 100 au lieu de 1 Gbps = RJ45/câble, mb-switch ou CPL.",
+          "HGW/eRouter tab: valid public WAN IPv4 = gateway routes; no/private WAN IP = provisioning/connectivity. CM tab: RJ45 ports (sw_1..sw_4, erouter0) Up/Down + speed. TV box over UTP = 100 Mbps normal; client/erouter at 100 vs 1 Gbps = RJ45/cable, mb-switch or PLC."),
+    subs:[
+      { key:"procera", answer:"janee", bad:"no",
+        label:L("Procera status ok? (Broadband, access operational)","Statut Procera ok ? (Broadband, access operational)","Procera status ok? (Broadband, access operational)"),
+        okLine:L("+procera ok: Broadband, access operational","+procera ok : Broadband, access operational","+procera ok: Broadband, access operational"),
+        nokLine:L("-procera nok","-procera nok","-procera nok") },
+      { key:"wan", answer:"janee", bad:"no",
+        label:L("WAN IPv4 ok? (publieke IP aanwezig)","WAN IPv4 ok ? (IP publique présente)","WAN IPv4 ok? (public IP present)"),
+        okLine:L("+WAN IPv4 ok","+WAN IPv4 ok","+WAN IPv4 ok"),
+        nokLine:L("-WAN IPv4 nok","-WAN IPv4 nok","-WAN IPv4 nok") },
+      { key:"rj45", answer:"janee", bad:"no",
+        label:L("Modem RJ45 speed ok?","Débit RJ45 modem ok ?","Modem RJ45 speed ok?"),
+        okLine:L("+modem RJ45 speed ok","+débit RJ45 modem ok","+modem RJ45 speed ok"),
+        nokLine:L("-modem RJ45 speed nok","-débit RJ45 modem nok","-modem RJ45 speed nok") }
     ]
   }
 ];
@@ -524,6 +550,7 @@ const BRANCH={
             "Le Healthscore donne une indication générale rapide. Notez toujours la valeur elle-même, pas seulement OK/NOK, afin de garder le contexte du client.",
             "The Healthscore gives a quick overall indication. Always record the value itself, not only OK/NOK, so the customer context can be reconstructed."),
       values:[{key:"score",label:L("Healthscore (1-100)","Healthscore (1-100)","Healthscore (1-100)")}],
+      scoreKey:"score", scoreBands:{good:95,medium:70},
       okLine:L("-Frontline Healthscore ok: {score}/100","-Healthscore Frontline ok : {score}/100","-Frontline Healthscore ok: {score}/100"),
       nokLine:L("-Frontline Healthscore nok: {score}/100","-Healthscore Frontline nok : {score}/100","-Frontline Healthscore nok: {score}/100")
     },
@@ -534,7 +561,8 @@ const BRANCH={
       tip:L("Gebruik de Devices-tab in QoE, niet alleen de algemene Healthscore. Een Apollo in de keuken kan bijvoorbeeld slecht verbonden zijn met de modem in de woonkamer. Controleer of het toestel via WiFi/Plume pod werkt terwijl er UTP beschikbaar is. Geen UTP en slechte verbinding → extra Plume pod in Actie; wel UTP maar WiFi gebruikt → aansluiten via UTP in Actie.",
             "Utilisez l'onglet Devices de QoE, pas seulement le Healthscore général. Un Apollo dans la cuisine peut par exemple être mal connecté au modem dans le salon. Vérifiez si l'appareil passe par WiFi/pod Plume alors que l'UTP est disponible. Pas d'UTP et mauvaise connexion → pod Plume supplémentaire dans Action ; UTP disponible mais WiFi utilisé → connecter en UTP dans Action.",
             "Use the QoE Devices tab, not only the overall Healthscore. An Apollo in the kitchen may have a poor connection to the modem in the living room. Check whether it uses WiFi/a Plume pod while UTP is available. No UTP and poor connection → add a Plume pod in Action; UTP available but WiFi used → connect via UTP in Action."),
-      values:[
+      multiDevice:true,
+      deviceFields:[
         {key:"device",label:L("Affected device","Appareil concerné","Affected device")},
         {key:"room",label:L("Room","Pièce","Room")},
         {key:"connection",label:L("Connection (WiFi / UTP)","Connexion (WiFi / UTP)","Connection (WiFi / UTP)")}
@@ -668,7 +696,27 @@ const ROOMS=[
 /* ============================================================
    State + step list
    ============================================================ */
-const state={ lang:"nl", idx:0, answers:{}, situatie:"", caseTypes:[], boxtype:null, wifiplat:null, actie:"", result:"", log:"", unlocked:false };
+const state={ lang:"nl", idx:0, answers:{}, jobKind:null, jobNet:null, installChecks:[], situatie:"", situationLines:[], situationActive:-1, situationCustom:"", caseTypes:[], boxtype:null, wifiplat:null, actie:"", result:"", log:"", unlocked:false };
+/* Appointment definitions */
+const JOBKINDS={
+  install:{label:{nl:"Install",fr:"Install",en:"Install"},nets:["COAX","XGSPON","RFoG"],light:true},
+  repair:{label:{nl:"Repair",fr:"Repair",en:"Repair"},nets:["COAX","XGSPON","RFoG"],light:false},
+  installupd:{label:{nl:"Install update",fr:"Install update",en:"Install update"},nets:null,light:true}
+};
+function isLightJob(){ return state.jobKind && JOBKINDS[state.jobKind] && JOBKINDS[state.jobKind].light; }
+const INSTALL_CHECKS=[
+  "Geïnstalleerd: NIU en/of Modem",
+  "Geïnstalleerd: STB",
+  "Geïnstalleerd: Pod",
+  "Geïnstalleerd: Switch",
+  "Geïnstalleerd: Stekkerblok",
+  "Geïnstalleerd: 4G backup",
+  "WiFi getest",
+  "Alles in dienst",
+  "Case NOK: klant niet thuis",
+  "Case NOK: technician follow up",
+  "Case NOK: Follow up SWAT"
+];
 const TYPE_ORDER=["internet","idtv","phone"];
 function selectedTypes(){ return TYPE_ORDER.filter(t=>state.caseTypes.includes(t)); }
 
@@ -716,7 +764,16 @@ function branchGroups(){
 /* Build the ordered list of steps */
 function steps(){
   const arr=[];
-  arr.push({kind:"casetype"});           // 1. type first (multi-select)
+  arr.push({kind:"appointment"});        // 0. install / repair / install update
+  // Light jobs (install / install update): only a short optional checklist + free notes.
+  if(isLightJob()){
+    arr.push({kind:"installcheck"});
+    arr.push({kind:"actie"});
+    arr.push({kind:"result"});
+    return arr;
+  }
+  // Repair (or before a job is chosen): full guided flow.
+  arr.push({kind:"casetype"});           // 1. type (multi-select)
   arr.push({kind:"situatie"});           // 2. situatie
   // 3. forced modem block (Phase 1). Conditional checks (condOn) only appear
   //    when the check they depend on was answered "bad".
@@ -772,13 +829,49 @@ function buildLog(){
     });
     typeLine="-type: "+types.join(" + ");
   }
-  if(state.situatie && state.situatie.trim()) state.situatie.split("\n").forEach(l=>{ if(l.trim()) S.push(l.replace(/^\s*-?\s*/,"-")); });
+  // Appointment outcome sits at the very top of the Situatie section.
+  if(state.jobKind && JOBKINDS[state.jobKind]){
+    let jl="-"+JOBKINDS[state.jobKind].label[state.lang];
+    if(state.jobNet) jl+=" — "+state.jobNet;
+    S.push(jl);
+  }
+  // Install/Install-update checklist lines.
+  if(isLightJob()) (state.installChecks||[]).forEach(c=>S.push("-"+c));
+  (state.situationLines||[]).forEach(line=>{
+    const lc=v=>v&&v.trim()?v.trim().toLowerCase():"";
+    const sentence=[lc(line.medium),lc(line.issue),lc(line.frequency)].filter(Boolean).join(" ");
+    if(sentence) S.push("-"+sentence);
+  });
+  if(state.situationCustom&&state.situationCustom.trim()) state.situationCustom.split("\n").forEach(l=>{if(l.trim())S.push(l.replace(/^\s*-?\s*/,"-"));});
+  if(!(state.situationLines&&state.situationLines.length) && !(state.situationCustom&&state.situationCustom.trim()) && state.situatie && state.situatie.trim()){
+    state.situatie.split("\n").forEach(l=>{ if(l.trim()) S.push(l.replace(/^\s*-?\s*/,"-")); });
+  }
   // Testen: modem + branch
   const emit=(check)=>{
     const a=state.answers[check.id];
     if(!a) return;
     // skip conditional checks not triggered
     if(check.condOn){ const dep=state.answers[check.condOn]; if(!(dep&&dep.status==="bad")) return; }
+    // Merged multi-sub check (e.g. provisioning): one line per answered sub.
+    if(check.subs){
+      check.subs.forEach(sub=>{
+        const st=a.subs&&a.subs[sub.key];
+        if(!st) return;
+        T.push(st==="good"?sub.okLine[state.lang]:sub.nokLine[state.lang]);
+      });
+      (a.hints||[]).forEach(hl=>T.push(hl));
+      return;
+    }
+    // Multi-device QoE: one line per device row.
+    if(check.multiDevice && a.devices && a.devices.length){
+      a.devices.forEach(d=>{
+        const good=d.status==="good";
+        const tmpl=good?check.okLine[state.lang]:check.nokLine[state.lang];
+        T.push(tmpl.replace("{device}",d.device||"?").replace("{room}",d.room||"?").replace("{connection}",d.connection||"?"));
+      });
+      (a.hints||[]).forEach(hl=>T.push(hl));
+      return;
+    }
     let line = a.status==="good" ? check.okLine[state.lang] : check.nokLine[state.lang];
     // fill values
     if(check.values){ check.values.forEach(v=>{ line=line.replace("{"+v.key+"}", (a.values&&a.values[v.key])?a.values[v.key]:"?"); }); }
@@ -863,7 +956,7 @@ function render(){
   // nav
   $("btnBack").textContent="◀ "+tr().back;
   $("btnBack").style.visibility=state.idx===0?"hidden":"visible";
-  $("btnCopy").textContent=tr().copy;
+  $("copyLbl").textContent=tr().copy;
   $("btnMt").textContent="📋 "+tr().modemtest;
   $("btnNew").textContent="↺ "+tr().newCase;
   $("expandLbl").textContent=tr().expand;
@@ -874,11 +967,13 @@ function render(){
   const btnNext=$("btnNext");
   const isLast = state.idx===list.length-1;
   btnNext.style.display = isLast ? "none" : "";
-  btnNext.textContent = tr().next+" ▶";
+  $("btnNextLbl").textContent = tr().next+" ▶";
   let needsAnswer=false;
   if(step.kind==="modem"||step.kind==="branch"||step.kind==="gateway"){
     const a=state.answers[step.check.id];
-    needsAnswer = !(a&&a.status);
+    if(step.check.subs){ needsAnswer = !(a&&a.subs&&step.check.subs.every(s=>a.subs[s.key])); }
+    else if(step.check.multiDevice){ needsAnswer = !(a&&a.devices&&a.devices.length&&a.devices.every(d=>d.status)); }
+    else needsAnswer = !(a&&a.status);
   }
   if(step.kind==="neighbour"){
     const a=state.answers["nb_"+step.check.id];
@@ -887,6 +982,7 @@ function render(){
   if(step.kind==="casetype"){ needsAnswer = selectedTypes().length===0; }
   if(step.kind==="boxtype"){ needsAnswer = !state.boxtype; }
   if(step.kind==="wifiplat"){ needsAnswer = !state.wifiplat; }
+  if(step.kind==="appointment"){ const needsNet=state.jobKind&&JOBKINDS[state.jobKind].nets; needsAnswer = !state.jobKind || (needsNet && !state.jobNet); }
   btnNext.disabled = needsAnswer;
 
   // lock message: guided until actie/result
@@ -894,7 +990,9 @@ function render(){
   $("lockMsg").textContent = onFree ? tr().lockOpen : tr().lockGuided;
 
   let crumb="";
-  if(step.kind==="situatie") crumb=STARHEAD[state.lang][0];
+  if(step.kind==="appointment") crumb={nl:"Afspraak",fr:"Rendez-vous",en:"Appointment"}[state.lang];
+  else if(step.kind==="installcheck") crumb=STARHEAD[state.lang][1]+" — Install";
+  else if(step.kind==="situatie") crumb=STARHEAD[state.lang][0];
   else if(step.kind==="modem") crumb=STARHEAD[state.lang][1]+" — Modem";
   else if(step.kind==="gateway") crumb=STARHEAD[state.lang][1]+" — Provisioning";
   else if(step.kind==="neighbour") crumb=STARHEAD[state.lang][1]+" — Buren";
@@ -906,7 +1004,9 @@ function render(){
   else if(step.kind==="result") crumb=STARHEAD[state.lang][3];
   $("crumb").textContent=crumb;
 
-  if(step.kind==="situatie") renderSituatie();
+  if(step.kind==="appointment") renderAppointment();
+  else if(step.kind==="installcheck") renderInstallCheck();
+  else if(step.kind==="situatie") renderSituatie();
   else if(step.kind==="modem"||step.kind==="branch"||step.kind==="gateway") renderCheck(step.check);
   else if(step.kind==="neighbour") renderNeighbour(step.check);
   else if(step.kind==="casetype") renderCaseType();
@@ -919,45 +1019,114 @@ function render(){
 }
 
 function renderSituatie(){
-  const t=tr();
-  host.innerHTML=`<div class="card">
+  const media=["Internet","WiFi","TV-box","Apollo","Telefonie"];
+  const issues=["Traag","Valt weg","Werkt niet","Buffert"];
+  const freqs=["Altijd","Willekeurig","'s avonds","De hele dag"];
+  if(!state.situationLines) state.situationLines=[];
+  const lines=state.situationLines;
+  if(state.situationActive<0 || state.situationActive>=lines.length) state.situationActive=lines.length-1;
+  const active=lines[state.situationActive]||null;
+  const chip=(text,i)=>`<button class="sitchip ${i===state.situationActive?'sel':''}" data-line="${i}">${escapeHtml(text||"…")}<span class="sitx" data-del="${i}">×</span></button>`;
+  const linesHtml=lines.length?`<div class="sitlines">${lines.map((l,i)=>chip([l.medium,l.issue,l.frequency].filter(Boolean).join(" "),i)).join("")}</div>`:`<div class="sitlines empty">Kies een medium om te beginnen</div>`;
+  const btnRow=(items,key,current)=>items.map(v=>`<button class="${current===v?'sel':''}" data-sit-key="${key}" data-sit-value="${escapeHtml(v)}">${v}</button>`).join("");
+  host.innerHTML=`<div class="card sitcard">
     <div class="stagebadge">${STARHEAD[state.lang][0]}</div>
-    <h2 class="qtitle">${ {nl:"Wat is de situatie?",fr:"Quelle est la situation ?",en:"What is the situation?"}[state.lang] }</h2>
-    <p class="qsub">${ {nl:"Korte beschrijving van de melding. Elke regel = een puntje.",fr:"Brève description. Chaque ligne = un point.",en:"Short description. Each line = one point."}[state.lang] }</p>
-    <div class="quickphrases">
-      <button data-sit="-geen internet">Geen internet</button>
-      <button data-sit="-traag internet">Traag internet</button>
-      <button data-sit="-WiFi valt weg">WiFi valt weg</button>
-      <button data-sit="-buffering op">Buffering op</button>
-      <button data-sit="-beeld bevriest op">Beeld bevriest op</button>
-      <button data-sit="-werkt niet op">Werkt niet op</button>
-      <button data-sit="in de keuken">Keuken</button>
-      <button data-sit="in de woonkamer">Woonkamer</button>
-      <button data-sit="in de slaapkamer">Slaapkamer</button>
-      <button data-sit="de hele dag">De hele dag</button>
-      <button data-sit="willekeurig">Willekeurig</button>
-      <button data-sit="vooral 's avonds">Vooral 's avonds</button>
-    </div>
-    <div class="freetype">
-      <textarea id="sitInput" placeholder="${ {nl:'bv. buffering op Apollo in de keuken, vooral \'s avonds',fr:"ex. buffering sur Apollo dans la cuisine, surtout le soir",en:'e.g. Apollo buffering in the kitchen, mostly in the evening'}[state.lang] }">${escapeHtml(state.situatie)}</textarea>
-    </div>
+    <h2 class="qtitle">Wat is de situatie?</h2>
+    ${linesHtml}
+    <div class="sitgroup"><div class="situationRowTitle">Medium</div><div class="situationButtons">${btnRow(media,"medium",active&&active.medium)}<button class="modelTrigger" id="openModel">Modem</button></div></div>
+    <div class="sitgroup"><div class="situationRowTitle">Issue</div><div class="situationButtons">${btnRow(issues,"issue",active&&active.issue)}</div></div>
+    <div class="sitgroup"><div class="situationRowTitle">Frequency</div><div class="situationButtons">${btnRow(freqs,"frequency",active&&active.frequency)}</div></div>
+    <div class="freetype sitfree"><textarea id="sitInput" placeholder="Extra uitleg (optioneel)…">${escapeHtml(state.situationCustom||"")}</textarea></div>
   </div>`;
-  const ta=$("sitInput");
-  const qp=host.querySelector(".quickphrases");
-  if(qp){ qp.classList.add("helpers"); const bs=Array.from(host.querySelectorAll("[data-sit]")); bs.forEach((b,i)=>{ qp.appendChild(b); if(i===5||i===8){ const s=document.createElement("span"); s.className="qpsep"; qp.appendChild(s); } }); ta.parentElement.after(qp); }
-  host.querySelectorAll("[data-sit]").forEach(b=>b.addEventListener("click",()=>{ const v=b.dataset.sit; const cur=ta.value.trim(); ta.value=cur ? cur+" "+v : v; state.situatie=ta.value; refreshLog(); ta.focus(); }));
-  ta.addEventListener("input",()=>{ state.situatie=ta.value; refreshLog(); });
+  host.querySelectorAll("[data-line]").forEach(b=>b.addEventListener("click",e=>{
+    if(e.target.dataset.del!==undefined) return;
+    state.situationActive=+b.dataset.line; renderSituatie(); refreshLog();
+  }));
+  host.querySelectorAll("[data-del]").forEach(x=>x.addEventListener("click",e=>{
+    e.stopPropagation(); const i=+x.dataset.del; state.situationLines.splice(i,1);
+    if(state.situationActive>=state.situationLines.length) state.situationActive=state.situationLines.length-1;
+    renderSituatie(); refreshLog();
+  }));
+  host.querySelectorAll("[data-sit-key]").forEach(b=>b.addEventListener("click",()=>{
+    setSituationPart(b.dataset.sitKey,b.dataset.sitValue);
+  }));
+  $("sitInput").addEventListener("input",e=>{state.situationCustom=e.target.value;refreshLog();});
+  $("openModel")?.addEventListener("click",openModelModal);
+}
+
+function setSituationPart(key,value){
+  if(key==="medium"){
+    // A new medium tap starts a new line and makes it active.
+    state.situationLines.push({medium:value,issue:"",frequency:""});
+    state.situationActive=state.situationLines.length-1;
+  } else {
+    let active=state.situationLines[state.situationActive];
+    if(!active){ active={medium:"",issue:"",frequency:""}; state.situationLines.push(active); state.situationActive=state.situationLines.length-1; }
+    active[key]=active[key]===value?"":value; // toggle off if same
+  }
+  renderSituatie(); refreshLog();
+}
+
+function openModelModal(){
+  const options=["MV1 (Mercury)","MV2","MV2+ (WiFi 6)","MV2.7 (WiFi 7)","MV3 (ONT)","Marakele"];
+  $("modelOptions").innerHTML=options.map(value=>`<button class="modelopt" data-model="${escapeHtml(value)}">${value}</button>`).join("");
+  $("modelOptions").querySelectorAll("[data-model]").forEach(button=>button.addEventListener("click",()=>{
+    $("modelModal").classList.remove("show");
+    setSituationPart("medium",button.dataset.model);
+  }));
+  $("modelModal").classList.add("show");
+}
+
+/* Evaluate a numeric value against a {min,max} threshold. Returns true if OUT of range. */
+function outOfRange(val,th){
+  if(val===undefined||val===null||(""+val).trim()==="") return false;
+  const n=parseFloat((""+val).replace(",","."));
+  if(isNaN(n)) return false;
+  if(th.min!==undefined && n<th.min) return true;
+  if(th.max!==undefined && n>th.max) return true;
+  return false;
+}
+/* Does a threshold check currently have any out-of-range value? */
+function checkHasBadValue(check,a){
+  if(!check.thresholds||!a||!a.values) return false;
+  return Object.keys(check.thresholds).some(k=>outOfRange(a.values[k],check.thresholds[k]));
+}
+/* Healthscore band: 'good' | 'medium' | 'bad' | null */
+function scoreBand(check,a){
+  if(!check.scoreBands||!a||!a.values) return null;
+  const raw=a.values[check.scoreKey];
+  if(raw===undefined||(""+raw).trim()==="") return null;
+  const n=parseFloat((""+raw).replace(",","."));
+  if(isNaN(n)) return null;
+  if(n>=check.scoreBands.good) return "good";
+  if(n>=check.scoreBands.medium) return "medium";
+  return "bad";
+}
+
+function badgeFor(check){
+  const isModem = MODEM.some(m=>m.id===check.id);
+  const isGw = GATEWAY.some(g=>g.id===check.id);
+  return isModem ? STARHEAD[state.lang][1]+" — Modem/RF"
+       : isGw ? STARHEAD[state.lang][1]+" — Provisioning"
+       : STARHEAD[state.lang][1]+" — Inhome";
 }
 
 function renderCheck(check){
+  if(check.subs) return renderMultiCheck(check);
+  if(check.multiDevice) return renderDeviceCheck(check);
   const a=state.answers[check.id]||{status:null,values:{},hints:[]};
   const t=tr();
+  const band=scoreBand(check,a);
+  const lockedBad=checkHasBadValue(check,a) || band==="bad"; // out-of-range → forced NOK, OK disabled
   let valHtml="";
   if(check.values){
     valHtml=`<div class="values">`+check.values.map(v=>{
       const val=(a.values&&a.values[v.key])?a.values[v.key]:"";
-      return `<div class="v"><label>${v.label[state.lang]}</label><input data-vkey="${v.key}" value="${escapeHtml(val)}" inputmode="decimal"></div>`;
+      const th=check.thresholds&&check.thresholds[v.key];
+      const bad=th&&outOfRange(val,th);
+      return `<div class="v"><label>${v.label[state.lang]}</label><input class="${bad?'bad':''}" data-vkey="${v.key}" value="${escapeHtml(val)}" inputmode="decimal"></div>`;
     }).join("")+`</div>`;
+    if(band) valHtml+=`<div class="scorepill ${band}">${ {good:"OK",medium:"medium",bad:"laag"}[band] }</div>`;
   }
   let hintsHtml="";
   if(a.status==="bad" && check.hints && check.hints.length){
@@ -965,63 +1134,157 @@ function renderCheck(check){
       check.hints.map((h,i)=>`<button class="hintbtn" data-hint="${i}"><span class="plus">＋</span>${h.label[state.lang]}</button>`).join("")+
       `</div>`;
   }
-  // Answer type: oknok (default) or janee. Each button maps to good/bad internally.
   const isJaNee = check.answer==="janee";
+  const okDisabled = lockedBad ? "disabled" : "";
   let btns;
   if(isJaNee){
     const yesBad = check.bad==="yes";
     btns = `
-      <button class="${yesBad?'nok':'ok'} ${a.status===(yesBad?'bad':'good')?'sel':''}" data-good="${yesBad?'bad':'good'}">${t.yes}</button>
-      <button class="${yesBad?'ok':'nok'} ${a.status===(yesBad?'good':'bad')?'sel':''}" data-good="${yesBad?'good':'bad'}">${t.no}</button>`;
+      <button class="${yesBad?'nok':'ok'} ${a.status===(yesBad?'bad':'good')?'sel':''}" data-good="${yesBad?'bad':'good'}" ${yesBad?'':okDisabled}>${t.yes}</button>
+      <button class="${yesBad?'ok':'nok'} ${a.status===(yesBad?'good':'bad')?'sel':''}" data-good="${yesBad?'good':'bad'}" ${yesBad?okDisabled:''}>${t.no}</button>`;
   } else {
     btns = `
-      <button class="ok ${a.status==='good'?'sel':''}" data-good="good">✓ ${t.ok}</button>
+      <button class="ok ${a.status==='good'?'sel':''}" data-good="good" ${okDisabled}>✓ ${t.ok}</button>
       <button class="nok ${a.status==='bad'?'sel':''}" data-good="bad">✕ ${t.nok}</button>`;
   }
-  const isModem = MODEM.some(m=>m.id===check.id);
-  const isGw = GATEWAY.some(g=>g.id===check.id);
-  const badge = isModem ? STARHEAD[state.lang][1]+" — Modem/RF"
-              : isGw ? STARHEAD[state.lang][1]+" — Provisioning"
-              : STARHEAD[state.lang][1]+" — Inhome";
   host.innerHTML=`<div class="card">
-    <div class="stagebadge">${badge}</div>
+    <div class="stagebadge">${badgeFor(check)}</div>
     <h2 class="qtitle">${check.title[state.lang]}<span class="qm" id="qmTip">?</span></h2>
     <div class="normbox">${check.norm[state.lang]}</div>
     ${valHtml}
     <div class="oknok">${btns}</div>
+    ${lockedBad?`<div class="lockedhint">${ {nl:"Waarde buiten de norm → NOK. Pas de waarde aan om OK te kunnen kiezen.",fr:"Valeur hors norme → NOK.",en:"Value out of range → NOK."}[state.lang] }</div>`:""}
     ${hintsHtml}
   </div>`;
 
   attachTip($("qmTip"),()=>check.tip[state.lang]);
 
   host.querySelectorAll("input[data-vkey]").forEach(inp=>{
+    // While typing: just store the value + refresh log. Don't judge yet (so "4" before "42" isn't flagged).
     inp.addEventListener("input",()=>{
       const cur=state.answers[check.id]||{status:null,values:{},hints:[]};
       cur.values=cur.values||{}; cur.values[inp.dataset.vkey]=inp.value;
       state.answers[check.id]=cur; refreshLog();
     });
+    // On leaving the field: evaluate thresholds. Only re-render when the verdict changes,
+    // so tabbing between fields stays smooth.
+    inp.addEventListener("blur",()=>{
+      const cur=state.answers[check.id]||{status:null,values:{},hints:[]};
+      const isBad = checkHasBadValue(check,cur) || scoreBand(check,cur)==="bad";
+      if(isBad && cur.status!=="bad"){ cur.status="bad"; state.answers[check.id]=cur; render(); }
+      else { state.answers[check.id]=cur; refreshLog(); }
+    });
   });
   host.querySelectorAll(".oknok button").forEach(b=>{
+    if(b.disabled) return;
     b.addEventListener("click",()=>{
       const cur=state.answers[check.id]||{values:{},hints:[]};
-      cur.status=b.dataset.good; // "good" or "bad"
-      if(cur.status==="good") cur.hints=[]; // clear hints when clean
+      // Muyle nudge: forcing OK on a below-85 healthscore.
+      if(b.dataset.good==="good" && check.scoreBands){
+        const n=parseFloat(((cur.values&&cur.values[check.scoreKey])||"").toString().replace(",","."));
+        if(!isNaN(n) && n<85 && !confirm(muyleMsg(n))) return;
+      }
+      cur.status=b.dataset.good;
+      if(cur.status==="good") cur.hints=[];
       state.answers[check.id]=cur;
+      const goingNext = cur.status==="good";
       render();
-      // auto-advance on the clean/good answer for speed
-      if(cur.status==="good"){ setTimeout(()=>{ next(); },160); }
+      if(goingNext){ cueNext(); setTimeout(()=>{ next(); },220); }
     });
   });
   host.querySelectorAll(".hintbtn").forEach(b=>{
     b.addEventListener("click",()=>{
       const i=+b.dataset.hint;
       const cur=state.answers[check.id]; cur.hints=cur.hints||[];
-      const line=check.hints[i].line[state.lang];
-      cur.hints.push(line);
+      cur.hints.push(check.hints[i].line[state.lang]);
       state.answers[check.id]=cur; refreshLog();
       toast("＋");
     });
   });
+}
+
+function muyleMsg(n){
+  return {nl:"Zeker? "+n+" is een beetje laag… Ronald Muyle would not be proud 😉",
+          fr:"Sûr ? "+n+" c'est un peu bas… Ronald Muyle would not be proud 😉",
+          en:"Sure? "+n+" is a bit low… Ronald Muyle would not be proud 😉"}[state.lang];
+}
+
+/* Merged multi-sub check (Procera / WAN IPv4 / modem RJ45 speed) */
+function renderMultiCheck(check){
+  const t=tr();
+  const a=state.answers[check.id]||{subs:{},hints:[]};
+  a.subs=a.subs||{};
+  const subHtml=check.subs.map((sub,i)=>{
+    const st=a.subs[sub.key];
+    const yesBad=sub.bad==="yes";
+    return `<div class="subrow"><div class="sublbl">${sub.label[state.lang]}</div><div class="oknok">
+      <button class="${yesBad?'nok':'ok'} ${st==='good'?'sel':''}" data-sub="${sub.key}" data-good="good">✓ ${t.ok}</button>
+      <button class="nok ${st==='bad'?'sel':''}" data-sub="${sub.key}" data-good="bad">✕ ${t.nok}</button>
+    </div></div>`;
+  }).join("");
+  host.innerHTML=`<div class="card">
+    <div class="stagebadge">${badgeFor(check)}</div>
+    <h2 class="qtitle">${check.title[state.lang]}<span class="qm" id="qmTip">?</span></h2>
+    <div class="normbox">${check.norm[state.lang]}</div>
+    <div class="subchecks">${subHtml}</div>
+  </div>`;
+  attachTip($("qmTip"),()=>check.tip[state.lang]);
+  host.querySelectorAll("[data-sub]").forEach(b=>b.addEventListener("click",()=>{
+    const cur=state.answers[check.id]||{subs:{},hints:[]}; cur.subs=cur.subs||{};
+    cur.subs[b.dataset.sub]=b.dataset.good;
+    // overall status good only when every sub is good
+    cur.status=check.subs.every(s=>cur.subs[s.key]==="good")?"good":(Object.keys(cur.subs).length?"bad":null);
+    state.answers[check.id]=cur; render();
+    // auto-advance once all subs are good
+    if(check.subs.every(s=>cur.subs[s.key]==="good")){ cueNext(); setTimeout(()=>next(),220); }
+  }));
+}
+
+/* Multi-device QoE: repeatable device/room/connection rows, each OK/NOK */
+function renderDeviceCheck(check){
+  const t=tr();
+  const a=state.answers[check.id]||{devices:[],hints:[]};
+  a.devices=a.devices&&a.devices.length?a.devices:[{device:"",room:"",connection:"",status:null}];
+  const rowsHtml=a.devices.map((d,i)=>`<div class="devrow">
+    <div class="values">${check.deviceFields.map(f=>`<div class="v"><label>${f.label[state.lang]}</label><input data-di="${i}" data-dk="${f.key}" value="${escapeHtml(d[f.key]||"")}"></div>`).join("")}</div>
+    <div class="oknok">
+      <button class="ok ${d.status==='good'?'sel':''}" data-di="${i}" data-good="good">✓ ${t.ok}</button>
+      <button class="nok ${d.status==='bad'?'sel':''}" data-di="${i}" data-good="bad">✕ ${t.nok}</button>
+      ${a.devices.length>1?`<button class="devdel" data-del="${i}">✕</button>`:""}
+    </div>
+  </div>`).join("");
+  host.innerHTML=`<div class="card">
+    <div class="stagebadge">${badgeFor(check)}</div>
+    <h2 class="qtitle">${check.title[state.lang]}<span class="qm" id="qmTip">?</span></h2>
+    <div class="normbox">${check.norm[state.lang]}</div>
+    <div class="devrows">${rowsHtml}</div>
+    <button class="adddev" id="addDev">＋ ${ {nl:"toestel",fr:"appareil",en:"device"}[state.lang] }</button>
+  </div>`;
+  attachTip($("qmTip"),()=>check.tip[state.lang]);
+  const commit=()=>{ 
+    // overall status: good only if at least one device and all are good
+    a.status=a.devices.length && a.devices.every(d=>d.status==="good")?"good":(a.devices.some(d=>d.status)?"bad":null);
+    state.answers[check.id]=a;
+  };
+  host.querySelectorAll("input[data-di]").forEach(inp=>inp.addEventListener("input",()=>{
+    a.devices[+inp.dataset.di][inp.dataset.dk]=inp.value; commit(); refreshLog();
+  }));
+  host.querySelectorAll(".oknok button[data-good]").forEach(b=>b.addEventListener("click",()=>{
+    a.devices[+b.dataset.di].status=b.dataset.good; commit(); render();
+    if(a.status==="good"){ cueNext(); setTimeout(()=>next(),220); }
+  }));
+  host.querySelectorAll("[data-del]").forEach(x=>x.addEventListener("click",()=>{
+    a.devices.splice(+x.dataset.del,1); commit(); render();
+  }));
+  $("addDev").addEventListener("click",()=>{
+    a.devices.push({device:"",room:"",connection:"",status:null}); commit(); render();
+  });
+}
+
+/* brief visual cue that we're moving to the next step */
+function cueNext(){
+  const card=host.querySelector(".card");
+  if(card){ card.classList.add("stepout"); }
 }
 
 function renderNeighbour(check){
@@ -1050,6 +1313,52 @@ function renderNeighbour(check){
   host.querySelectorAll("[data-nb]").forEach(b=>b.addEventListener("click",()=>{
     state.answers["nb_"+check.id]={status:b.dataset.nb};
     render(); setTimeout(()=>next(),160);
+  }));
+}
+
+function renderAppointment(){
+  const sub={nl:"Kies het type afspraak. Dit bepaalt de flow.",fr:"Choisissez le type de rendez-vous. Cela détermine le flux.",en:"Pick the appointment type. This drives the flow."}[state.lang];
+  const kindBtns=Object.keys(JOBKINDS).map(k=>{
+    const j=JOBKINDS[k]; const on=state.jobKind===k;
+    return `<button class="${on?'sel':''}" data-jk="${k}"><span>${j.label[state.lang]}</span></button>`;
+  }).join("");
+  let netHtml="";
+  if(state.jobKind && JOBKINDS[state.jobKind].nets){
+    netHtml=`<div class="situationRowTitle" style="margin-top:10px">${ {nl:"Netwerk",fr:"Réseau",en:"Network"}[state.lang] }</div><div class="situationButtons">${JOBKINDS[state.jobKind].nets.map(n=>`<button class="${state.jobNet===n?'sel':''}" data-jn="${n}">${n}</button>`).join("")}</div>`;
+  }
+  host.innerHTML=`<div class="card">
+    <div class="stagebadge">${ {nl:"Afspraak",fr:"Rendez-vous",en:"Appointment"}[state.lang] }</div>
+    <h2 class="qtitle">${ {nl:"Afspraak?",fr:"Rendez-vous ?",en:"Appointment?"}[state.lang] }</h2>
+    <p class="qsub">${sub}</p>
+    <div class="situationRowTitle">${ {nl:"Type",fr:"Type",en:"Type"}[state.lang] }</div>
+    <div class="situationButtons">${kindBtns}</div>
+    ${netHtml}
+  </div>`;
+  host.querySelectorAll("[data-jk]").forEach(b=>b.addEventListener("click",()=>{
+    state.jobKind=b.dataset.jk;
+    if(!JOBKINDS[state.jobKind].nets) state.jobNet=null;
+    render();
+  }));
+  host.querySelectorAll("[data-jn]").forEach(b=>b.addEventListener("click",()=>{
+    state.jobNet=b.dataset.jn; render();
+  }));
+}
+
+function renderInstallCheck(){
+  const label=JOBKINDS[state.jobKind]?JOBKINDS[state.jobKind].label[state.lang]:"Install";
+  const sub={nl:"Tik aan wat van toepassing is. Niets verplicht — vul aan in Actie/Resultaat.",fr:"Cochez ce qui s'applique. Rien d'obligatoire.",en:"Tap what applies. Nothing mandatory."}[state.lang];
+  const set=new Set(state.installChecks||[]);
+  host.innerHTML=`<div class="card">
+    <div class="stagebadge">${STARHEAD[state.lang][1]} — ${label}</div>
+    <h2 class="qtitle">${label}</h2>
+    <p class="qsub">${sub}</p>
+    <div class="situationButtons instchecks">${INSTALL_CHECKS.map(c=>`<button class="${set.has(c)?'sel':''}" data-ic="${escapeHtml(c)}">${c}</button>`).join("")}</div>
+  </div>`;
+  host.querySelectorAll("[data-ic]").forEach(b=>b.addEventListener("click",()=>{
+    const v=b.dataset.ic;
+    if(set.has(v)) state.installChecks=state.installChecks.filter(x=>x!==v);
+    else { state.installChecks=state.installChecks||[]; state.installChecks.push(v); }
+    renderInstallCheck(); refreshLog();
   }));
 }
 
@@ -1214,6 +1523,10 @@ function next(){ const list=steps(); if(state.idx<list.length-1){state.idx++; wi
 function back(){ if(state.idx>0){state.idx--; window.scrollTo(0,0); render();} }
 $("btnBack").addEventListener("click",back);
 $("btnNext").addEventListener("click",()=>{ if(!$("btnNext").disabled) next(); });
+/* Ctrl+Enter = Next (works even while typing in a textarea/input) */
+document.addEventListener("keydown",e=>{
+  if((e.ctrlKey||e.metaKey) && e.key==="Enter"){ e.preventDefault(); if(!$("btnNext").disabled && $("btnNext").style.display!=="none") next(); }
+});
 
 /* allow manual editing of the output on any step (advanced) */
 out.addEventListener("input",()=>{ state.log=out.value; /* manual override not fed back to answers */ save(); });
@@ -1229,7 +1542,7 @@ function fb(text,cb){const ta=document.createElement("textarea");ta.value=text;d
 $("btnCopy").addEventListener("click",copyLog);
 $("btnNew").addEventListener("click",()=>{
   if(!confirm(tr().newConfirm)) return;
-  state.idx=0;state.answers={};state.situatie="";state.caseTypes=[];state.boxtype=null;state.wifiplat=null;state.actie="";state.result="";state.log="";
+  state.idx=0;state.answers={};state.jobKind=null;state.jobNet=null;state.installChecks=[];state.situatie="";state.situationLines=[];state.situationActive=-1;state.situationCustom="";state.caseTypes=[];state.boxtype=null;state.wifiplat=null;state.actie="";state.result="";state.log="";
   render();
 });
 
@@ -1237,6 +1550,11 @@ $("btnNew").addEventListener("click",()=>{
 document.querySelectorAll("#langs .chip").forEach(b=>b.addEventListener("click",()=>{
   state.lang=b.dataset.lang; document.documentElement.lang=state.lang; render();
 }));
+
+/* ---------- modem model modal ---------- */
+const modelModal=$("modelModal");
+$("modelCancel").addEventListener("click",()=>modelModal.classList.remove("show"));
+modelModal.addEventListener("click",e=>{ if(e.target===modelModal) modelModal.classList.remove("show"); });
 
 /* ---------- modemtest modal ---------- */
 const mt=$("mtModal"); let mttab="align";
